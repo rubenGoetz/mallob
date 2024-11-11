@@ -73,3 +73,11 @@ if echo $solvers|grep -q "c"; then
         mv cadical-* cadical
     fi
 fi
+
+
+# gimSATul
+if echo $solvers|grep -q "s"; then
+    if [ ! -d gimsatul ]; then
+        git clone https://github.com/rubenGoetz/gimsatul.git
+    fi
+fi

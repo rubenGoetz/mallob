@@ -24,3 +24,4 @@ download.sh
 callgrind.out.*
 nohup.out
 directives.*.impcheck
+cmake-build-debug

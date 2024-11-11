@@ -9,8 +9,8 @@ set(BASE_SOURCES ${BASE_SOURCES} ${SAT_MALLOB_SOURCES} CACHE INTERNAL "")
 #message("commons+SAT sources: ${BASE_SOURCES}") # Use to debug
 
 # Include default SAT solvers as external libraries (their Mallob-side interfaces are part of SAT_SOURCES)
-link_directories(lib/lingeling lib/yalsat lib/cadical lib/kissat)
-set(BASE_LIBS ${BASE_LIBS} lgl yals cadical kissat CACHE INTERNAL "")
+link_directories(lib/lingeling lib/yalsat lib/cadical lib/kissat lib/gimsatul)
+set(BASE_LIBS ${BASE_LIBS} lgl yals cadical kissat gimsatul CACHE INTERNAL "")
 set(BASE_INCLUDES ${BASE_INCLUDES} lib CACHE INTERNAL "") # need to include some solver code
 
 # Add new non-default solvers here
