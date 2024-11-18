@@ -12,14 +12,14 @@
 #include "gimsatul.hpp"
 #include "util/sys/threading.hpp"
 
-struct kissat;
+struct gimsatul;
 struct SolverSetup;
 struct SolverStatistics;
 
-class Kissat : public PortfolioSolverInterface {
+class Gimsatul : public PortfolioSolverInterface {
 
 private:
-    kissat* solver;
+    gimsatul* solver;
     bool seedSet = false;
     int numVars = 0;
 
@@ -40,8 +40,8 @@ private:
 
 
 public:
-    Kissat(const SolverSetup& setup);
-    ~Kissat();
+    Gimsatul(const SolverSetup& setup);
+    ~Gimsatul();
 
     // Add a (list of) permanent clause(s) to the formula
     void addLiteral(int lit) override;

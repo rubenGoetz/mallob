@@ -109,6 +109,6 @@ if echo $solvers|grep -q "s" && [ ! -f gimsatul/gimsatul ]; then
 
     cd gimsatul
     ./configure
-    make
+    make libgimsatul.a
     cd ..
 fi
