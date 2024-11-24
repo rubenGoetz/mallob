@@ -8,8 +8,7 @@
 #include "portfolio_solver_interface.hpp"
 #include "app/sat/data/clause.hpp"
 #include "app/sat/data/definitions.hpp"
-#include "kissat/src/kissat.h"
-#include "gimsatul.hpp"
+#include "gimsatul/libgimsatul.h"
 #include "util/sys/threading.hpp"
 
 struct gimsatul;

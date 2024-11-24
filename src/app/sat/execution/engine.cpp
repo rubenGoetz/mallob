@@ -11,6 +11,7 @@
 #include "../solvers/cadical.hpp"
 #include "../solvers/lingeling.hpp"
 #include "../solvers/kissat.hpp"
+#include "../solvers/gimsatul.hpp"
 #include "app/sat/data/clause_histogram.hpp"
 #include "app/sat/data/definitions.hpp"
 #include "app/sat/data/sharing_statistics.hpp"
@@ -134,6 +135,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	int numCdc = 0;
 	int numMrg = 0;
 	int numKis = 0;
+    int numGim = 0;
 
 	// Add solvers from full cycles on previous ranks
 	// and from the begun cycle on the previous rank
@@ -150,6 +152,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		case PortfolioSequence::CADICAL: solverToAdd = &numCdc; break;
 		case PortfolioSequence::MERGESAT: solverToAdd = &numMrg; break;
 		case PortfolioSequence::KISSAT: solverToAdd = &numKis; break;
+        case PortfolioSequence::GIMSATUL: solverToAdd = &numGim; break;
 		}
 		*solverToAdd += numFullCycles + (i < begunCyclePos);
 	}
@@ -233,6 +236,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 			case PortfolioSequence::MERGESAT: setup.diversificationIndex = numMrg++; break;
 			case PortfolioSequence::GLUCOSE: setup.diversificationIndex = numGlu++; break;
 			case PortfolioSequence::KISSAT: setup.diversificationIndex = numKis++; break;
+            case PortfolioSequence::GIMSATUL: setup.diversificationIndex = numGim++; break;
 			}
 			setup.diversificationIndex += divOffsetCycle;
 		}
@@ -279,6 +283,12 @@ std::shared_ptr<PortfolioSolverInterface> SatEngine::createSolver(const SolverSe
 		LOGGER(_logger, V4_VVER, "S%i : Kissat-%i\n", setup.globalId, setup.diversificationIndex);
 		solver.reset(new Kissat(setup));
 		break;
+    case 's':
+    case 'S':
+        // Gimsatul
+        LOGGER(_logger, V4_VVER, "S%i : Gimsatul-%i\n", setup.globalId, setup.diversificationIndex);
+        solver.reset(new Gimsatul(setup));
+        break;
 #ifdef MALLOB_USE_MERGESAT
 	case 'm':
 	//case 'M': // no support for incremental mode as of now

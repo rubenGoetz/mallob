@@ -17,7 +17,7 @@
 #include "app/sat/solvers/portfolio_solver_interface.hpp"
 
 extern "C" {
-#include "kissat/src/gimsatul.h"
+#include "gimsatul/libgimsatul.h"
 }
 #include "gimsatul.hpp"
 #include "util/distribution.hpp"
@@ -25,17 +25,17 @@ extern "C" {
 
 
 
-void produce_clause(void* state, int size, int glue) {}
+// void produce_clause(void* state, int size, int glue) {}
 
-void consume_clause(void* state, int** clause, int* size, int* glue) {}
+// void consume_clause(void* state, int** clause, int* size, int* glue) {}
 
-int terminate_callback(void* state) {
-    return 0;
-}
+// int terminate_callback(void* state) {
+//     return 0;
+// }
 
 
 Gimsatul::Gimsatul(const SolverSetup& setup)
-        : PortfolioSolverInterface(setup), solver(gimsatul_init()),
+        : PortfolioSolverInterface(setup), solver(gimsatul_init(setup.numVars, setup.numOriginalClauses)),
           learntClauseBuffer(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts()) {
 
     // kissat_set_terminate(solver, this, &terminate_callback);
@@ -86,7 +86,9 @@ void Gimsatul::setSolverSuspend() {}
 
 void Gimsatul::unsetSolverSuspend() {}
 
-bool Gimsatul::shouldTerminate() {}
+bool Gimsatul::shouldTerminate() {
+    return false;
+}
 
 void Gimsatul::cleanUp() {}
 
@@ -105,7 +107,9 @@ std::vector<int> Gimsatul::getSolution() {
 }
 
 std::set<int> Gimsatul::getFailedAssumptions() {
-    return std::set<int>(0);
+    // return empty set
+    std::set<int> x;
+    return x;
 }
 
 void Gimsatul::setLearnedClauseCallback(const LearnedClauseCallback& callback) {}
@@ -115,7 +119,7 @@ void Gimsatul::produceClause(int size, int lbd) {}
 void Gimsatul::consumeClause(int** clause, int* size, int* lbd) {}
 
 int Gimsatul::getVariablesCount() {
-    return (int) this->solver.variables;
+    return (int) this->numVars;
 }
 
 int Gimsatul::getSplittingVariable() {
