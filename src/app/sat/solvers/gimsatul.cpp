@@ -7,6 +7,8 @@
 #include <cmath>
 #include <functional>
 #include <random>
+#include <iostream>
+#include <cstdio>
 
 #include "app/sat/data/clause_metadata.hpp"
 #include "util/logger.hpp"
@@ -36,11 +38,7 @@ extern "C" {
 
 Gimsatul::Gimsatul(const SolverSetup& setup)
         : PortfolioSolverInterface(setup), solver(gimsatul_init(setup.numVars, setup.numOriginalClauses)),
-          learntClauseBuffer(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts()) {
-
-    // kissat_set_terminate(solver, this, &terminate_callback);
-    glueLimit = _setup.strictLbdLimit;
-}
+          learntClauseBuffer(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts()) {}
 
 void Gimsatul::addLiteral(int lit) {
     gimsatul_add(solver, lit);
