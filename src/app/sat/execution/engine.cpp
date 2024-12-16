@@ -236,7 +236,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 			case PortfolioSequence::MERGESAT: setup.diversificationIndex = numMrg++; break;
 			case PortfolioSequence::GLUCOSE: setup.diversificationIndex = numGlu++; break;
 			case PortfolioSequence::KISSAT: setup.diversificationIndex = numKis++; break;
-            case PortfolioSequence::GIMSATUL: setup.diversificationIndex = numGim++; break;
+            case PortfolioSequence::GIMSATUL: setup.diversificationIndex = numGim += config.threads - setup.localId; break;
 			}
 			setup.diversificationIndex += divOffsetCycle;
 		}
@@ -249,6 +249,8 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		setup.modelCheckingLratConnector = modelCheckingLratConnector;
 		setup.avoidUnsatParticipation = (params.proofOutputFile.isSet() || params.onTheFlyChecking()) && !item.outputProof;
 		setup.exportClauses = !setup.avoidUnsatParticipation;
+		setup.threads = 1;
+		if (item.baseSolver == PortfolioSequence::GIMSATUL) setup.threads = config.threads;
 
 		_solver_interfaces.push_back(createSolver(setup));
 		cyclePos = (cyclePos+1) % portfolio.cycle.size();

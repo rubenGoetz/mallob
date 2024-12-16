@@ -37,7 +37,7 @@ extern "C" {
 
 
 Gimsatul::Gimsatul(const SolverSetup& setup)
-        : PortfolioSolverInterface(setup), solver(gimsatul_init(setup.numVars, setup.numOriginalClauses)),
+        : PortfolioSolverInterface(setup), solver(gimsatul_init(setup.numVars, setup.numOriginalClauses, setup.threads)),
           learntClauseBuffer(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts()) {}
 
 void Gimsatul::addLiteral(int lit) {
