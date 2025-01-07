@@ -78,8 +78,8 @@ public:
 
     void cleanUp() override;
 
-    friend void produce_clause(void* state, int size, int glue);
-    friend void consume_clause(void* state, int** clause, int* size, int* lbd);
+    friend void gimsatul_produce_clause(void* state, int size, int glue);
+    friend void gimsatul_consume_clause(void* state, int** clause, int* size, int* lbd);
     friend int terminate_callback(void* state);
 
 private:

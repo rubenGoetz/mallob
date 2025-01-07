@@ -236,7 +236,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 			case PortfolioSequence::MERGESAT: setup.diversificationIndex = numMrg++; break;
 			case PortfolioSequence::GLUCOSE: setup.diversificationIndex = numGlu++; break;
 			case PortfolioSequence::KISSAT: setup.diversificationIndex = numKis++; break;
-            case PortfolioSequence::GIMSATUL: setup.diversificationIndex = numGim += config.threads - setup.localId; break;
+            case PortfolioSequence::GIMSATUL: setup.diversificationIndex = numGim++; break;
 			}
 			setup.diversificationIndex += divOffsetCycle;
 		}
