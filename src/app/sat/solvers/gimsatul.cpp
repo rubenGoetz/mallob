@@ -44,7 +44,7 @@ Gimsatul::Gimsatul(const SolverSetup& setup)
         : PortfolioSolverInterface(setup), solver(gimsatul_init(setup.numVars, setup.numOriginalClauses)),
           learntClauseBuffer(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts()) {
     int success = gimsatul_set_option(solver, "threads", setup.threads);
-    std::cout << ">>>>> gimsatul_set_option: " << success << std::endl;
+    // std::cout << ">>>>> gimsatul_set_option: " << success << std::endl;
 }
 
 void Gimsatul::addLiteral(int lit) {
@@ -77,7 +77,7 @@ SatResult Gimsatul::solve(size_t numAssumptions, const int* assumptions) {
     initialVariablePhasesLocked = true;
     gimsatul_set_initial_variable_phases (solver, initialVariablePhases.data(), initialVariablePhases.size());
 
-    std::cout << ">>>>> solve" << std::endl;
+    // std::cout << ">>>>> solve" << std::endl;
     // start solving
     int res = gimsatul_solve(solver);
     switch (res) {
