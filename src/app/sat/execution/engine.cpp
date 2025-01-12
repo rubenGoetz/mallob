@@ -61,13 +61,21 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	// Retrieve the string defining the cycle of solver choices, one character per solver
 	// e.g. "llgc" => lingeling lingeling glucose cadical lingeling lingeling glucose ...
 	std::string solverChoicesStr = params.satSolverSequence();
-	// Exclusively use gimsatul for now
-	if (solverChoicesStr.find(PortfolioSequence::GIMSATUL) != std::string::npos) {
-		solverChoicesStr = "s";
-		numOrigSolvers = 1;
-		_num_solvers = 1;
-		_num_active_solvers = _num_solvers;
+	// count gimsatul instances and compress to one instance
+	std::size_t gimsatulCount = 0;
+	std::string newSolverChoicesStr = "";
+	for (auto c : solverChoicesStr) {
+		if (c == 's' ) gimsatulCount++;
+		else newSolverChoicesStr += c;
 	}
+	if (gimsatulCount) {
+		newSolverChoicesStr += 's';
+		solverChoicesStr = newSolverChoicesStr;
+		_num_solvers -= (gimsatulCount - 1);
+		_num_active_solvers = _num_solvers;
+		numOrigSolvers -= (gimsatulCount - 1);
+	}
+	
 	PortfolioSequence portfolio;
 	bool ok = portfolio.parse(solverChoicesStr);
 	if (!ok) {
@@ -148,8 +156,6 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	// and from the begun cycle on the previous rank
 	int numFullCycles = std::max(0, appRank * numOrigSolvers - (int)portfolio.prefix.size()) / portfolio.cycle.size();
 	int begunCyclePos = std::max(0, appRank * numOrigSolvers - (int)portfolio.prefix.size()) % portfolio.cycle.size();
-	// std::cout << ">>>>> numFullCycles=" << numFullCycles << " begunCyclePos=" << begunCyclePos << std::endl;
-	// std::cout << ">>>>> appRank=" << appRank << " numOrigSolvers=" << numOrigSolvers << " portfolio.prefix.size()=" << portfolio.prefix.size() << " portfolio.cycle.size()=" << portfolio.cycle.size() << std::endl;
 	bool hasPseudoincrementalSolvers = false;
 	for (size_t i = 0; i < portfolio.cycle.size(); i++) {
 		int* solverToAdd;
@@ -259,7 +265,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		setup.avoidUnsatParticipation = (params.proofOutputFile.isSet() || params.onTheFlyChecking()) && !item.outputProof;
 		setup.exportClauses = !setup.avoidUnsatParticipation;
 		setup.threads = 1;
-		if (item.baseSolver == PortfolioSequence::GIMSATUL) setup.threads = config.threads;
+		if (item.baseSolver == PortfolioSequence::GIMSATUL) setup.threads = gimsatulCount;
 
 		_solver_interfaces.push_back(createSolver(setup));
 		cyclePos = (cyclePos+1) % portfolio.cycle.size();
