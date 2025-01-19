@@ -44,6 +44,10 @@ class LratConnector;
 
 using namespace SolvingStates;
 
+bool comp_SolverSetup(SolverSetup a, SolverSetup b) {
+    return b.solverType == PortfolioSequence::GIMSATUL;
+}
+
 SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, Logger& loggingInterface) : 
 			_params(params), _config(config), _logger(loggingInterface), _state(INITIALIZING) {
 
@@ -61,21 +65,6 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	// Retrieve the string defining the cycle of solver choices, one character per solver
 	// e.g. "llgc" => lingeling lingeling glucose cadical lingeling lingeling glucose ...
 	std::string solverChoicesStr = params.satSolverSequence();
-	// count gimsatul instances and compress to one instance
-	std::size_t gimsatulCount = 0;
-	std::string newSolverChoicesStr = "";
-	for (auto c : solverChoicesStr) {
-		if (c == 's' ) gimsatulCount++;
-		else newSolverChoicesStr += c;
-	}
-	if (gimsatulCount) {
-		newSolverChoicesStr += 's';
-		solverChoicesStr = newSolverChoicesStr;
-		_num_solvers -= (gimsatulCount - 1);
-		_num_active_solvers = _num_solvers;
-		numOrigSolvers -= (gimsatulCount - 1);
-	}
-	
 	PortfolioSequence portfolio;
 	bool ok = portfolio.parse(solverChoicesStr);
 	if (!ok) {
@@ -168,6 +157,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		case PortfolioSequence::MERGESAT: solverToAdd = &numMrg; break;
 		case PortfolioSequence::KISSAT: solverToAdd = &numKis; break;
         case PortfolioSequence::GIMSATUL: solverToAdd = &numGim; break;
+		// Hier die Gimsatulinstanzen zählen
 		}
 		*solverToAdd += numFullCycles + (i < begunCyclePos);
 	}
@@ -231,6 +221,8 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 
 	// Instantiate solvers according to the global solver IDs and diversification indices
 	int cyclePos = begunCyclePos;
+	int gimsatulCount = 0;
+	std::vector<SolverSetup> setupVector(0);
 	for (setup.localId = 0; setup.localId < _num_solvers; setup.localId++) {
 		setup.globalId = appRank * numOrigSolvers + setup.localId;
 
@@ -251,7 +243,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 			case PortfolioSequence::MERGESAT: setup.diversificationIndex = numMrg++; break;
 			case PortfolioSequence::GLUCOSE: setup.diversificationIndex = numGlu++; break;
 			case PortfolioSequence::KISSAT: setup.diversificationIndex = numKis++; break;
-            case PortfolioSequence::GIMSATUL: setup.diversificationIndex = numGim++; break;
+            case PortfolioSequence::GIMSATUL: setup.diversificationIndex = numGim++; gimsatulCount++; break;
 			}
 			setup.diversificationIndex += divOffsetCycle;
 		}
@@ -265,13 +257,40 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		setup.avoidUnsatParticipation = (params.proofOutputFile.isSet() || params.onTheFlyChecking()) && !item.outputProof;
 		setup.exportClauses = !setup.avoidUnsatParticipation;
 		setup.threads = 1;
-		if (item.baseSolver == PortfolioSequence::GIMSATUL) setup.threads = gimsatulCount;
 
-		_solver_interfaces.push_back(createSolver(setup));
 		cyclePos = (cyclePos+1) % portfolio.cycle.size();
+		setupVector.push_back(setup);
+	}
+
+	// vector sortieren nach (nicht) gimsatul
+	std::sort(setupVector.begin(), setupVector.end(), comp_SolverSetup);
+	// localId fixen (neue machen und dann überschreiben)
+	std::cout << ">>>>> reindex solvers: ";
+	for (int i = 0; i < setupVector.size(); i++) {
+		std::cout << setupVector[i].solverType;
+		setupVector[i].localId = i;
+		if (setupVector[i].solverType == PortfolioSequence::GIMSATUL) {
+			setupVector[i].threads = gimsatulCount;
+			_num_solvers = i + 1;
+			_num_active_solvers = _num_solvers;
+			numOrigSolvers = i + 1;
+			break;
+		}
+	}
+	std::cout << std::endl;
+	// Solver erstellen
+	std::cout << ">>>>> creating Solver: ";
+	for (SolverSetup setup : setupVector) {
+		std::cout << setup.solverType;
+		_solver_interfaces.push_back(createSolver(setup));
 		auto mclc = _solver_interfaces.back()->getSolverSetup().modelCheckingLratConnector;
 		if (mclc) modelCheckingLratConnector = mclc;
+		if (setup.solverType == PortfolioSequence::GIMSATUL) {
+			std::cout << " gimsatul_threads = " << setup.threads;
+			break;
+		}
 	}
+	std::cout << std::endl;
 
 	_sharing_manager.reset(new SharingManager(_solver_interfaces, _params, _logger, 
 		/*max. deferred literals per solver=*/5*config.maxBroadcastedLitsPerCycle, config.apprank));
