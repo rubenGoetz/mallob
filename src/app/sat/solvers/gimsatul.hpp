@@ -23,7 +23,7 @@ private:
     int numVars = 0;
 
     LearnedClauseCallback callback;
-    std::vector<int> learntClauseBuffer;
+    std::vector<int*> learntClauseBuffer;
     Mallob::Clause learntClause;
     std::vector<int> producedClause;
 
@@ -78,12 +78,12 @@ public:
 
     void cleanUp() override;
 
-    friend void gimsatul_produce_clause(void* state, int size, int glue);
+    friend void gimsatul_produce_clause(void* state, int size, int glue, int ring_id);
     friend void gimsatul_consume_clause(void* state, int** clause, int* size, int* lbd);
     friend int terminate_callback(void* state);
 
 private:
-    void produceClause(int size, int lbd);
+    void produceClause(int size, int lbd, int ring_id);
     void consumeClause(int** clause, int* size, int* lbd);
     bool shouldTerminate();
 
