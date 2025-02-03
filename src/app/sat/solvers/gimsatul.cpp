@@ -41,11 +41,9 @@ void gimsatul_consume_clause(void* state, int** clause, int* size, int* glue) {
 
 
 Gimsatul::Gimsatul(const SolverSetup& setup)
-        : PortfolioSolverInterface(setup), solver(gimsatul_init(setup.numVars, setup.numOriginalClauses)),
-          learntClauseBuffer(setup.threads, nullptr) {
-    for (size_t i = 0; i < setup.threads; i++)
-    {
-        this->learntClauseBuffer[i] = (int*) calloc(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts(), sizeof(int));
+        : PortfolioSolverInterface(setup), solver(gimsatul_init(setup.numVars, setup.numOriginalClauses)), learntClauseBuffer(setup.threads, std::vector<int>(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts())), bufferPointer(setup.threads, nullptr){
+    for (size_t i = 0; i < setup.threads; i++) {
+        bufferPointer[i] = learntClauseBuffer[i].data();
     }
     
     int success = gimsatul_set_option(solver, "threads", setup.threads);
@@ -131,7 +129,7 @@ std::set<int> Gimsatul::getFailedAssumptions() {
 
 void Gimsatul::setLearnedClauseCallback(const LearnedClauseCallback& callback) {
     this->callback = callback;
-    gimsatul_set_clause_export_callback(solver, this, learntClauseBuffer.data(), _setup.strictMaxLitsPerClause, &gimsatul_produce_clause);
+    gimsatul_set_clause_export_callback(solver, this, bufferPointer.data(), _setup.strictMaxLitsPerClause, &gimsatul_produce_clause);
     gimsatul_set_clause_import_callback(solver, this, &gimsatul_consume_clause);
 }
 
@@ -143,7 +141,7 @@ void Gimsatul::produceClause(int size, int lbd, int ring_id) {
     learntClause.lbd = learntClause.size == 1 ? 1 : lbd;
     if (learntClause.lbd == 1 && learntClause.size > 1) learntClause.lbd++;
     if (learntClause.lbd > _setup.strictLbdLimit) return;
-    learntClause.begin = learntClauseBuffer[ring_id];
+    learntClause.begin = bufferPointer[ring_id];
     callback(learntClause, _setup.localId);
 }
 
