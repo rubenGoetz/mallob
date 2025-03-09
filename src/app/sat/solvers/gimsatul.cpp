@@ -146,7 +146,7 @@ void Gimsatul::produceClause(int size, int lbd, int ring_id) {
 }
 
 void Gimsatul::consumeClause(int** clause, int* size, int* lbd) {
-        Mallob::Clause c;
+    Mallob::Clause c;
     bool success = fetchLearnedClause(c, GenericClauseStore::ANY);
     if (success) {
         assert(c.begin != nullptr);
