@@ -22,10 +22,11 @@ private:
     bool seedSet = false;
     int numVars = 0;
 
+    // clause exchange
     LearnedClauseCallback callback;
     std::vector<std::vector<int>> learntClauseBuffer;
     std::vector<int*> bufferPointer;
-    Mallob::Clause learntClause;
+    std::vector<Mallob::Clause> learntClauses;
     std::vector<int> producedClause;
 
     bool interruptionInitialized = false;
@@ -38,6 +39,13 @@ private:
     std::vector<signed char> initialVariablePhases;
     bool initialVariablePhasesLocked = false;
 
+    // diversification
+    void calc_phases(int seed);
+    int portfolio_size;
+    int predicted_num_vars;
+    bool mallob_diversification;
+    std::vector<std::vector<char>> initial_phases;
+    std::vector<char*> initial_phases_pointer;
 
 public:
     Gimsatul(const SolverSetup& setup);

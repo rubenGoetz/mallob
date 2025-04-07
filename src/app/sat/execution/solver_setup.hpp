@@ -42,6 +42,7 @@ struct SolverSetup {
 	bool diversifyFanOut;
 	bool diversifyInitShuffle;
 	int threads;
+	int portfolio_size;
 	enum EliminationSetting {
 		ALLOW_ALL, DISABLE_SOME, DISABLE_MOST, DISABLE_ALL
 	} eliminationSetting;

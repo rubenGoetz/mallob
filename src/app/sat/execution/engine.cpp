@@ -257,6 +257,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		setup.avoidUnsatParticipation = (params.proofOutputFile.isSet() || params.onTheFlyChecking()) && !item.outputProof;
 		setup.exportClauses = !setup.avoidUnsatParticipation;
 		setup.threads = 1;
+		setup.portfolio_size = _num_solvers;
 
 		cyclePos = (cyclePos+1) % portfolio.cycle.size();
 		setupVector.push_back(setup);
@@ -265,9 +266,9 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	// vector sortieren nach (nicht) gimsatul
 	std::sort(setupVector.begin(), setupVector.end(), comp_SolverSetup);
 	// localId fixen (neue machen und dann überschreiben)
-	std::cout << ">>>>> reindex solvers: ";
+	// std::cout << ">>>>> reindex solvers: ";
 	for (int i = 0; i < setupVector.size(); i++) {
-		std::cout << setupVector[i].solverType;
+		// std::cout << setupVector[i].solverType;
 		setupVector[i].localId = i;
 		if (setupVector[i].solverType == PortfolioSequence::GIMSATUL) {
 			setupVector[i].threads = gimsatulCount;
@@ -277,20 +278,20 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 			break;
 		}
 	}
-	std::cout << std::endl;
+	// std::cout << std::endl;
 	// Solver erstellen
-	std::cout << ">>>>> creating Solver: ";
+	// std::cout << ">>>>> creating Solver: ";
 	for (SolverSetup setup : setupVector) {
-		std::cout << setup.solverType;
+		// std::cout << setup.solverType;
 		_solver_interfaces.push_back(createSolver(setup));
 		auto mclc = _solver_interfaces.back()->getSolverSetup().modelCheckingLratConnector;
 		if (mclc) modelCheckingLratConnector = mclc;
 		if (setup.solverType == PortfolioSequence::GIMSATUL) {
-			std::cout << " gimsatul_threads = " << setup.threads;
+			// std::cout << " gimsatul_threads = " << setup.threads;
 			break;
 		}
 	}
-	std::cout << std::endl;
+	// std::cout << std::endl;
 
 	_sharing_manager.reset(new SharingManager(_solver_interfaces, _params, _logger, 
 		/*max. deferred literals per solver=*/5*config.maxBroadcastedLitsPerCycle, config.apprank));

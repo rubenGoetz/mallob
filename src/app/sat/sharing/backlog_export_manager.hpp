@@ -40,6 +40,7 @@ public:
     }
     virtual ~BacklogExportManager() {}
 
+    // Hier geht gimsatul dann rein
     void produce(int* begin, int size, int lbd, int producerId, int epoch) override {
 
         ProducedClauseCandidate pcc(begin, size, lbd, producerId, epoch);

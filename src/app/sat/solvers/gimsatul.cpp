@@ -39,13 +39,30 @@ void gimsatul_consume_clause(void* state, int** clause, int* size, int* glue) {
 //     return 0;
 // }
 
+/*
+    bool mallob_diversification;
+    std::vector<std::vector<bool>> initial_phases;
+    std::vector<bool*> initial_phases_pointer;
+*/
 
-Gimsatul::Gimsatul(const SolverSetup& setup)
-        : PortfolioSolverInterface(setup), solver(gimsatul_init(setup.numVars, setup.numOriginalClauses)), learntClauseBuffer(setup.threads, std::vector<int>(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts())), bufferPointer(setup.threads, nullptr){
+Gimsatul::Gimsatul(const SolverSetup& setup) :
+    PortfolioSolverInterface(setup),
+    learntClauseBuffer(setup.threads, std::vector<int>(_setup.strictMaxLitsPerClause+ClauseMetadata::numInts())),
+    bufferPointer(setup.threads, nullptr),
+    learntClauses(setup.threads, Mallob::Clause()),
+    portfolio_size(setup.portfolio_size),
+    mallob_diversification(false),
+    initial_phases(setup.threads, std::vector<char>(setup.numVars, 1)),
+    initial_phases_pointer(setup.threads, nullptr),
+    predicted_num_vars(setup.numVars) {
+
     for (size_t i = 0; i < setup.threads; i++) {
         bufferPointer[i] = learntClauseBuffer[i].data();
+        initial_phases_pointer[i] = initial_phases[i].data();
     }
     
+    solver = gimsatul_init(setup.numVars, setup.numOriginalClauses, initial_phases_pointer.data());
+
     int success = gimsatul_set_option(solver, "threads", setup.threads);
     // std::cout << ">>>>> gimsatul_set_option: " << success << std::endl;
 }
@@ -57,17 +74,44 @@ void Gimsatul::addLiteral(int lit) {
 }
 
 
-void Gimsatul::diversify(int seed) {}
+void Gimsatul::calc_phases(int seed) {
+    // if (!_params.diversifyPhases()) return;
+    if (getGlobalId() < getNumOriginalDiversifications()) return;
+
+    int solversCount = get_threads(solver);
+    int totalSolvers = solversCount * portfolio_size;
+    int vars = predicted_num_vars;
+
+    // std::cout << ">> solversCount=" << solversCount << " totalSolvers=" << totalSolvers << " vars=" << vars << " getGlobalId=" << getGlobalId() << std::endl;
+
+    // calculate initial phases for each ring
+    for (int ring_id = 0; ring_id < _setup.threads; ring_id++) {
+        // calculate phase array
+        SplitMix64Rng rng = SplitMix64Rng(seed + getGlobalId() + ring_id);
+        for (int i = 0; i < vars; i++) {
+            float numSolversRand = rng.randomInRange(0, totalSolvers);
+            if (numSolversRand < 1) {
+                initial_phases[ring_id][i] = -1;
+                // std::cout << ">> numSolversRand < 1" << std::endl;
+            }
+        }
+    }
+}
+
+void Gimsatul::diversify(int seed) {
+    calc_phases(seed);
+}
 
 int Gimsatul::getNumOriginalDiversifications() {
     return 0;
 }
 
-void Gimsatul::setPhase(const int var, const bool phase) {
-    assert(!initialVariablePhasesLocked);
+void Gimsatul::setPhase(const int var, const bool phase) {    
+    // ignore and implement in diversify
+    /*assert(!initialVariablePhasesLocked);
 	if (var >= initialVariablePhases.size())
         initialVariablePhases.resize(var+1);
-    initialVariablePhases[var] = phase ? 1 : -1;
+    initialVariablePhases[var] = phase ? 1 : -1;*/
 }
 
 // Solve the formula with a given set of assumptions
@@ -136,11 +180,14 @@ void Gimsatul::setLearnedClauseCallback(const LearnedClauseCallback& callback) {
 void Gimsatul::produceClause(int size, int lbd, int ring_id) {
     interruptionInitialized = true;
     if (size > _setup.strictMaxLitsPerClause) return;
+    auto &learntClause = learntClauses[ring_id];
     learntClause.size = size;
     // In Kissat, long clauses of LBD 1 can be exported. => Increment LBD in this case.
     learntClause.lbd = learntClause.size == 1 ? 1 : lbd;
     if (learntClause.lbd == 1 && learntClause.size > 1) learntClause.lbd++;
     if (learntClause.lbd > _setup.strictLbdLimit) return;
+    assert (ring_id >= 0);
+    assert (bufferPointer[ring_id] != nullptr);
     learntClause.begin = bufferPointer[ring_id];
     callback(learntClause, _setup.localId);
 }
@@ -170,7 +217,18 @@ int Gimsatul::getSplittingVariable() {
     return 0;
 }
 
-void Gimsatul::writeStatistics(SolverStatistics& stats) {}
+void Gimsatul::writeStatistics(SolverStatistics& stats) {
+    if (!solver) return;
+    gimsatul_statistics gstats = gimsatul_get_statistics(solver);
+    stats.conflicts = gstats.conflicts;
+    stats.decisions = gstats.decisions;
+    stats.propagations = gstats.propagations;
+    stats.restarts = gstats.restarts;
+    stats.imported = gstats.imported;
+    stats.discarded = gstats.discarded;
+    LOGGER(_logger, V4_VVER, "disc_reasons r_ee:%ld,r_ed:%ld,r_pb:%ld,r_ss:%ld,r_sw:%ld,r_tr:%ld,r_fx:%ld,r_ia:%ld,r_tl:%ld\n",
+        gstats.r_ee, gstats.r_ed, gstats.r_pb, gstats.r_ss, gstats.r_sw, gstats.r_tr, gstats.r_fx, gstats.r_ia, gstats.r_tl);
+}
 
 Gimsatul::~Gimsatul() {
     if (solver) {

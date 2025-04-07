@@ -287,6 +287,8 @@ void SolverThread::diversifyInitially() {
 }
 
 void SolverThread::diversifyAfterReading() {
+    // inspiration hier :)
+    
     if (!_params.diversifyPhases()) return;
     if (_solver.getGlobalId() < _solver.getNumOriginalDiversifications()) return;
 
