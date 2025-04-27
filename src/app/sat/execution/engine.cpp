@@ -218,6 +218,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		setup.profilingBaseDir += "/" + std::to_string(appRank) + "/";
 		setup.profilingLevel = params.cadicalProfilingLevel();
 	}
+	setup.searchOnly = params.searchOnly();
 
 	// Instantiate solvers according to the global solver IDs and diversification indices
 	int cyclePos = begunCyclePos;

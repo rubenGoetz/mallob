@@ -64,7 +64,23 @@ Gimsatul::Gimsatul(const SolverSetup& setup) :
     solver = gimsatul_init(setup.numVars, setup.numOriginalClauses, initial_phases_pointer.data());
 
     int success = gimsatul_set_option(solver, "threads", setup.threads);
-    // std::cout << ">>>>> gimsatul_set_option: " << success << std::endl;
+    assert (success == 0);
+    
+    if (setup.searchOnly) {
+        success += gimsatul_set_option(solver, "simplify", 0);
+        assert (success == 0);
+        success += gimsatul_set_option(solver, "simplify_regularly", 0);
+        assert (success == 0);
+        success += gimsatul_set_option(solver, "simplify_initially", 0);
+        assert (success == 0);
+        success += gimsatul_set_option(solver, "probe", 0);
+        assert (success == 0);
+    }
+    
+
+    if (success != 0)
+        LOGGER(_logger, V1_WARN, "[WARN] Gimsatul Options could not be set successfully\n");
+    assert (success == 0);
 }
 
 void Gimsatul::addLiteral(int lit) {
