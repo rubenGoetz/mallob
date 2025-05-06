@@ -57,6 +57,17 @@ struct SolverSetup {
 	bool diversifyNative {false};
 	bool diversifyFanOut {false};
 	bool diversifyInitShuffle {false};
+
+	bool doIncrementalSolving;
+	int diversificationIndex;
+	bool diversifyNoise;
+	bool diversifyNative;
+	bool diversifyFanOut;
+	bool diversifyInitShuffle;
+	bool searchOnly;
+	int threads;
+	int portfolio_size;
+
 	enum EliminationSetting {
 		ALLOW_ALL, DISABLE_SOME, DISABLE_MOST, DISABLE_ALL
 	} eliminationSetting {ALLOW_ALL};

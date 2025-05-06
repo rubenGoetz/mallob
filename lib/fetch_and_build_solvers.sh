@@ -11,7 +11,7 @@ elif [ x$DISABLE_FPU != x1 ]; then
 fi
 
 if [ -z $1 ]; then
-    solvers="clyk"
+    solvers="clyks"
     echo "Defaulting to solvers $solvers (supply another string to override solvers to build)"
 else
     solvers="$1"
@@ -101,5 +101,15 @@ if echo $solvers|grep -q "c" && [ ! -f cadical/libcadical.a ]; then
     ./configure
     make
     cp build/libcadical.a .
+    cd ..
+fi
+
+# gimSATul
+if echo $solvers|grep -q "s" && [ ! -f gimsatul/gimsatul ]; then
+    echo "Building gimSATul ..."
+
+    cd gimsatul
+    ./configure
+    make libgimsatul.a
     cd ..
 fi
