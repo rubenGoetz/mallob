@@ -58,12 +58,6 @@ struct SolverSetup {
 	bool diversifyFanOut {false};
 	bool diversifyInitShuffle {false};
 
-	bool doIncrementalSolving;
-	int diversificationIndex;
-	bool diversifyNoise;
-	bool diversifyNative;
-	bool diversifyFanOut;
-	bool diversifyInitShuffle;
 	bool searchOnly;
 	int threads;
 	int portfolio_size;

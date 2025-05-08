@@ -1,8 +1,9 @@
 #!/bin/bash
 
-benchmark_dir=$1
-log_dir=$2
-trace_dir=$3
+benchmark_dir=~/masterarbeit/mallob/instances/sat-instances-for-small-tests/
+log_dir=logs
+trace_dir=logs
+solver_str=k_
 
 RDMAV_FORK_SAFE=1
 NPROCS=2
@@ -22,7 +23,7 @@ for file in $benchmark_dir/*; do
         fi
 
         # rather multiple jobs with own timeout?
-        { time -p timeout $TIMEOUT mpirun -np $NPROCS --bind-to core --map-by ppr:${NPROCS}:node:pe=4 build/mallob -mono=$file -satsolver='s' -trace-dir=$trace_dir/$file_name -log=$log_dir/$file_name -t=$THREADS > $log_dir/$file_name/out_file; } 2>> $log_dir/$file_name/out_file
+        { time -p timeout $TIMEOUT mpirun -np $NPROCS --bind-to core --map-by ppr:${NPROCS}:node:pe=$THREADS build/mallob -mono=$file -satsolver=$solver_str -pb=0 -pjp=999999 -pef=1 -mono-app=SATWITHPRE -rlbd=3 -ilbd=0 -trace-dir=$trace_dir/$file_name -log=$log_dir/$file_name -t=$THREADS > $log_dir/$file_name/out_file; } 2>> $log_dir/$file_name/out_file
 
     fi 
 done

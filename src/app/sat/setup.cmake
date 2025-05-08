@@ -11,7 +11,8 @@ set(MALLOB_COREPLUSCOMM_SOURCES ${MALLOB_COREPLUSCOMM_SOURCES} ${SAT_MALLOB_SOUR
 # Include default SAT solvers as external libraries (their Mallob-side interfaces are part of SAT_SOURCES)
 set(BASE_LINK_DIRS ${BASE_LINK_DIRS} lib/lingeling lib/yalsat lib/cadical lib/kissat CACHE INTERNAL "")
 set(BASE_LIBS ${BASE_LIBS} lgl yals cadical kissat gimsatul CACHE INTERNAL "")
-# link_directories(lib/lingeling lib/yalsat lib/cadical lib/kissat lib/gimsatul)
+link_directories(lib/lingeling lib/yalsat lib/cadical lib/kissat lib/gimsatul)
+# set(BASE_LIBS ${BASE_LIBS} lgl yals cadical kissat gimsatul CACHE INTERNAL "")
 set(BASE_INCLUDES ${BASE_INCLUDES} lib CACHE INTERNAL "") # need to include some solver code
 
 # Add new non-default solvers here

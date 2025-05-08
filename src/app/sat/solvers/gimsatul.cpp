@@ -65,8 +65,8 @@ Gimsatul::Gimsatul(const SolverSetup& setup) :
 
     int success = gimsatul_set_option(solver, "threads", setup.threads);
     assert (success == 0);
-    
-    if (setup.searchOnly) {
+
+    if (_setup.flavour == PortfolioSequence::PLAIN) {
         success += gimsatul_set_option(solver, "simplify", 0);
         assert (success == 0);
         success += gimsatul_set_option(solver, "simplify_regularly", 0);

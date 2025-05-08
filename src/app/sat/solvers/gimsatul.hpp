@@ -62,8 +62,8 @@ public:
 
     void setSolverInterrupt() override;
     void unsetSolverInterrupt() override;
-    void setSolverSuspend() override;
-    void unsetSolverSuspend() override;
+    void setSolverSuspend();
+    void unsetSolverSuspend();
 
     std::vector<int> getSolution() override;
     std::set<int> getFailedAssumptions() override;
