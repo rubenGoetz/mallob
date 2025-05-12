@@ -35,15 +35,7 @@ void gimsatul_consume_clause(void* state, int** clause, int* size, int* glue) {
     ((Gimsatul*) state)->consumeClause(clause, size, glue);
 }
 
-// int terminate_callback(void* state) {
-//     return 0;
-// }
 
-/*
-    bool mallob_diversification;
-    std::vector<std::vector<bool>> initial_phases;
-    std::vector<bool*> initial_phases_pointer;
-*/
 
 Gimsatul::Gimsatul(const SolverSetup& setup) :
     PortfolioSolverInterface(setup),
@@ -63,24 +55,26 @@ Gimsatul::Gimsatul(const SolverSetup& setup) :
     
     solver = gimsatul_init(setup.numVars, setup.numOriginalClauses, initial_phases_pointer.data());
 
+    // Set gimsatul options
     int success = gimsatul_set_option(solver, "threads", setup.threads);
     assert (success == 0);
+    success += gimsatul_set_option(solver, "-q", 1);
+    assert (success == 0);
 
+    // std::cout << ">> gimsatul flavour: " << _setup.flavour << std::endl;
     if (_setup.flavour == PortfolioSequence::PLAIN) {
-        success += gimsatul_set_option(solver, "simplify", 0);
+        success += gimsatul_set_option(solver, "--simplify", 0);
         assert (success == 0);
-        success += gimsatul_set_option(solver, "simplify_regularly", 0);
+        success += gimsatul_set_option(solver, "--simplify_regularly", 0);
         assert (success == 0);
-        success += gimsatul_set_option(solver, "simplify_initially", 0);
+        success += gimsatul_set_option(solver, "--simplify_initially", 0);
         assert (success == 0);
-        success += gimsatul_set_option(solver, "probe", 0);
+        success += gimsatul_set_option(solver, "--probe", 0);
         assert (success == 0);
     }
-    
 
     if (success != 0)
         LOGGER(_logger, V1_WARN, "[WARN] Gimsatul Options could not be set successfully\n");
-    assert (success == 0);
 }
 
 void Gimsatul::addLiteral(int lit) {
@@ -116,6 +110,21 @@ void Gimsatul::calc_phases(int seed) {
 
 void Gimsatul::diversify(int seed) {
     calc_phases(seed);
+
+    /*
+    std::cout << ">> gimsatul flavour: " << _setup.flavour << std::endl;
+    int success = 0;
+    if (_setup.flavour == PortfolioSequence::PLAIN) {
+        success += gimsatul_set_option(solver, "simplify", 0);
+        assert (success == 0);
+        success += gimsatul_set_option(solver, "simplify_regularly", 0);
+        assert (success == 0);
+        success += gimsatul_set_option(solver, "simplify_initially", 0);
+        assert (success == 0);
+        success += gimsatul_set_option(solver, "probe", 0);
+        assert (success == 0);
+    }
+    */
 }
 
 int Gimsatul::getNumOriginalDiversifications() {

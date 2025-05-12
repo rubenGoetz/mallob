@@ -11,9 +11,13 @@ def get_max_mem(log):
     if globmems:
         return max([float(x) for x in globmems])
     # Gimsatul style output
-    globmem = re.search('c maximum-resident-set-size:( )+([0-9]+.[0-9]+)', log)
+    globmem = re.search('c maximum-resident-set-size:( )+([0-9]+.[0-9]+)( bytes)?', log)
     if globmem:
-        return float(globmem.groups()[1]) / 1024
+        max_mem = float(globmem.groups()[1]) / 1024
+        # Kissat style output
+        if ' bytes' in globmem.groups():
+            max_mem /= 1024 * 1024
+        return max_mem
     return 0
 
 def get_all_mem(log):
@@ -40,6 +44,11 @@ def get_runtime(log):
     s = re.search("c wall-clock-time:( )+([0-9]+.[0-9]+)", log)
     if s:
         runtime = float(s.groups()[1])
+        return runtime
+    # Kissat style output
+    s = re.search("c process-time:( )+([0-9]+m [0-9]+s)( )+([0-9]+.[0-9]+) seconds", log)
+    if s:
+        runtime = float(s.groups()[3])
         return runtime
     return 0
 
