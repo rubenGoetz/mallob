@@ -46,9 +46,9 @@ def get_runtime(log):
         runtime = float(s.groups()[1])
         return runtime
     # Kissat style output
-    s = re.search("c process-time:( )+([0-9]+m [0-9]+s)( )+([0-9]+.[0-9]+) seconds", log)
+    s = re.search("c process-time:(.)+ ([0-9]+.[0-9]+) seconds", log)
     if s:
-        runtime = float(s.groups()[3])
+        runtime = float(s.groups()[1])
         return runtime
     return 0
 
