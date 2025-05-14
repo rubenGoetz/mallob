@@ -49,7 +49,9 @@ class LratConnector;
 using namespace SolvingStates;
 
 bool comp_SolverSetup(SolverSetup a, SolverSetup b) {
-    return b.solverType == PortfolioSequence::GIMSATUL;
+	if (a.solverType == b.solverType)
+		return false;
+	return b.solverType == PortfolioSequence::GIMSATUL;
 }
 
 SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, Logger& loggingInterface) : 
