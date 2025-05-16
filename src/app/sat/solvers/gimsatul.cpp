@@ -63,12 +63,12 @@ Gimsatul::Gimsatul(const SolverSetup& setup) :
 
     // std::cout << ">> gimsatul flavour: " << _setup.flavour << std::endl;
     if (_setup.flavour == PortfolioSequence::PLAIN) {
-        success += gimsatul_set_option(solver, "--simplify", 0);
-        assert (success == 0);
+        //success += gimsatul_set_option(solver, "--simplify", 0);
+        //assert (success == 0);
         success += gimsatul_set_option(solver, "--simplify_regularly", 0);
         assert (success == 0);
-        success += gimsatul_set_option(solver, "--simplify_initially", 0);
-        assert (success == 0);
+        //success += gimsatul_set_option(solver, "--simplify_initially", 0);
+        //assert (success == 0);
         success += gimsatul_set_option(solver, "--probe", 0);
         assert (success == 0);
     }
