@@ -1,4 +1,4 @@
 #!/bin/bash
 
-projectname="" # TODO set
-username=""    # TODO set
+projectname="pn72pu" # TODO set
+username="di97xah"    # TODO set
