@@ -47,7 +47,7 @@ localtmpdir_base=/tmp/$DS_JOBNAME-$SLURM_JOB_ID # fast local disk
 mkdir -p $localtmpdir_base $globallogdir_base
 
 # Benchmark instances, one per line
-benchmarkfile="~/benchmarks.txt" # TODO benchmark file
+benchmarkfile="/hppfs/work/$projname/$username/track_2024/benchmarks.txt" # TODO benchmark file
 if [ ! -f $benchmarkfile ]; then
     echo "Benchmark file not found!"
     exit 1
