@@ -87,3 +87,30 @@ def parse_mem(path, prefix):
         data[f"{prefix}_runtime"].append(get_runtime(log))
 
     return pd.DataFrame(data)
+
+def get_satwp_extraction(log):
+    h = {'prepro': 0,
+         'base': 0}
+    # cound :prepro extracted
+    res = re.search('SATWP #([1-9])+:prepro extracted', log)
+    if res:
+        h['prepro'] += int(res.groups()[0])
+    # count :base extracted
+    res = re.search('SATWP #([1-9])+:base extracted', log)
+    if res:
+        h['base'] += int(res.groups()[0])
+
+    return h
+
+def count_satwp_extractions_over_benchmarks(path, prefix):
+    dirs = next(os.walk(path))[1]
+    h = {f"{prefix}_prepro": 0,
+         f"{prefix}_base": 0}
+    for name in dirs:
+        file = open(f"{path}/{name}/out_file", 'r')
+        log = file.read().__str__()
+        res = get_satwp_extraction(log)
+        h[f"{prefix}_prepro"] += res['prepro']
+        h[f"{prefix}_base"] += res['base']
+
+    return h
