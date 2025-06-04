@@ -28,7 +28,7 @@ which mpirun
 echo "#ranks: $SLURM_NTASKS"
 
 build="build" # TODO your build directory for Mallob
-solver_str="[k_]w"
+solver_str="[s_]w"
 
 # Environment variables
 export PATH="$build/:$PATH"
