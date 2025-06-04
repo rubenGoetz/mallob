@@ -3,7 +3,7 @@
 benchmark_dir=~/masterarbeit/mallob/instances/sat-instances-for-small-tests/
 log_dir=logs
 trace_dir=logs
-solver_str=k_
+solver_str='s_'
 
 RDMAV_FORK_SAFE=1
 NPROCS=2
