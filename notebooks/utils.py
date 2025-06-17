@@ -52,6 +52,15 @@ def get_runtime(log):
         return runtime
     return 0
 
+def get_name(dir):
+    try:
+        file = open(f"{dir}/instance.txt", 'r')
+        return file.read().split('/')[-1].replace('\n','')
+    except FileNotFoundError:
+        file = open(f"{dir}/0/log.0", 'r')
+        log = file.read()
+        return re.search("-mono=(.*) -mono-app", log).groups()[0].split('/')[-1]
+
 def parse_overview(path, prefix):
     dirs = next(os.walk(path))[1]
     data = {f"name":[],
@@ -59,8 +68,13 @@ def parse_overview(path, prefix):
             f"{prefix}_memory":[],
             f"{prefix}_runtime":[]}
     for name in dirs:
-        file = open(f"{path}/{name}/out_file", 'r')
-        log = file.read().__str__()
+        try:
+            file = open(f"{path}/{name}/out_file", 'r')
+            log = file.read().__str__()
+        except FileNotFoundError:
+            file = open(f"{path}/{name}/0/log.0")
+            log = file.read().__str__()
+            name = get_name(f"{path}/{name}")
 
         # add data
         data[f"name"].append(name)
@@ -77,8 +91,13 @@ def parse_mem(path, prefix):
             f"{prefix}_mem_per_sec":[],
             f"{prefix}_runtime":[]}
     for name in dirs:
-        file = open(f"{path}/{name}/out_file", 'r')
-        log = file.read().__str__()
+        try:
+            file = open(f"{path}/{name}/out_file", 'r')
+            log = file.read().__str__()
+        except FileNotFoundError:
+            file = open(f"{path}/{name}/0/log.0")
+            log = file.read().__str__()
+            name = get_name(f"{path}/{name}")
 
         # add data
         data[f"name"].append(name)

@@ -29,3 +29,4 @@ directives.*.impcheck
 compile_commands.json
 cmake-build-debug
 logs*/
+sMUC_logs*/
