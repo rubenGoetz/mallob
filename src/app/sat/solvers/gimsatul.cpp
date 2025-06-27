@@ -251,8 +251,8 @@ void Gimsatul::writeStatistics(SolverStatistics& stats) {
     stats.restarts = gstats.restarts;
     stats.imported = gstats.imported;
     stats.discarded = gstats.discarded;
-    LOGGER(_logger, V4_VVER, "disc_reasons r_ee:%ld,r_ed:%ld,r_pb:%ld,r_ss:%ld,r_sw:%ld,r_tr:%ld,r_fx:%ld,r_ia:%ld,r_tl:%ld\n",
-        gstats.r_ee, gstats.r_ed, gstats.r_pb, gstats.r_ss, gstats.r_sw, gstats.r_tr, gstats.r_fx, gstats.r_ia, gstats.r_tl);
+    LOGGER(_logger, V4_VVER, "disc_reasons r_ee:%ld,r_ed:%ld,r_pb:%ld,r_ss:%ld,r_sw:%ld,r_tr:%ld,r_fx:%ld,r_ia:%ld,r_tl:%ld,r_ilitLvl:%ld,r_inactive:%ld\n",
+        gstats.r_ee, gstats.r_ed, gstats.r_pb, gstats.r_ss, gstats.r_sw, gstats.r_tr, gstats.r_fx, gstats.r_ia, gstats.r_tl, gstats.r_ilitLvl, gstats.r_inactive);
 }
 
 Gimsatul::~Gimsatul() {
