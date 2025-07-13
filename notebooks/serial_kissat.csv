@@ -1,317 +1,402 @@
-name	Serial_result	Serial_runtime
-spg_420_280.cnf	unsat	1424.09
-rand_net70-40-10.shuffled.cnf	unsat	0.0660706
-vmpc_28.shuffled-as.sat05-1957.cnf	sat	395.563
-multiplier_14bits__miter_14.cnf	unsat	4255.26
-SGI_30_70_27_50_3-dir.shuffled-as.sat03-169.cnf	unsat	3168.41
-shuffling-2-s1480152728-of-bench-sat04-434.used-as.sat04-711.cnf	unsat	98.1045
-10pipe_q0_k.cnf	unsat	527.006
-ncc_none_7047_6_3_3_0_0_420.cnf	unsat	21.5681
-mod4block_2vars_10gates_u2_autoenc-sc2009.cnf	sat	606.98
-satsgi-n23himBHm26-p0-q248.cnf	sat	0.110986
-mp1-Nb5T15.cnf	sat	147.163
-grs-192-32.cnf	unsat	282.616
-asconhashv12_opt64_H4_M2-LOD9_m0_2_U19.c.cnf	unsat	239.338
-ctl_4201_555_unsat_pre.cnf	unsat	1703.13
-hash_table_find_safety_size_13.cnf	unsat	90.2598
-mp1-klieber2017s-0500-023-t12.cnf	sat	89.7129
-simon-r18-0.sanitized.cnf	sat	0.0598145
-PRP_100_150.cnf	sat	13766
-SC23_Timetable_C_478_E_50_Cl_32_D_6_T_50.cnf	sat	52.0654
-x9-12063.sat.sanitized.cnf	sat	469.042
-Break_unsat_04_03.xml.cnf	unsat	0.0543823
-or_randxor_k3_n600_m600.cnf	unsat	25.671
-DivS_568_11.cnf.sanitized.cnf	sat	57.4795
-lru_10.sanitized.cnf	sat	122.47
-g2-ak128boothbg2msisc.cnf	sat	0.874115
-linked_list_swap_contents_safety_unwind65.cnf	unsat	158.365
-j3045_10_gmto_b.cnf	sat	401.76
-g2-test_v5_r10_vr10_c1_s21502.smt2-cvc4.cnf	unsat	472.444
-satcoin-genesis-UNSAT-11900.cnf	unsat	988.658
-or_randxor_k3_n510_m510.sanitized.cnf	unsat	4.87823
-summle_X4053_steps8_I1-2-2-4-4-8-25-100.cnf	sat	14.7545
-mchess16-mixed-35percent-blocked.cnf	unsat	126.49
-Break_triple_20_36.xml.cnf	sat	12800.4
-posixpath__joinrealpath_13.cnf	unsat	14.7942
-shuffling-2-s25242449-of-bench-sat04-727.used-as.sat04-753.cnf	sat	50.7664
-af-synthesis_stb_50_40_9_unsat.cnf	unsat	2058.26
-hwmcc20miters-iso-rast-p06.sanitized.cnf	unsat	0.80835
-18_1.cnf	sat	40534.4
-circuit_48in64out_with_800gates_4in4out_dist128_seed4.sanitized.cnf	sat	21.6356
-brent_69_0.3.cnf	sat	78.1982
-brent_9_0.cnf	unsat	1202.42
-hwmcc20miters-iso-rast-p11.sanitized.cnf	unsat	0.499592
-square.2.0.i.smt2-cvc4.cnf	unsat	8.03003
-worker_550_550_550_0.3.cnf	sat	29.9882
-asconhashv12_opt64_H8_M2-I61h2mH5_m2_6.c.cnf	sat	532.217
-af-synthesis_stb_50_140_1_unsat.cnf	unsat	2234.77
-PRP_100_600.cnf	sat	623.929
-REGRandom-K4-L1-Seed30.sanitized.cnf	unsat	16.9036
-REGRandom-K3-L3-Seed25.sanitized.cnf	unsat	4.56192
-grs-96-32.cnf	unsat	113.433
-rook-42-0-1.cnf	unsat	1948.68
-WCNF_from_fp_13.cnf	unsat	8.46767
-vmpc_24.cnf	sat	1.79544
-j3037_10_rggt_b.cnf	sat	121.416
-mdp-32-14-unsat.cnf	unsat	51095.5
-lisa19_99_a.shuffled.cnf	sat	11.7961
-SC23_Timetable_C_486_E_50_Cl_33_D_6_T_50.cnf	sat	125.283
-asconhashv12_opt64_H9_M2-LSGb5PgEM_m2_7.c.cnf	sat	543.669
-128_75.sanitized.cnf	sat	408.258
-lec_mult_DvK_11x10.sanitized.cnf	unsat	812.272
-PRP_30_40.cnf	sat	21.0764
-bmc_QICE_snp_vld_30.cnf	unsat	544.721
-spg_200_307.cnf	unsat	900.69
-goldberg03:hard_eq_check:i10mul.miter.used-as.sat04-333.cnf	unsat	18.2599
-170223547.cnf	sat	2.9682
-fixedbandwidth-eq-31_shuffled.cnf	unsat	2847.48
-goldcrest-and-16.cnf	unsat	2877.29
-ER_500_30_3.apx_1_DC-ST.cnf	unsat	357.511
-REGRandom-K3-L3-Seed10.cnf	unsat	2.71115
-asconhashv12_opt64_H9_M2-MIC4kfhiA_m0_6_U2.c.cnf	unsat	710.569
-Folkman-190-66337703.sanitized.cnf	sat	302.591
-mdp-28-10-unsat.cnf	unsat	1128.8
-pcmax-scheduling-m26-6398-62377-UNSAT.sanitized.cnf	unsat	225.016
-TimetableCNFEncoding_20_UNKNOWN.cnf	sat	119.961
-SC23_Timetable_C_482_E_50_Cl_33_D_6_T_50.cnf	sat	136.794
-grs-64-160.cnf	unsat	3048.01
-f9idw.cnf	unsat	522.946
-patat-08-comp-3.cnf	sat	11.5712
-satcoin-genesis-UNSAT-9880.cnf	unsat	886.997
-rovers1_ks99i.renamed-as.sat05-3971.cnf	sat	0.0906219
-circuit_32in32out_with_350gates_6in6out_dist64_seed1.sanitized.cnf	sat	84.6267
-lec_mult_CvD_11x11.sanitized.cnf	unsat	856.747
-rbsat-v1150c84314gyes10.cnf	sat	21234
-multiplier_15bits__miter_20.cnf	unsat	27867.1
-circuit_32in32out_with_80gates_7in7out_dist128_seed1.sanitized.cnf	sat	194.069
-summle_X4044_steps7_I1-2-2-4-4-8-25-100.cnf	sat	13.3473
-x9-10031.sat.sanitized.cnf	unsat	320.779
-shuffling-1-s1870372346-of-bench-sat04-423.used-as.sat04-562.cnf	sat	29.6063
-intervals607.cnf	unsat	54390.8
-stb_588_138.apx_2_DC-ST.cnf	unsat	203.07
-FileObject_open_13.cnf	unsat	7.38017
-brent_63_0.cnf	sat	2.71625
-sgen1-sat-180-100.cnf	sat	3117.32
-DivU_1520_10.cnf.sanitized.cnf	unsat	59.581
-mrpp_8x8#22_10.cnf	unsat	0.77314
-pb_300_09_lb_07.cnf	sat	79.5757
-php-010-009.shuffled-as.sat05-1185.cnf	unsat	3.97089
-PRP_30_36.cnf	sat	29.6187
-c880_gr_rcs_w7.shuffled.cnf	sat	0.259552
-Break_20_72.xml.cnf	sat	7514.27
-VanDerWaerden_2-3-14_186.cnf	unsat	14501.2
-WS_400_24_90_10.apx_1_DS-ST.cnf	unsat	32942.9
-x9-09076.sat.sanitized.cnf	unsat	38.8031
-constraints_18_0.4_2.sanitized.cnf	unsat	646.12
-oisc-subrv-sll-nested-15.cnf	unsat	6032.6
-ER_400_20_4.apx_1_DC-AD.cnf	unsat	458.749
-lec_mult_CvK_12x11.sanitized.cnf	unsat	6661.04
-stb_418_125.apx_1_DC-ST.cnf	unsat	616.132
-satcoin-genesis-UNSAT-7200.cnf	unsat	1163.01
-brent_69_0.05.cnf	sat	10.6657
-or_randxor_k3_n520_m520.cnf	unsat	3.05048
-noL-11-14.sanitized.cnf	sat	79.5859
-circuit_32in32out_with_500gates_6in6out_dist64_seed1.sanitized.cnf	sat	208.46
-satcoin-genesis-UNSAT-19500.cnf	unsat	1783.02
-satcoin-genesis-UNSAT-5920.cnf	unsat	872.902
-qwh.60.1728.shuffled-as.sat03-1659.cnf	sat	94.519
-WS_500_16_90_70.apx_2_DC-AD.cnf	unsat	461.805
-collections_namedtuple_15.cnf	unsat	123.67
-clqcolor-08-06-07.shuffled-as.sat05-1257.cnf	unsat	0.857391
-j3037_9_rggt_b.cnf	sat	482.959
-php18-mixed-35percent-blocked.cnf	unsat	922.647
-6s20-sc2013.cnf	unsat	435.188
-x9-09047.sat.sanitized.cnf	unsat	34.8704
-iso-ukn004.shuffled-as.sat05-3385.cnf	sat	0.297333
-hcp_CP18_18.cnf	sat	4415.74
-g2-hwmcc15deep-6s161-k17.cnf	unsat	1221.17
-lec_mult_KvW_11x10.sanitized.cnf	unsat	812.265
-pcmax-scheduling-m15-2352-13561-SAT.sanitized.cnf	sat	17355.9
-x9-12001.sat.sanitized.cnf	sat	229.763
-rbsat-v760c43649gyes3.cnf	sat	4639.69
-linked_list_swap_contents_safety_unwind76.cnf	unsat	222.201
-constraints_18_0.3_2.sanitized.cnf	unsat	444.507
-noL-11-4.sanitized.cnf	sat	713.576
-FmlaEquivChain_4_8_8.sanitized.cnf	unsat	3312.63
-mchess18-mixed-25percent-blocked.cnf	unsat	829.303
-oisc-subrv-sll-nested-11.cnf	unsat	2275.56
-hash_table_find_safety_size_12.cnf	unsat	89.2006
-asconhashv12_opt64_H11_M2-fCHjS2L0du5_m2_4.c.cnf	sat	396.465
-x9-11094.sat.sanitized.cnf	sat	597.934
-mchess20-mixed-25percent-blocked.cnf	unsat	3582.07
-constraints_16_0.5_1.sanitized.cnf	unsat	126.969
-brent_51_0.28.cnf	sat	187.558
-circuit_64in64out_with_64gates_8in5out_dist256_seed1.sanitized.cnf	sat	62.0874
-battleship-14-26-sat.cnf	sat	15.1288
-gensys-icl002.shuffled-as.sat05-2714.cnf	unsat	5.22842
-Schur_161_5_d40.cnf	unsat	1048.32
-iso-brn100.shuffled-as.sat05-3025.cnf	sat	0.202957
-SCPC-800-43.cnf	sat	161.893
-constraints_18_0.5_2.sanitized.cnf	unsat	1010.46
-cliquecolouring_n13_k8_c7.sanitized.cnf	unsat	9741.35
-Folkman-175-9054056.sanitized.cnf	sat	99.8655
-grs-64-32.cnf	unsat	73.0613
-CNFPlus_from_fp_12.cnf	unsat	3.01324
-ER_400_20_4.apx_1_DC-ST.cnf	unsat	396.74
-pcmax-scheduling-m19-2974-16501-UNSAT.sanitized.cnf	unsat	98.6545
-asconhashv12_opt64_H5_M2-xEJ8F_m0_3_U5.c.cnf	unsat	481.537
-lru_9.sanitized.cnf	sat	76.9844
-WS_400_24_70_10.apx_2_DC-AD.cnf	unsat	1432.34
-WS_400_24_90_10.apx_2_DC-AD.cnf	unsat	2574.71
-or_randxor_k3_n560_m560.cnf	unsat	21.3786
-af-synthesis_stb_50_40_2_unsat.cnf	unsat	639.936
-SC23_Timetable_C_473_E_52_Cl_32_D_6_T_50.cnf	sat	118.904
-openstacks-sequencedstrips-nonadl-nonnegated-os-sequencedstrips-p30_3.025-NOTKNOWN.cnf	unsat	2488.15
-satcoin-genesis-UNSAT-17800.cnf	unsat	1675.51
-SC23_Timetable_C_473_E_49_Cl_32_D_6_T_50.cnf	sat	34.8689
-linked_list_swap_contents_safety_unwind45.cnf	unsat	97.08
-32_200.sanitized.cnf	sat	164.699
-satcoin-genesis-UNSAT-18400.cnf	unsat	1593.08
-x9-11062.sat.sanitized.cnf	sat	229.744
-stable-300-0.1-20-98765432130020.cnf	sat	114.724
-lec_mult_DvW_12x11.sanitized.cnf	unsat	4712.65
-minxor128.cnf	unsat	450.477
-sat-bench-trig-taylor6.cnf	unsat	17171.2
-ContextModel_output_7_3_9.bul_.dimacs.cnf	sat	292.707
-hwmcc17miters-xits-iso-6s281b35.sanitized.cnf	unsat	14.5264
-WS_400_32_90_10.apx_1_DC-AD.cnf	unsat	39306.3
-satcoin-genesis-UNSAT-18800.cnf	unsat	1610.07
-satcoin-genesis-UNSAT-12300.cnf	unsat	989.125
-sat-bench-trig-taylor2.cnf	unsat	1049.71
-asconhashv12_opt64_H6_M2-4XKSMr_m1_3_U25.c.cnf	unsat	230.385
-mdp-32-10-sat.cnf	sat	3179.14
-manol-pipe-g10bid_i.cnf	unsat	372.742
-rbsat-v760c43649gyes10.cnf	sat	17.5227
-hwmcc20miters-iso-mul2.sanitized.cnf	unsat	0.613464
-combined-crypto1-wff-seed-101-wffvars-500-cryptocplx-31-overlap-2.cnf	sat	28.2366
-grid-pbl-0150.shuffled-as.sat05-1347.shuffled-as.sat05-1347.cnf	unsat	1.21832
-PRP_30_35.cnf	sat	32.3181
-af-synthesis_stb_50_200_0_unsat.cnf	unsat	1127.04
-stb_792_333.apx_1_DS-ST.cnf	sat	314.055
-os_fwalk_12.cnf	unsat	3.41697
-WS_500_16_70_10.apx_1_DC-ST.cnf	unsat	405.886
-brent_51_0.29.cnf	sat	32.7306
-cliquecolouring_n13_k9_c8.sanitized.cnf	unsat	2778.23
-grs-64-128.cnf	unsat	1843.38
-WS_500_16_90_70.apx_2_DC-ST.cnf	unsat	215.74
-asconhashv12_opt64_H4_M2-ldRf_m1_2_U21.c.cnf	unsat	233.606
-FmlaEquivChain_4_6_6.sanitized.cnf	unsat	36.089
-EDP3-11000.cnf	sat	65.3829
-SCPC-700-84.cnf	sat	298.899
-circuit_32in32out_with_96gates_7in7out_dist128_seed1.sanitized.cnf	sat	1955.51
-asconhashv12_opt64_H9_M2-Jdds95CIv_m1_5.c.cnf	sat	503.531
-j3045_4_gmto_b.cnf	sat	931.876
-frb65-12-2.used-as.sat04-874.cnf	sat	33.9789
-x9-10014.sat.sanitized.cnf	sat	57.4279
-unsat-set-b-fclqcolor-10-07-09.sat05-1282.reshuffled-07.cnf	unsat	48.5666
-FileObject_open_12.cnf	unsat	1.26932
-Kakuro-easy-097-ext.xml.hg_4.cnf	unsat	3130.85
-pmg-12-UNSAT.sat05-3940.reshuffled-07.cnf	unsat	12757.3
-grs-48-256.cnf	unsat	14114.4
-Grain_no_init_ver1_out200_known_last105_0_u.cnf	unsat	422.072
-asconhashv12_opt64_H10_M2-BPHqhzNzqi_m5_6_U14.c.cnf	unsat	658.688
-mdp-32-16-sat.cnf	sat	638.062
-hash_table_find_safety_size_20.cnf	unsat	181.04
-urq45.cnf	unsat	331.399
-stb_418_125.apx_2_DC-ST.cnf	unsat	632.138
-barman-pfile06-022.sas.ex.7.cnf	unsat	2.90657
-mp1-klieber2017s-1600-022-eq.cnf	unsat	346.094
-lru_8.sanitized.cnf	sat	88.542
-x9-08075.sat.sanitized.cnf	unsat	25.0277
-circuit_48in64out_with_800gates_4in4out_dist128_seed1.sanitized.cnf	sat	28.9887
-posixpath_expanduser_14.cnf	unsat	163.351
-si2-b03m-m800-03.cnf	sat	7.6925
-CNF_to_alien_11.cnf	unsat	9.48875
-Schur_161_5_d38.cnf	unsat	9427.97
-LZMAFile___init___14.cnf	unsat	21.9523
-Folkman-190-104806020.sanitized.cnf	sat	983.401
-PRP_30_39.cnf	sat	40.8403
-constraints_17_0.3_2.sanitized.cnf	unsat	64.5767
-spg_200_316.cnf	unsat	693.357
-SC23_Timetable_C_476_E_50_Cl_32_D_6_T_50.cnf	sat	44.3423
-circuit_48in64out_with_1000gates_4in4out_dist128_seed4.sanitized.cnf	sat	155.378
-grs-128-64.cnf	unsat	768.396
-x9-10007.sat.sanitized.cnf	unsat	236.641
-asconhashv12_opt64_H6_M2-PgbpwX_m0_4_U1.c.cnf	unsat	252.379
-lec_mult_DvW_11x10.sanitized.cnf	unsat	573.955
-sat-bench-trig-bhaskara.cnf	unsat	706.925
-stb_588_138.apx_1_DC-ST.cnf	unsat	276.081
-lec_mult_CvK_11x10.sanitized.cnf	unsat	711.61
-asconhashv12_opt64_H15_M2-kwhXs2juqFoKAYA_m12_13_U16.c.cnf	unsat	244.799
-j3037_10_mdd_b.cnf	sat	35.3302
-pcmax-scheduling-m19-10199-62102-UNSAT.sanitized.cnf	unsat	20567.4
-mp1-Nb7T42.cnf	sat	22999.7
-linked_list_swap_contents_safety_unwind68.cnf	unsat	116.044
-x9-10093.sat.sanitized.cnf	unsat	184.55
-brent_71_0.25.cnf	sat	183.872
-SCPC-900-27.cnf	sat	189.44
-x9-11053.sat.sanitized.cnf	sat	69.2704
-Circuit_multiplier22.cnf	sat	649.82
-hwb-n24-02-S786928571.shuffled-as.sat03-1618.cnf	unsat	214.759
-noL-11-12.sanitized.cnf	sat	499.639
-mp1-blockpuzzle_5x10_s7_free4.cnf	unsat	22.5846
-oisc-subrv-and-nested-14.cnf	unsat	47098.5
-worker_20_40_20_0.95.cnf	sat	0.191135
-preimage_80r_495m_160h_seed_379.cnf	sat	2677.3
-brent_51_0.17.cnf	sat	17.9548
-preimage_80r_490m_160h_seed_150.cnf	sat	46557.1
-clique_n2_k10.sanitized.cnf	unsat	17.9124
-MASG0_72_keystream76_0.cnf	sat	1753.86
-simon-r17-0.sanitized.cnf	sat	0.0601196
-SCPC-800-41.cnf	sat	86.0557
-asconhashv12_opt64_H7_M2-gHvzZOd_m3_4_U11.c.cnf	unsat	210.412
-new-difficult-26-243-24-70.cnf	sat	0.0856628
-asconhashv12_opt64_H10_M2-pH7B6T6Vub_m6_7.c.cnf	sat	367.794
-mdp-32-14-sat.cnf	sat	16174.8
-tph8.cnf	unsat	1095.36
-x9-09098.sat.sanitized.cnf	unsat	83.4848
-g2-ak128boothbg2msaig.cnf	sat	1.3559
-Folkman-180-5383714.sanitized.cnf	sat	85.5596
-SC23_Timetable_C_484_E_50_Cl_33_D_6_T_50.cnf	sat	817.861
-ER_400_20_7.apx_2_DC-ST.cnf	unsat	2671.21
-baseballcover13with25_and3positions.cnf	unsat	1211.43
-PRP_200_100.cnf	sat	4524.36
-stb_418_125.apx_1_DC-AD.cnf	unsat	1526.77
-brent_63_0.1.cnf	sat	31.6432
-brent_13_0.1.cnf	unsat	712.495
-DivU_624_11.cnf.sanitized.cnf	unsat	43.1356
-lec_mult_DvW_12x12.sanitized.cnf	unsat	12879.1
-pcmax-scheduling-m30-14113-167638-UNSAT.sanitized.cnf	unsat	1454.76
-constraints_25_4_5_12_12_0_0_0.sanitized.cnf	unsat	207.415
-LZMAFile_write_12.cnf	unsat	6.29962
-lec_mult_KvW_10x10.sanitized.cnf	unsat	294.596
-PRP_20_40.cnf	sat	7.4964
-noL-11-18.sanitized.cnf	sat	231.976
-x9-09014.sat.sanitized.cnf	unsat	49.9968
-x9-12021.sat.sanitized.cnf	sat	496.222
-circuit_48in24out_with_100gates_7in7out_dist128_seed1.sanitized.cnf	sat	125.784
-asconhashv12_opt64_H8_M2-bL4cM6NJ_m4_5_U14.c.cnf	unsat	624.265
-j3037_1_gmto_b.cnf	sat	16.5587
-satcoin-genesis-UNSAT-11400.cnf	unsat	925.062
-Folkman-190-358004741.sanitized.cnf	sat	1447.5
-SC23_Timetable_C_483_E_50_Cl_33_D_6_T_50.cnf	sat	132.57
-rbsat-v760c43649gyes9.cnf	sat	177.749
-004.cnf	sat	114.51
-pb_300_05_lb_17.cnf	sat	91.7979
-x9-10098.sat.sanitized.cnf	sat	34.8176
-SCPC-1000-18.cnf	sat	50.0299
-Folkman-185-152478531.sanitized.cnf	sat	455.85
-crn_11_99_u.cnf	unsat	2.47617
-asconhashv12_opt64_H13_M2-axxJh7DAq767y_m4_5.c.cnf	sat	255.741
-hwmcc12miters-xits-iso-6s111.sanitized.cnf	unsat	3.64984
-summle_X11112_steps6_I1-2-2-4-4-8-25-100.cnf	sat	22.0603
-af-synthesis_stb_50_100_9_unsat.cnf	unsat	916.964
-SC23_Timetable_C_473_E_50_Cl_32_D_6_T_50.cnf	sat	141.276
-SCPC-900-31.cnf	sat	4028.22
-asconhashv12_opt64_H7_M2-OrF8zEw_m2_4.c.cnf	sat	106.781
-x9-10083.sat.sanitized.cnf	unsat	166.583
-asconhashv12_opt64_H11_M2-MxJOnbQIXNd_m5_6.c.cnf	sat	158.399
-linked_list_swap_contents_safety_unwind54.cnf	unsat	109.628
-hwmcc20miters-iso-mul3.sanitized.cnf	unsat	2.41843
-ex065_25.cnf	sat	1882.47
-constraints_17_0.5_2.sanitized.cnf	unsat	123.118
-cliquecoloring_n16_k7_c6.cnf	unsat	26562.8
-brent_63_0.2.cnf	sat	11.1173
-PRP_100_300.cnf	sat	636.039
-C208_FA_UT_3254.cnf	unsat	0.0639343
-mchess20-mixed-35percent-blocked.cnf	unsat	5193.3
+	name	Serial_result	Serial_memory	Serial_runtime
+0	mchess_15.cnf	-1	0.03253173828125	510.1
+1	ctl_4291_567_9_unsat.cnf	-1	0.0416259765625	884.4
+2	af-synthesis_stb_50_140_1_unsat.cnf	-1	0.06195831298828125	2276.84
+3	apn-sbox5-cut3-symmbreak.cnf	0	0.09715652465820312	2999.42
+4	x9-12035.sat.sanitized.cnf	1	0.03592681884765625	420.57
+5	tseitin_grid_n11_m20.sanitized.cnf	0	0.046905517578125	3000.04
+6	pcmax-scheduling-m13-1655-9604-UNSAT.sanitized.cnf	-1	0.0606536865234375	711.01
+7	x9-10083.sat.sanitized.cnf	-1	0.01865386962890625	166.61
+8	32_200.sanitized.cnf	0	1.917938232421875	7.13
+9	WS_500_16_90_70.apx_2_DC-AD.cnf	-1	0.035915374755859375	481.75
+10	x9-10007.sat.sanitized.cnf	-1	0.0365753173828125	233.01
+11	sted5_0x1e3-20.cnf	0	0.061611175537109375	3000.03
+12	rphp_p8_r170.sanitized.cnf	0	1.1723403930664062	3000.04
+13	mdp-36-14-sat.cnf	0	0.058231353759765625	3000.09
+14	Break_20_72.xml.cnf	0	0.2025909423828125	3000.05
+15	170058440.cnf	1	0.0741729736328125	1614.42
+16	x9-12063.sat.sanitized.cnf	1	0.033416748046875	473.06
+17	x9-11077.sat.sanitized.cnf	1	0.01988983154296875	79.38
+18	circuit_32in32out_with_100gates_7in7out_dist64_seed2.sanitized.cnf	1	0.3197059631347656	122.43
+19	x9-10002.sat.sanitized.cnf	-1	0.03424072265625	320.99
+20	lec_mult_DvK_11x10.sanitized.cnf	-1	0.032749176025390625	840.2
+21	circuit_48in64out_with_700gates_4in4out_dist128_seed1.sanitized.cnf	1	0.032382965087890625	7.0
+22	lec_mult_CvK_11x11.sanitized.cnf	-1	0.059452056884765625	2547.8
+23	mp1-Nb5T15.cnf	1	0.04705810546875	217.13
+24	ctl_4201_555_unsat_pre.cnf	-1	0.037235260009765625	1634.35
+25	simon-r22-1.sanitized.cnf	1	0.00312042236328125	0.01
+26	x9-10098.sat.sanitized.cnf	1	0.00975799560546875	36.04
+27	worker_550_550_550_0.3.cnf	1	0.27716827392578125	26.75
+28	j3045_4_mdd_bm1.cnf	-1	0.024990081787109375	696.06
+29	x9-09004.sat.sanitized.cnf	-1	0.01012420654296875	56.43
+30	FmlaImplyChain_3_7_7.sanitized.cnf	-1	0.06570053100585938	1060.54
+31	frb45-21-2.used-as.sat04-884.cnf	1	0.038112640380859375	523.3
+32	lru_9.sanitized.cnf	0	2.1466903686523438	7.11
+33	j3037_9_rggt_b.cnf	1	0.0392913818359375	480.25
+34	64_200.sanitized.cnf	0	1.9575157165527344	7.12
+35	circuit_32in32out_with_70gates_7in7out_dist128_seed1.sanitized.cnf	1	0.21448898315429688	270.38
+36	x9-09054.sat.sanitized.cnf	1	0.009296417236328125	39.84
+37	bphp_p23_h22.sanitized.cnf	0	0.09198379516601562	3000.08
+38	hwmcc17miters-xits-iso-oski15a08b00s.sanitized.cnf	-1	0.5329360961914062	8.06
+39	pcmax-scheduling-m11-1517-6802-UNSAT.sanitized.cnf	-1	0.01955413818359375	60.58
+40	DLTM_twitter774_83_17.cnf	1	0.04120635986328125	1546.93
+41	mdp-28-14-sat.cnf	1	0.039752960205078125	616.89
+42	asconhashv12_opt64_H11_M2-tBi5i1RIgRz_m0_1_U23.c.cnf	-1	0.08834075927734375	665.75
+43	hwmcc12miters-xits-iso-6s111.sanitized.cnf	-1	0.2821922302246094	2.68
+44	asconhashv12_opt64_H5_M2-xEJ8F_m0_3_U5.c.cnf	-1	0.08221435546875	297.8
+45	x9-10014.sat.sanitized.cnf	1	0.011760711669921875	58.12
+46	hwmcc17miters-xits-iso-6s281b35.sanitized.cnf	-1	1.0789031982421875	10.11
+47	1-ET-512-K-96.sanitized.cnf	0	0.16968154907226562	3000.03
+48	cliquecolouring_n13_k9_c8.sanitized.cnf	-1	0.10905075073242188	2795.21
+49	circuit_48in64out_with_800gates_4in4out_dist128_seed4.sanitized.cnf	1	0.03855133056640625	23.05
+50	noL-11-0.sanitized.cnf	1	0.09716796875	1274.97
+51	constraints_17_0.3_2.sanitized.cnf	-1	0.06254196166992188	69.69
+52	FmlaEquivChain_4_8_8.sanitized.cnf	0	0.409576416015625	3000.02
+53	two-trees-511v.sanitized.cnf	0	0.0896759033203125	3000.06
+54	32_350.sanitized.cnf	0	1.9604225158691406	7.12
+55	mdp-36-10-unsat.cnf	0	0.0682220458984375	2999.88
+56	cliquecolouring_n21_k6_c5.sanitized.cnf	0	0.12529754638671875	2999.84
+57	Circuit_multiplier22.cnf	1	0.026256561279296875	674.58
+58	Folkman-185-75415683.sanitized.cnf	1	0.04311370849609375	650.25
+59	pb_300_09_lb_07.cnf	1	0.09563446044921875	152.16
+60	FmlaEquivChain_4_6_6.sanitized.cnf	-1	0.06735992431640625	40.97
+61	Break_unsat_04_03.xml.cnf	-1	0.002323150634765625	0.03
+62	af-synthesis_stb_50_100_4_sat.cnf	1	0.046497344970703125	1515.62
+63	1-ZC-512-K-65.sanitized.cnf	0	0.10679244995117188	2999.86
+64	pb_300_05_lb_17.cnf	1	0.09639358520507812	75.4
+65	x9-10093.sat.sanitized.cnf	-1	0.032726287841796875	185.67
+66	oisc-subrv-sll-nested-13.cnf	0	2.075672149658203	6.91
+67	cliquecolouring_n41_k5_c4.sanitized.cnf	0	0.13805389404296875	2999.87
+68	circuit_32in32out_with_350gates_6in6out_dist64_seed1.sanitized.cnf	1	0.2361907958984375	98.17
+69	cliquecolouring_n31_k5_c4.sanitized.cnf	0	0.17288970947265625	2999.87
+70	2dlx_ca_bp_f_liveness.cnf	0	0.2670326232910156	2999.84
+71	combined-crypto1-wff-seed-1-wffvars-450-cryptocplx-40-overlap-2.cnf	1	0.012359619140625	8.15
+72	circuit_48in64out_with_1000gates_4in4out_dist128_seed4.sanitized.cnf	1	0.040081024169921875	168.42
+73	linked_list_swap_contents_safety_unwind73.cnf	-1	1.9201469421386719	161.41
+74	Break_unsat_14_23.xml.cnf	0	0.08730697631835938	2999.88
+75	grs-64-64.cnf	-1	0.06896591186523438	354.19
+76	Folkman-190-358004741.sanitized.cnf	1	0.054668426513671875	1406.47
+77	002.cnf	1	0.038753509521484375	279.2
+78	x9-12014.sat.sanitized.cnf	1	0.0100860595703125	27.86
+79	grs-64-128.cnf	-1	0.16688919067382812	2089.29
+80	lec_mult_CvK_11x10.sanitized.cnf	-1	0.01850128173828125	736.41
+81	circuit_32in64out_with_150gates_6in6out_dist256_seed1.sanitized.cnf	0	0.11106109619140625	3000.81
+82	x9-10096.sat.sanitized.cnf	-1	0.03142547607421875	167.85
+83	rbsat-v760c43649gyes3.cnf	0	0.05609893798828125	2999.85
+84	shuffling-2-s25242449-of-bench-sat04-727.used-as.sat04-753.cnf	1	0.2600593566894531	45.87
+85	stb_418_125.apx_1_DC-AD.cnf	-1	0.0698089599609375	1554.64
+86	stb_588_138.apx_1_DC-AD.cnf	-1	0.054485321044921875	806.96
+87	linked_list_swap_contents_safety_unwind80.cnf	0	1.9251861572265625	25.93
+88	noL-11-20.sanitized.cnf	1	0.0350494384765625	147.1
+89	mrpp_4x4#12_12.cnf	-1	0.0115203857421875	14.57
+90	frb65-12-2.used-as.sat04-874.cnf	1	0.012416839599609375	22.79
+91	pcmax-scheduling-m19-2974-16501-UNSAT.sanitized.cnf	-1	0.0380859375	100.22
+92	af-synthesis_stb_50_40_9_unsat.cnf	-1	0.04021453857421875	2161.31
+93	noL-11-8.sanitized.cnf	1	0.0334930419921875	234.9
+94	T105.2.0.cnf	-1	1.667449951171875	527.08
+95	jgiraldezlevy.2200.9086.08.40.41.cnf	1	0.007717132568359375	10.82
+96	pcmax-scheduling-m19-10199-62102-UNSAT.sanitized.cnf	0	0.1024932861328125	2995.39
+97	Timetable_C_392_E_62_Cl_26_S_28.cnf	1	0.20691680908203125	60.46
+98	linked_list_swap_contents_safety_unwind65.cnf	-1	1.5724029541015625	153.76
+99	x9-12001.sat.sanitized.cnf	1	0.033237457275390625	235.28
+100	REGRandom-K4-L3-Seed40.sanitized.cnf	0	1.3099403381347656	2995.75
+101	1-ZC-512-K-63.sanitized.cnf	0	0.08865737915039062	3000.81
+102	REGRandom-K3-L3-Seed25.sanitized.cnf	-1	0.056301116943359375	2.38
+103	x9-11034.sat.sanitized.cnf	1	0.007709503173828125	20.41
+104	simon-r16-1.sanitized.cnf	1	0.002849578857421875	0.0
+105	af-synthesis_stb_50_200_4_unsat.cnf	-1	0.07104110717773438	516.89
+106	x9-09057.sat.sanitized.cnf	-1	0.010753631591796875	46.18
+107	x9-10051.sat.sanitized.cnf	-1	0.0347900390625	258.01
+108	linked_list_swap_contents_safety_unwind54.cnf	-1	1.1721878051757812	109.48
+109	clique_n2_k10.sanitized.cnf	-1	0.010784149169921875	18.51
+110	j3037_10_mdd_b.cnf	1	0.019786834716796875	25.94
+111	marg5x5.shuffled-as.sat03-1455.cnf	0	0.04698944091796875	3000.89
+112	lec_mult_DvK_12x12.sanitized.cnf	0	0.0276947021484375	3000.88
+113	Break_unsat_18_31.xml.cnf	0	0.10382080078125	3000.83
+114	pcmax-scheduling-m37-28831-324346-SAT.sanitized.cnf	0	0.15189361572265625	2998.61
+115	lec_mult_CvW_12x12.sanitized.cnf	0	0.08792877197265625	3000.88
+116	pcmax-scheduling-m13-2011-12813-UNSAT.sanitized.cnf	-1	0.023555755615234375	171.52
+117	rbsat-v945c61409gyes9-sc2009.cnf	1	0.024158477783203125	45.45
+118	lec_mult_CvW_12x11.sanitized.cnf	0	0.07452774047851562	2999.42
+119	Break_08_24.xml.cnf	1	0.004611968994140625	0.16
+120	stb_495_168.apx_2_DC-AD.cnf	-1	0.023052215576171875	231.57
+121	x9-09076.sat.sanitized.cnf	-1	0.01129913330078125	39.9
+122	stb_495_168.apx_1_DC-AD.cnf	-1	0.02176666259765625	293.55
+123	simon-r19-1.sanitized.cnf	1	0.002925872802734375	0.01
+124	rphp_p8_r160.sanitized.cnf	0	1.3020401000976562	3000.85
+125	Folkman-190-66337703.sanitized.cnf	1	0.03985595703125	305.01
+126	linked_list_swap_contents_safety_unwind45.cnf	-1	0.8966941833496094	95.13
+127	pcmax-scheduling-m40-26287-324155-SAT.sanitized.cnf	0	0.10539627075195312	3000.86
+128	asconhashv12_opt64_H9_M2-MIC4kfhiA_m0_6_U2.c.cnf	-1	0.09235000610351562	744.21
+129	128_75.sanitized.cnf	0	2.141864776611328	7.95
+130	x9-11093.sat.sanitized.cnf	1	0.011844635009765625	53.29
+131	circuit_32in32out_with_80gates_7in7out_dist128_seed1.sanitized.cnf	1	0.2595062255859375	199.55
+132	md5_48_1.cnf	1	0.036441802978515625	49.42
+133	32_100.sanitized.cnf	0	2.0523834228515625	16.93
+134	004.cnf	1	0.045928955078125	135.16
+135	mdp-32-10-sat.cnf	0	0.07491302490234375	2999.99
+136	hwmcc20miters-iso-rast-p06.sanitized.cnf	-1	0.044170379638671875	0.41
+137	mchess_16.cnf	-1	0.029697418212890625	636.89
+138	noL-11-4.sanitized.cnf	1	0.06630325317382812	782.71
+139	x9-11053.sat.sanitized.cnf	1	0.0183563232421875	70.77
+140	GracefulGraph-K05-P02_c18.cnf	1	0.01334381103515625	38.04
+141	WS_500_16_70_10.apx_2_DC-AD.cnf	-1	0.038166046142578125	775.4
+142	mdp-32-14-unsat.cnf	0	0.07061767578125	3000.89
+143	goldcrest-and-9.cnf	-1	0.17227554321289062	254.88
+144	1-ZC-512-K-60.sanitized.cnf	1	0.09499740600585938	945.74
+145	mp1-ps_5000_21250_3_0_0.8_0_1.50_6.cnf	-1	0.017772674560546875	61.7
+146	linked_list_swap_contents_safety_unwind68.cnf	-1	1.6864051818847656	123.58
+147	sgen1-sat-180-100.cnf	0	0.07471466064453125	3000.91
+148	Break_18_32.xml.cnf	0	0.1133270263671875	2999.85
+149	summle_X4053_steps8_I1-2-2-4-4-8-25-100.cnf	1	0.032238006591796875	15.23
+150	x9-08014.sat.sanitized.cnf	-1	0.0076751708984375	23.14
+151	sokoban-p20.sas.cr.25.cnf	0	0.07960128784179688	2999.86
+152	Break_unsat_16_27.xml.cnf	0	0.08929824829101562	2999.97
+153	worker_40_80_40_0.9.cnf	0	0.16682052612304688	2999.4
+154	mdp-36-12-unsat.cnf	0	0.06819915771484375	2999.9
+155	linked_list_swap_contents_safety_unwind69.cnf	-1	1.7609825134277344	126.25
+156	simon-r21-0.sanitized.cnf	1	0.002994537353515625	0.01
+157	summle_X4044_steps7_I1-2-2-4-4-8-25-100.cnf	1	0.026218414306640625	13.73
+158	lru_8.sanitized.cnf	0	2.1046485900878906	6.94
+159	mp1-blockpuzzle_5x10_s7_free4.cnf	-1	0.0139617919921875	23.12
+160	VanDerWaerden_2-3-14_186.cnf	0	0.09587860107421875	2999.9
+161	spg_200_316.cnf	0	0.3120079040527344	2998.86
+162	x9-11062.sat.sanitized.cnf	1	0.032375335693359375	232.69
+163	cliquecolouring_n15_k9_c8.sanitized.cnf	0	0.1259613037109375	3000.35
+164	af-synthesis_stb_50_100_9_sat.cnf	1	0.027667999267578125	5.94
+165	Folkman-180-5383714.sanitized.cnf	1	0.028522491455078125	96.67
+166	Folkman-175-1251868.sanitized.cnf	1	0.031585693359375	91.96
+167	rook-56-1-1.cnf	-1	0.11709976196289062	1179.55
+168	6g_6color_366_050_04.cnf	0	0.19942474365234375	2999.94
+169	af-synthesis_stb_50_120_4_sat.cnf	1	0.046722412109375	118.66
+170	mdp-28-11-sat.cnf	1	0.03820037841796875	613.21
+171	Kakuro-easy-097-ext.xml.hg_4.cnf	0	1.339813232421875	3000.87
+172	mp1-Nb7T42.cnf	0	0.16967010498046875	3000.87
+173	bvsub_19952.smt2.cnf	0	0.24509429931640625	2999.84
+174	mdp-36-10-sat.cnf	0	0.045200347900390625	2999.88
+175	j3045_4_gmto_b.cnf	1	0.0381011962890625	934.95
+176	mdp-32-12-unsat.cnf	0	0.06992721557617188	2999.86
+177	g2-ak128boothbg2msisc.cnf	1	0.08258056640625	0.53
+178	constraints_17_0.4_2.sanitized.cnf	-1	0.09071731567382812	86.69
+179	worker_20_40_20_0.95.cnf	1	0.00354766845703125	0.12
+180	tseitingrid6x200_shuffled.cnf	0	0.08910751342773438	2999.83
+181	mdp-32-16-sat.cnf	1	0.035022735595703125	648.0
+182	Break_triple_20_36.xml.cnf	0	0.12100982666015625	2999.32
+183	lec_mult_DvW_12x11.sanitized.cnf	0	0.0782470703125	2999.21
+184	ITC2021_Early_10.xml.cnf	0	0.17098617553710938	2999.87
+185	linked_list_swap_contents_safety_unwind62.cnf	-1	1.4556655883789062	135.33
+186	x9-10038.sat.sanitized.cnf	1	0.030426025390625	203.11
+187	1-ET-512-K-110.sanitized.cnf	0	0.15163040161132812	2999.12
+188	circuit_64in64out_with_64gates_8in5out_dist256_seed1.sanitized.cnf	1	0.09702682495117188	58.84
+189	noL-11-18.sanitized.cnf	1	0.039676666259765625	228.97
+190	lec_mult_KvW_12x11.sanitized.cnf	0	0.02545928955078125	2999.87
+191	hwmcc20miters-iso-mul3.sanitized.cnf	-1	0.18429183959960938	1.86
+192	1-ZC-1024-K-117.sanitized.cnf	0	0.43030548095703125	2999.91
+193	srhd-sgi-m37-q446.25-n35-p30-s33692332.cnf	1	0.0051422119140625	0.02
+194	x9-09007.sat.sanitized.cnf	-1	0.007640838623046875	37.48
+195	circuit_32in32out_with_400gates_6in6out_dist64_seed1.sanitized.cnf	1	0.2703819274902344	126.23
+196	lru_10.sanitized.cnf	0	2.1528968811035156	6.94
+197	Nb44T6.cnf	0	1.032196044921875	2999.86
+198	ER_400_20_4.apx_2_DC-ST.cnf	-1	0.036529541015625	393.89
+199	ITC2021_Early_3.xml.cnf	1	0.015598297119140625	1.0
+200	asconhashv12_opt64_H11_M2-fCHjS2L0du5_m2_4.c.cnf	1	0.07199859619140625	417.07
+201	g2-slp-synthesis-aes-top30.cnf	1	0.059749603271484375	72.76
+202	1-TC-256-K-71.sanitized.cnf	-1	0.04754638671875	149.79
+203	128_125.sanitized.cnf	0	1.9880523681640625	6.98
+204	mdp-28-14-unsat.cnf	-1	0.05248260498046875	2617.82
+205	x9-09098.sat.sanitized.cnf	-1	0.019214630126953125	85.52
+206	Folkman-185-152478531.sanitized.cnf	1	0.043804168701171875	468.47
+207	x9-09047.sat.sanitized.cnf	-1	0.0078125	35.38
+208	g2-hwmcc15deep-6s161-k17.cnf	-1	0.04541015625	1300.8
+209	combined-crypto1-wff-seed-102-wffvars-500-cryptocplx-31-overlap-2.cnf	1	0.0158233642578125	19.07
+210	stb_418_125.apx_1_DC-ST.cnf	-1	0.040538787841796875	637.66
+211	ER_400_20_4.apx_2_DC-AD.cnf	-1	0.0456085205078125	467.8
+212	battleship-14-26-sat.cnf	1	0.01983642578125	18.32
+213	asconhashv12_opt64_H11_M2-MxJOnbQIXNd_m5_6.c.cnf	1	0.06854629516601562	160.73
+214	WS_500_16_70_10.apx_1_DC-ST.cnf	-1	0.02294921875	414.69
+215	tseitin_d3_n174.sanitized.cnf	0	0.07624053955078125	2996.64
+216	constraints_16_0.5_1.sanitized.cnf	-1	0.0634918212890625	142.4
+217	EDP3-11000.cnf	1	0.08863067626953125	98.62
+218	mulhs016-sc2009.cnf	0	0.055683135986328125	2995.26
+219	6s167-opt.cnf	-1	0.004871368408203125	0.38
+220	circuit_48in64out_with_800gates_4in4out_dist128_seed1.sanitized.cnf	1	0.033977508544921875	42.9
+221	simon-r25-0.sanitized.cnf	1	0.00325775146484375	0.01
+222	x9-11094.sat.sanitized.cnf	1	0.050991058349609375	596.17
+223	af-synthesis_stb_50_40_9_sat.cnf	1	0.0400238037109375	1204.81
+224	exam_flat_0.04_2018_3.cnf	1	0.4658470153808594	936.92
+225	mchess_17.cnf	0	0.057098388671875	2999.88
+226	worker_30_60_25_0.9.cnf	0	0.1312103271484375	3000.01
+227	pcmax-scheduling-m26-6398-62377-UNSAT.sanitized.cnf	-1	0.029815673828125	232.12
+228	noL-11-10.sanitized.cnf	1	0.02239227294921875	109.13
+229	j3037_10_mdd_bm1.cnf	-1	0.02109527587890625	50.79
+230	si2-b03m-m800-03.cnf	1	0.10589981079101562	8.01
+231	rbsat-v760c43649gyes7.cnf	1	0.047210693359375	2393.39
+232	Folkman-180-11710376.sanitized.cnf	1	0.0273590087890625	97.44
+233	lec_mult_CvK_12x12.sanitized.cnf	0	0.0562896728515625	2999.8
+234	linked_list_swap_contents_safety_unwind76.cnf	-1	2.0435829162597656	228.49
+235	x9-09024.sat.sanitized.cnf	-1	0.010772705078125	38.03
+236	StConn_7_128.sanitized.cnf	0	0.07424545288085938	2999.88
+237	Folkman-175-9054056.sanitized.cnf	1	0.03127288818359375	100.73
+238	noL-11-6.sanitized.cnf	1	0.11994171142578125	2153.03
+239	ER_500_30_3.apx_1_DC-ST.cnf	-1	0.06185150146484375	360.85
+240	f9idw.cnf	-1	0.244171142578125	490.54
+241	rook-42-0-1.cnf	-1	0.16038894653320312	1773.79
+242	linked_list_swap_contents_safety_unwind78.cnf	0	2.126476287841797	25.98
+243	Schur_161_5_d38.cnf	0	0.075897216796875	2999.86
+244	pcmax-scheduling-m24-17855-226744-SAT.sanitized.cnf	0	0.1184539794921875	3000.84
+245	noL-11-14.sanitized.cnf	1	0.024936676025390625	85.12
+246	Dodecahedron-k7.cnf	0	0.10216522216796875	3000.91
+247	af-synthesis_stb_50_140_0_unsat.cnf	-1	0.045383453369140625	1000.57
+248	or_randxor_k3_n510_m510.sanitized.cnf	-1	0.00608062744140625	4.92
+249	benchmarks.txt	0	0.0	0.0
+250	constraints_16_0.3_1.sanitized.cnf	-1	0.056697845458984375	179.47
+251	cliquecolouring_n13_k8_c7.sanitized.cnf	0	0.10897064208984375	3000.86
+252	pcmax-scheduling-m24-24102-255206-SAT.sanitized.cnf	0	0.11585235595703125	2999.99
+253	fixedbandwidth-eq-31_shuffled.cnf	-1	0.037288665771484375	1839.8
+254	oisc-subrv-sll-nested-11.cnf	0	1.9304580688476562	25.93
+255	lec_mult_KvW_11x10.sanitized.cnf	-1	0.022747039794921875	818.74
+256	32_325.sanitized.cnf	0	1.9795303344726562	6.97
+257	ecarev-110-4099-22-30-7.cnf	1	0.13239288330078125	531.74
+258	mdp-28-10-unsat.cnf	-1	0.04347991943359375	1150.86
+259	noL-11-16.sanitized.cnf	1	0.033687591552734375	130.43
+260	FmlaImplyChain_3_7_8.sanitized.cnf	0	0.101318359375	3000.87
+261	x9-12021.sat.sanitized.cnf	1	0.037265777587890625	511.93
+262	ctl_4291_567_2_unsat-sc2013.cnf	-1	0.040493011474609375	2151.16
+263	circuit_48in24out_with_100gates_7in7out_dist128_seed1.sanitized.cnf	1	0.31589508056640625	139.36
+264	x9-10027.sat.sanitized.cnf	1	0.010555267333984375	52.4
+265	x9-09051.sat.sanitized.cnf	-1	0.01055145263671875	56.91
+266	urq45.cnf	-1	0.040103912353515625	326.35
+267	sokoban-p20.sas.cr.33.cnf	0	0.15567779541015625	3000.83
+268	tseitin_d3_n158.sanitized.cnf	0	0.0883331298828125	2999.83
+269	sokoban-p16.sas.ex.15-sc2016.cnf	-1	0.6962127685546875	1160.58
+270	stable-300-0.1-20-98765432130020.cnf	1	0.027515411376953125	115.25
+271	openstacks-sequencedstrips-nonadl-nonnegated-os-sequencedstrips-p30_3.025-NOTKNOWN.cnf	-1	0.07637405395507812	2589.24
+272	lec_mult_CvK_12x11.sanitized.cnf	0	0.0323333740234375	2999.91
+273	1-ZC-512-K-64.sanitized.cnf	0	0.10223388671875	3000.85
+274	128_100.sanitized.cnf	0	1.9560394287109375	6.95
+275	ER_400_20_7.apx_2_DC-ST.cnf	-1	0.09164047241210938	2805.86
+276	stb_531_83.apx_2_DC-ST.cnf	-1	0.03588104248046875	296.25
+277	af-synthesis_stb_50_140_3_unsat.cnf	-1	0.046855926513671875	358.44
+278	noL-11-12.sanitized.cnf	1	0.062137603759765625	534.79
+279	bmc_QICE_snp_vld_30.cnf	0	1.9335746765136719	41.89
+280	j3045_10_rggt_b.cnf	1	0.026275634765625	241.66
+281	af-synthesis_stb_50_200_0_sat.cnf	1	0.06717681884765625	509.96
+282	two-trees-1023v.sanitized.cnf	0	0.10954666137695312	2998.13
+283	sgen1-unsat-121-100.cnf	0	0.05507659912109375	2999.45
+284	lru_7.sanitized.cnf	0	2.114215850830078	6.95
+285	64_150.sanitized.cnf	0	1.9231910705566406	6.94
+286	IBM_FV_2004_rule_batch_1_31_1_SAT_dat.k40.debugged.cnf	-1	0.029529571533203125	343.49
+287	1-ZC-512-K-67.sanitized.cnf	0	0.1350555419921875	2999.82
+288	af-synthesis_stb_50_40_2_unsat.cnf	-1	0.026302337646484375	496.12
+289	rbsat-v760c43649gyes9.cnf	1	0.025726318359375	185.76
+290	circuit_32in32out_with_64gates_8in6out_dist128_seed2.sanitized.cnf	1	0.19391250610351562	878.27
+291	pcmax-scheduling-m12-8049-55035-SAT.sanitized.cnf	0	0.09321212768554688	3000.87
+292	test_v7_r17_vr5_c1_s25451.smt2-cvc4.cnf	0	0.3492088317871094	3000.84
+293	j3045_10_gmto_b.cnf	1	0.035137176513671875	432.63
+294	rook-56-0-0.cnf	0	0.18550872802734375	2999.85
+295	qwh.50.1250.shuffled-as.sat03-1655.cnf	1	0.037174224853515625	15.54
+296	simon-r24-1.sanitized.cnf	1	0.003101348876953125	0.01
+297	lec_mult_DvW_12x12.sanitized.cnf	0	0.0813446044921875	3000.9
+298	constraints_25_4_5_12_12_0_0_0.sanitized.cnf	-1	0.024566650390625	312.84
+299	pcmax-scheduling-m15-2352-13561-SAT.sanitized.cnf	0	0.12060546875	2999.96
+300	lec_mult_KvW_10x10.sanitized.cnf	-1	0.019931793212890625	299.77
+301	ex065_25.cnf	1	0.0938873291015625	1338.05
+302	lru_6.sanitized.cnf	0	2.0578269958496094	6.91
+303	g2-hwmcc15deep-bob12s02-k16.cnf	0	0.15543365478515625	2999.65
+304	1-ZC-1024-K-116.sanitized.cnf	0	0.426971435546875	2999.9
+305	j3037_1_gmto_b.cnf	1	0.015949249267578125	17.81
+306	1-ET-256-K-55.sanitized.cnf	0	0.072418212890625	2999.96
+307	stb_588_138.apx_1_DC-ST.cnf	-1	0.030841827392578125	283.91
+308	post-cbmc-aes-ee-r3-noholes.cnf	-1	0.22039031982421875	615.79
+309	stb_418_125.apx_2_DC-AD.cnf	-1	0.0603179931640625	1702.63
+310	crn_11_99_u.cnf	-1	0.006420135498046875	2.53
+311	af-synthesis_stb_50_100_9_unsat.cnf	-1	0.0408172607421875	930.55
+312	string_compare_safety_cbmc_unwinding_900.cnf	0	1.9730758666992188	17.92
+313	Folkman-175-7416734.sanitized.cnf	1	0.04451751708984375	354.58
+314	g2-T93.2.1.cnf	-1	1.8526077270507812	875.43
+315	manol-pipe-g10bid_i.cnf	-1	0.14606857299804688	321.81
+316	simon-r17-0.sanitized.cnf	1	0.002704620361328125	0.0
+317	j3037_9_mdd_bm1.cnf	0	0.064666748046875	3000.84
+318	j3037_10_rggt_b.cnf	1	0.02313995361328125	130.26
+319	stb_531_83.apx_1_DC-ST.cnf	-1	0.032077789306640625	366.47
+320	g2-test_v5_r10_vr10_c1_s21502.smt2-cvc4.cnf	-1	0.169281005859375	499.99
+321	hwmcc17miters-xits-iso-oski15a08b08s.sanitized.cnf	-1	0.5330734252929688	7.82
+322	hwb-n24-02-S786928571.shuffled-as.sat03-1618.cnf	-1	0.0283050537109375	220.04
+323	simon-r23-1.sanitized.cnf	1	0.00305938720703125	0.01
+324	fermat-931960058139995587.cnf	0	0.041545867919921875	3000.78
+325	Break_unsat_06_07.xml.cnf	-1	0.005191802978515625	1.68
+326	REGRandom-K4-L1-Seed30.sanitized.cnf	-1	0.0689849853515625	9.31
+327	linked_list_swap_contents_safety_unwind63.cnf	-1	1.4938278198242188	103.76
+328	mdp-28-16-unsat.cnf	-1	0.0448760986328125	2109.37
+329	pcmax-scheduling-m43-38782-385402-SAT.sanitized.cnf	0	0.15493011474609375	2999.84
+330	af-synthesis_stb_50_200_0_unsat.cnf	-1	0.07355117797851562	1051.98
+331	x9-12087.sat.sanitized.cnf	1	0.035533905029296875	315.66
+332	x9-09014.sat.sanitized.cnf	-1	0.01163482666015625	51.08
+333	x9-12092.sat.sanitized.cnf	1	0.03168487548828125	226.15
+334	1-TC-256-K-68.sanitized.cnf	-1	0.05327606201171875	260.59
+335	x9-08075.sat.sanitized.cnf	-1	0.007785797119140625	25.16
+336	64_25.sanitized.cnf	1	1.3110618591308594	34.42
+337	1-ET-256-K-70.sanitized.cnf	-1	0.047088623046875	139.81
+338	x9-10076.sat.sanitized.cnf	-1	0.02843475341796875	135.7
+339	1-TC-256-K-64.sanitized.cnf	-1	0.042667388916015625	1255.69
+340	sted5_0x24204-50.cnf	1	0.0119171142578125	6.0
+341	simon-r20-0.sanitized.cnf	1	0.003082275390625	0.01
+342	constraints_18_0.4_2.sanitized.cnf	-1	0.21581268310546875	675.9
+343	g2-ak128boothbg2msaig.cnf	1	0.1060638427734375	0.73
+344	hwmcc17miters-xits-iso-bobsmfpu.sanitized.cnf	-1	0.034698486328125	0.29
+345	StConn_8_32.sanitized.cnf	-1	0.034488677978515625	402.93
+346	lec_mult_CvD_11x11.sanitized.cnf	-1	0.039913177490234375	890.5
+347	hcp_CP18_18.cnf	0	0.10848236083984375	2999.6
+348	constraints_16_0.4_1.sanitized.cnf	-1	0.04734039306640625	129.77
+349	ER_400_20_4.apx_1_DC-AD.cnf	-1	0.05432891845703125	476.83
+350	constraints_18_0.3_2.sanitized.cnf	-1	0.10087203979492188	466.33
+351	SGI_30_80_26_70_4-log.shuffled-as.sat03-208.cnf	0	0.12335205078125	3000.87
+352	6s130-opt.cnf	-1	0.0394287109375	117.82
+353	constraints_17_0.4_1.sanitized.cnf	1	0.08922195434570312	24.07
+354	hwmcc20miters-iso-mul7.sanitized.cnf	-1	0.18762588500976562	1.91
+355	simon-r18-0.sanitized.cnf	1	0.003131866455078125	0.01
+356	ER_400_20_7.apx_2_DC-AD.cnf	0	0.090728759765625	2999.89
+357	mdp-32-11-unsat.cnf	0	0.0565032958984375	3000.91
+358	summle_X11112_steps6_I1-2-2-4-4-8-25-100.cnf	1	0.02657318115234375	22.1
+359	ER_400_20_7.apx_1_DC-AD.cnf	-1	0.04828643798828125	857.97
+360	mp1-klieber2017s-0500-023-t12.cnf	1	0.02400970458984375	99.68
+361	hwmcc20miters-iso-rast-p11.sanitized.cnf	-1	0.044403076171875	0.42
+362	Folkman-185-19924337.sanitized.cnf	1	0.02422332763671875	99.05
+363	pcmax-scheduling-m35-32274-371389-SAT.sanitized.cnf	0	0.2946434020996094	2999.84
+364	j3037_1_mdd_b.cnf	1	0.024860382080078125	63.2
+365	HCP-446-105.cnf	1	0.09850692749023438	2221.87
+366	rbsat-v1150c84314gyes1.cnf	0	0.054172515869140625	2999.87
+367	linked_list_swap_contents_safety_unwind70.cnf	-1	1.7991142272949219	365.64
+368	asconhashv12_opt64_H6_M2-PgbpwX_m0_4_U1.c.cnf	-1	0.06473922729492188	260.15
+369	mdp-32-11-sat.cnf	0	0.0897064208984375	3000.87
+370	linked_list_swap_contents_safety_unwind57.cnf	-1	1.2675018310546875	120.78
+371	x9-11088.sat.sanitized.cnf	1	0.03824615478515625	333.67
+372	SGI_30_60_19_60_6-dir.shuffled-as.sat03-112.cnf	-1	0.04529571533203125	1669.91
+373	ITC2021_Middle_1.xml.cnf	0	0.1254730224609375	2999.87
+374	hwmcc20miters-iso-mul2.sanitized.cnf	-1	0.055568695068359375	0.45
+375	mdp-32-14-sat.cnf	0	0.0723724365234375	3000.86
+376	pcmax-scheduling-m30-14113-167638-UNSAT.sanitized.cnf	-1	0.07204818725585938	1564.77
+377	x9-12098.sat.sanitized.cnf	1	0.06400299072265625	1026.53
+378	qwh.60.1728.shuffled-as.sat03-1659.cnf	1	0.089324951171875	216.75
+379	constraints_18_0.5_2.sanitized.cnf	-1	0.27635955810546875	952.96
+380	tseitin_d3_n162.sanitized.cnf	0	0.07741546630859375	2999.86
+381	constraints_17_0.5_2.sanitized.cnf	-1	0.126983642578125	153.35
+382	x9-10031.sat.sanitized.cnf	-1	0.0350799560546875	345.42
+383	barman-pfile06-022.sas.ex.7.cnf	-1	0.126800537109375	2.7
+384	preimage_80r_495m_160h_seed_379.cnf	1	0.06671142578125	2575.21
+385	circuit_32in32out_with_500gates_6in6out_dist64_seed1.sanitized.cnf	1	0.3346519470214844	223.41
+386	circuit_32in32out_with_96gates_7in7out_dist128_seed1.sanitized.cnf	1	0.2922515869140625	2025.97
+387	1-ZC-512-K-61.sanitized.cnf	1	0.09673309326171875	1308.19
+388	atco_enc1_opt1_10_15.cnf	1	0.04233551025390625	218.29
+389	REGRandom-K4-L2-Seed35.sanitized.cnf	-1	0.4387931823730469	1954.96
+390	Ptn-7824-b18.cnf	1	0.021533966064453125	152.98
+391	ER_500_30_3.apx_2_DC-AD.cnf	-1	0.09021377563476562	1183.59
+392	lec_mult_DvW_11x10.sanitized.cnf	-1	0.03841400146484375	595.0
+393	Folkman-190-104806020.sanitized.cnf	1	0.054569244384765625	985.6
+394	MASG0_72_keystream76_0.cnf	1	0.028621673583984375	1797.87
+395	Nb13T165.cnf	0	1.3236503601074219	2999.85
+396	noL-11-2.sanitized.cnf	1	0.063232421875	699.47
+397	x9-10084.sat.sanitized.cnf	-1	0.019931793212890625	145.85
+398	crafted_n12_d6_c4_num23.cnf	-1	0.34937286376953125	364.12
+399	mdp-32-10-unsat.cnf	0	0.06845855712890625	3000.88
+400	urqh1c5x5.shuffled-as.sat03-1468.cnf.mis-103.debugged.cnf	0	0.08314132690429688	2999.87
