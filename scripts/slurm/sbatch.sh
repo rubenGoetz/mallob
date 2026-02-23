@@ -27,7 +27,7 @@ module list
 which mpirun
 echo "#ranks: $SLURM_NTASKS"
 
-build="build-maxsat" # TODO your build directory for Mallob
+build="build" # TODO your build directory for Mallob
 
 # Environment variables
 export PATH="$build/:$PATH"
@@ -46,7 +46,9 @@ localtmpdir_base=/tmp/$DS_JOBNAME-$SLURM_JOB_ID # fast local disk
 mkdir -p $localtmpdir_base $globallogdir_base
 
 # Benchmark instances, one per line
-benchmarkfile="/hppfs/work/$projname/$username/instances/2023+2024-unique.txt" # TODO benchmark file
+# TODO: change back to WORK
+#benchmarkfile="/hppfs/work/$projname/$username/instances/2023+2024-unique.txt" # TODO benchmark file
+benchmarkfile="/hppfs/work/$projname/$username/main_2025_unsat/benchmarks.txt" # TODO benchmark file
 if [ ! -f $benchmarkfile ]; then
     echo "Benchmark file not found!"
     exit 1
@@ -88,18 +90,21 @@ for i in $(seq $DS_FIRSTJOBIDX $DS_LASTJOBIDX | shuf) ; do
     localtmpdir="${localtmpdir_base}/tmp/$i" # make sure that proof and disk data are written on FAST, local disk
     globallogdir="${localtmpdir_base}/$i"
     outputlogdir="${globallogdir_base}"
+    proof_palrup="${SCRATCH}/$DS_JOBNAME-$SLURM_JOB_ID/proof_palrup"
+    proof_working="${SCRATCH}/$DS_JOBNAME-$SLURM_JOB_ID/proof_working"
 
     echo "logdir: $globallogdir , localtmp: $localtmpdir , output: $outputlogdir"
 
     # TODO Configure Mallob
-    timeout=$DS_SECONDSPERJOB
-    cmd="$build/mallob -mono-app=SATWITHPRE -pb=1 -pjp=999999 -pef=1 -mono=$f -jwl=$timeout -T=$(($timeout+30)) -wam=60``000 -pre-cleanup=1 \
+    timeout=$(($DS_SECONDSPERJOB/2))
+    cmd="$build/mallob -mono-app=SAT -pb=1 -pjp=999999 -pef=1 -mono=$f -jwl=$timeout -T=$(($timeout+30)) -wam=60``000 -pre-cleanup=1 \
     -q=1 -log=$globallogdir -tmp=$localtmpdir -comment-outputlogdir=$outputlogdir -sro=${globallogdir}/processed-jobs.out -trace-dir=${globallogdir}/ -os=1 -v=4 -iff=0 -s2f=${globallogdir}/model -cm=0 \
     -rpa=1 -pph=${SLURM_NTASKS_PER_NODE} -mlpt=50``000``000 -t=$((${SLURM_CPUS_PER_TASK} / 2)) \
-    -satsolver=[k_]w -isp=0 -div-phases=1 -div-noise=0 -div-seeds=1 -div-elim=0 -div-native=0 -scsd=0 \
+    -satsolver=c -isp=0 -div-phases=1 -div-noise=0 -div-seeds=1 -div-elim=0 -div-native=0 -scsd=0 \
     -scll=60 -slbdl=60 -qcll=60 -qlbdl=60 -csm=3 -cfm=3 -cfci=30 -mscf=5 -bem=1 -aim=1 -rlbd=0 -ilbd=1 -randlbd=0 -scramble-lbds=0 \
     -seed=0 \
-    -spd=${globallogdir}/ -spl=3"
+    -spd=${globallogdir}/ -spl=3 \
+    -proof-dir=$proof_palrup -palrup=1 -palrup-binary=1 -palrup-check=1 -palrup-check-dir=$proof_working"
 
     # Pre-create network-disk output directories to avoid many concurrent filesystem manips
     mkdir -p $(for rank in $(seq 0 $(($SLURM_NTASKS-1))); do echo $outputlogdir/$i/$rank; done)
@@ -109,6 +114,8 @@ for i in $(seq $DS_FIRSTJOBIDX $DS_LASTJOBIDX | shuf) ; do
     export MALLOB_OUTPUTLOGDIR=$outputlogdir
     export MALLOB_BUILDDIR=$build
     export MALLOB_NUMNODES=$DS_NODES
+    export PROOF_PALRUP=$proof_palrup
+    export PROOF_WORKING=$proof_working
 
     # Assemble MPI command options
     mpicall="mpiexec -n $SLURM_NTASKS --bind-to core --map-by numa -genvall"

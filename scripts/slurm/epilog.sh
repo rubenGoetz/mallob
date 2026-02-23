@@ -5,6 +5,8 @@ globallogdir=$MALLOB_GLOBALLOGDIR
 localtmpdir=$MALLOB_LOCALTMPDIR
 outputlogdir=$MALLOB_OUTPUTLOGDIR
 numnodes=$MALLOB_NUMNODES
+proof_palrup=$PROOF_PALRUP
+proof_working=$PROOF_WORKING
 
 if [ -z "$globallogdir" ]; then exit; fi
 if [ -z "$localtmpdir" ]; then exit; fi
@@ -27,6 +29,12 @@ for x in * ; do
 done
 wait
 cd $prevdir
+
+# Clean up local proof data
+rm -r "${proof_palrup}"
+
+# Clean up global checking data
+rm -r "${proof_working}"
 
 # Barrier across hosts (note that we clean up the lock directory afterwards)
 touch "$dest/.done.$(hostname)"
