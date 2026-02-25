@@ -97,13 +97,12 @@ for i in $(seq $DS_FIRSTJOBIDX $DS_LASTJOBIDX | shuf) ; do
 
     # TODO Configure Mallob
     timeout=$(($DS_SECONDSPERJOB/2))
-    cmd="$build/mallob -mono-app=SAT -pb=1 -pjp=999999 -pef=1 -mono=$f -jwl=$timeout -T=$(($timeout+30)) -wam=60``000 -pre-cleanup=1 \
+    cmd="$build/mallob -mono-app=SAT -pb=1 -pjp=999999 -pef=1 -mono=$f -jwl=$timeout -T=$((($timeout*2)+30)) -wam=60``000 -pre-cleanup=1 \
     -q=1 -log=$globallogdir -tmp=$localtmpdir -comment-outputlogdir=$outputlogdir -sro=${globallogdir}/processed-jobs.out -trace-dir=${globallogdir}/ -os=1 -v=4 -iff=0 -s2f=${globallogdir}/model -cm=0 \
     -rpa=1 -pph=${SLURM_NTASKS_PER_NODE} -mlpt=20``000``000 -t=$((${SLURM_CPUS_PER_TASK} / 2)) \
     -satsolver=c -isp=0 -div-phases=1 -div-noise=0 -div-seeds=1 -div-elim=0 -div-native=0 -scsd=0 \
     -scll=60 -slbdl=60 -qcll=60 -qlbdl=60 -csm=3 -cfm=3 -cfci=30 -mscf=5 -bem=1 -aim=1 -rlbd=0 -ilbd=1 -randlbd=0 -scramble-lbds=0 \
     -seed=0 \
-    -spd=${globallogdir}/ -spl=3 \
     -proof-dir=$proof_palrup -palrup=1 -palrup-binary=1 -palrup-check=1 -palrup-check-dir=$proof_working"
 
     # Pre-create network-disk output directories to avoid many concurrent filesystem manips
