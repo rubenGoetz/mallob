@@ -24,7 +24,7 @@ if [ -f "$dest/.alldone" ]; then exit ; fi
 prevdir=$(pwd)
 cd "$globallogdir"
 for x in * ; do
-    if [ -d $x ]; then mv $x/* "$dest/$x/" & : ; fi
+    if [ -d $x ]; then mkdir -p "$dest/$x";  mv $x/* "$dest/$x" & : ; fi
     if [ -f $x ]; then mv $x "$dest/" & : ; fi
 done
 wait
