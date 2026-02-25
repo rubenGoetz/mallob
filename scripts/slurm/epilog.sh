@@ -31,10 +31,10 @@ wait
 cd $prevdir
 
 # Clean up local proof data
-rm -r "${proof_palrup}"
+rm -r "${proof_palrup}" 2>/dev/null
 
 # Clean up global checking data
-rm -r "${proof_working}"
+rm -r "${proof_working}" 2>/dev/null
 
 # Barrier across hosts (note that we clean up the lock directory afterwards)
 touch "$dest/.done.$(hostname)"
