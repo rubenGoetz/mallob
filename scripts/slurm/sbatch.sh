@@ -46,7 +46,6 @@ localtmpdir_base=/tmp/$DS_JOBNAME-$SLURM_JOB_ID # fast local disk
 mkdir -p $localtmpdir_base $globallogdir_base
 
 # Benchmark instances, one per line
-# TODO: change back to WORK
 #benchmarkfile="/hppfs/work/$projname/$username/instances/2023+2024-unique.txt" # TODO benchmark file
 benchmarkfile="/hppfs/work/$projname/$username/main_2025_unsat/benchmarks.txt" # TODO benchmark file
 if [ ! -f $benchmarkfile ]; then
