@@ -57,7 +57,7 @@ public:
             + " PROOF_PALRUP=\"" + proofInputDir + "\""
             + " PROOF_WORKING=\"" + proofWorkingDir + "\""
             + " LOG_DIR=\"" + logDir + "\""
-            + " TIMEOUT=" + std::to_string(jwl)
+            + " TIMEOUT=" + std::to_string(jwl > 0 ? jwl : 9999999)
             + " bash scripts/pal_launcher.sh";
 
         LOG(V4_VVER, "Calling PalRUP checker: %s\n", palRupCall.c_str());
