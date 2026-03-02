@@ -253,7 +253,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	setup.numVars = numVars;
 	setup.numOriginalClauses = numClauses;
 	int sqrt = std::ceil(std::sqrt((double) setup.maxNumSolvers));
-	setup.proofDir = proofDirectory + "/" + (_params.palRup() ? std::to_string(sqrt) + "/" : "");
+	//setup.proofDir = proofDirectory; // + "/" + (_params.palRup() ? std::to_string(sqrt) + "/" : "");
 
 	LratConnector* modelCheckingLratConnector {nullptr};
 	setup.nbSkippedIdEpochs = std::max(0, epochOffset + epochModulus * config.nbPreviousBalancingEpochs);
@@ -269,7 +269,8 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	// Pre-create PalRUP proof directories for *all* solver IDs, including cancelled ones.
 	if (params.palRup()) for (setup.localId = 0; setup.localId < numOrigSolvers; setup.localId++) {
 		setup.globalId = appRank * numOrigSolvers + setup.localId;
-		auto dir = setup.proofDir + "/" + std::to_string(setup.globalId);
+		//int dir_hierarchy = proofDirectory / sqrt;
+		auto dir = proofDirectory + "/" + std::to_string((int)(setup.globalId / sqrt)) + "/" + std::to_string(setup.globalId);
 		LOG(V2_INFO, "MKDIR %s\n", dir.c_str());
 		FileUtils::mkdir(dir);
 	}
@@ -313,6 +314,8 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		setup.modelCheckingLratConnector = modelCheckingLratConnector;
 		setup.avoidUnsatParticipation = (params.proofOutputFile.isSet() || params.onTheFlyChecking() || _params.palRup()) && !item.outputProof;
 		setup.exportClauses = !setup.avoidUnsatParticipation;
+		setup.proofDir = proofDirectory + "/" + std::to_string((int)(setup.globalId / sqrt));
+		std::cout << ">> globalId:" << setup.globalId << " sqrt:" << sqrt << " proofDir:" << setup.proofDir << std::endl;
 
 		_solver_interfaces.push_back(createSolver(setup));
 		cyclePos = (cyclePos+1) % portfolio.cycle.size();
