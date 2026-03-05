@@ -47,7 +47,7 @@ mkdir -p $localtmpdir_base $globallogdir_base
 
 # Benchmark instances, one per line
 #benchmarkfile="/hppfs/work/$projname/$username/instances/2023+2024-unique.txt" # TODO benchmark file
-benchmarkfile="/hppfs/work/$projname/$username/main_2025_unsat/benchmarks.txt" # TODO benchmark file
+benchmarkfile="/hppfs/work/$projname/$username/main_2025/benchmarks.txt" # TODO benchmark file
 if [ ! -f $benchmarkfile ]; then
     echo "Benchmark file not found!"
     exit 1
@@ -90,7 +90,7 @@ for i in $(seq $DS_FIRSTJOBIDX $DS_LASTJOBIDX | shuf) ; do
     globallogdir="${localtmpdir_base}/$i"
     outputlogdir="${globallogdir_base}"
     proof_palrup="${SCRATCH}/$DS_JOBNAME-$SLURM_JOB_ID/proof_palrup"
-    proof_working="${SCRATCH}/$DS_JOBNAME-$SLURM_JOB_ID/proof_working"
+    proof_working="/hppfs/work/$projname/$username/palrup/$DS_JOBNAME-$SLURM_JOB_ID/proof_working"
 
     echo "logdir: $globallogdir , localtmp: $localtmpdir , output: $outputlogdir"
 

@@ -24,6 +24,14 @@ if [ -f "$dest/.alldone" ]; then exit ; fi
 prevdir=$(pwd)
 cd "$globallogdir"
 for x in * ; do
+    # enable merging of pal hierarchy
+    if [[ $x == "pals" ]]; then
+        for pal in pals/*/* ; do
+            mkdir -p "$dest/$pal"
+            mv $pal/* "$dest/$pal" &
+        done
+        continue
+    fi
     if [ -d $x ]; then mkdir -p "$dest/$x";  mv $x/* "$dest/$x" & : ; fi
     if [ -f $x ]; then mv $x "$dest/" & : ; fi
 done
