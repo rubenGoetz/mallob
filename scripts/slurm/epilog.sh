@@ -26,7 +26,7 @@ cd "$globallogdir"
 for x in * ; do
     # enable merging of pal hierarchy
     if [[ $x == "pals" ]]; then
-        for pal in pals/*/* ; do
+        for pal in pals/* ; do
             mkdir -p "$dest/$pal"
             mv $pal/* "$dest/$pal" &
         done
@@ -37,12 +37,6 @@ for x in * ; do
 done
 wait
 cd $prevdir
-
-# Clean up local proof data
-rm -r "${proof_palrup}" 2>/dev/null
-
-# Clean up global checking data
-rm -r "${proof_working}" 2>/dev/null
 
 # Barrier across hosts (note that we clean up the lock directory afterwards)
 touch "$dest/.done.$(hostname)"
