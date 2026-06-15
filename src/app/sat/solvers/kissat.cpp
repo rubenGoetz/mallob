@@ -27,8 +27,8 @@ extern "C" {
 
 
 
-void produce_clause(void* state, int size, int glue) {
-    ((Kissat*) state)->produceClause(size, glue);
+void produce_clause(void* state, int size, int glue, u64 id) {
+    ((Kissat*) state)->produceClause(size, glue, id);
 }
 
 void consume_clause(void* state, int** clause, int* size, int* glue, unsigned long* id, unsigned char* sig) {
@@ -72,18 +72,33 @@ Kissat::Kissat(const SolverSetup& setup)
     numVars = setup.numVars;
 
     if (setup.certifiedUnsat) {
-        assert(_lrat); // needs to be real-time checking setup for Kissat
-
         int solverRank = setup.globalId;
-		int maxNumSolvers = setup.maxNumSolvers;
+	    int maxNumSolvers = setup.maxNumSolvers;
 
-		auto descriptor = _lrat ? "on-the-fly checking" : "proof production";
-		LOGGER(_logger, V3_VERB, "Initializing rank=%i size=%i DI=%i #C=%ld IDskips=%i with %s\n",
-			solverRank, maxNumSolvers, getDiversificationIndex(), setup.numOriginalClauses, setup.nbSkippedIdEpochs,
-			descriptor);
+        auto descriptor = _lrat ? "on-the-fly checking" : "PalRUP proof production";
 
-        // set Kissat's internal proof tracing mode
-        kissat_trace_proof_internally(solver, this, &on_drup_derivation, &on_lrup_import, &on_drup_deletion);
+        if (setup.usePalRupFormat) {    // setup Kissat to log PalRUP proof fragment
+            LOGGER(_logger, V3_VERB, "Initializing rank=%i size=%i DI=%i #C=%ld IDskips=%i with %s\n",
+		    	solverRank, maxNumSolvers, getDiversificationIndex(), setup.numOriginalClauses, setup.nbSkippedIdEpochs,
+		    	descriptor);
+
+            // set kissat to log PalRUP
+            int sqrt = std::ceil(std::sqrt((double) maxNumSolvers));
+            std::string fragment_path = setup.proofDir + "/"
+                                        + std::to_string((int)(solverRank / sqrt)) + "/"
+                                        + std::to_string(solverRank) + "/"
+                                        + "out.palrup";
+            kissat_trace_palrup_internally(solver, maxNumSolvers, solverRank, setup.numOriginalClauses, fragment_path.c_str());
+        } else {
+            assert(_lrat); // needs to be real-time checking setup for Kissat otherwise
+
+		    LOGGER(_logger, V3_VERB, "Initializing rank=%i size=%i DI=%i #C=%ld IDskips=%i with %s\n",
+		    	solverRank, maxNumSolvers, getDiversificationIndex(), setup.numOriginalClauses, setup.nbSkippedIdEpochs,
+		    	descriptor);
+
+            // set Kissat's internal proof tracing mode
+            kissat_trace_proof_internally(solver, this, &on_drup_derivation, &on_lrup_import, &on_drup_deletion);
+        }
     }
 }
 
@@ -315,7 +330,10 @@ SatResult Kissat::solve(size_t numAssumptions, const int* assumptions) {
 
 void Kissat::setSolverInterrupt() {
 	interrupted = true;
-    if (interruptionInitialized) kissat_terminate (solver);
+    if (interruptionInitialized) {
+        kissat_terminate (solver);
+        kissat_close_palrup_internally(solver);
+    }
 }
 
 void Kissat::unsetSolverInterrupt() {
@@ -372,7 +390,7 @@ void Kissat::setLearnedClauseCallback(const LearnedClauseCallback& callback) {
     kissat_set_clause_import_callback(solver, this, &consume_clause);
 }
 
-void Kissat::produceClause(int size, int lbd) {
+void Kissat::produceClause(int size, int lbd, u64 id) {
     interruptionInitialized = true;
     if (size > _setup.strictMaxLitsPerClause) return;
     learntClause.size = size;
@@ -381,6 +399,12 @@ void Kissat::produceClause(int size, int lbd) {
     if (learntClause.lbd == 1 && learntClause.size > 1) learntClause.lbd++;
     if (learntClause.lbd > _setup.strictLbdLimit) return;
     learntClause.begin = learntClauseBuffer.data();
+    // Add clasue ID if it is expected
+    if (ClauseMetadata::enabled()) {
+        assert(id != 0);    // If ID is required it should never be 0
+        learntClause.size += ClauseMetadata::numInts();
+        ClauseMetadata::writeUnsignedLong(id, learntClause.begin);
+    }
     callback(learntClause, _setup.localId);
 }
 

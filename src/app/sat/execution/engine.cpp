@@ -89,10 +89,10 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 
 		// Override options
 		if (!portfolio.featuresProofOutput()) {
-			LOG(V2_INFO, "Certified UNSAT mode: Overriding portfolio to have all CaDiCaLs produce proofs\n");
+			LOG(V2_INFO, "Certified UNSAT mode: Overriding portfolio to have all CaDiCaLs and Kissats produce proofs\n");
 			for (auto set : {&portfolio.prefix, &portfolio.cycle})
 				for (auto& item : *set)
-					if (item.baseSolver == PortfolioSequence::CADICAL)
+					if (item.baseSolver == PortfolioSequence::CADICAL || item.baseSolver == PortfolioSequence::KISSAT)
 						item.outputProof = true;
 			if (!portfolio.featuresProofOutput()) {
 				LOG(V0_CRIT, "[ERROR] No specified solver capable of producing proofs!\n");

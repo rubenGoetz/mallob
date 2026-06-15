@@ -82,7 +82,7 @@ public:
 
 	void reconstructSolutionFromPreprocessing(std::vector<int>& model);
 
-    friend void produce_clause(void* state, int size, int glue);
+    friend void produce_clause(void* state, int size, int glue, u64 id);
     friend void consume_clause(void* state, int** clause, int* size, int* lbd, unsigned long* id, unsigned char* sig);
 	friend void on_drup_derivation(void* state, const int* lits, int nbLits, int glue);
     friend void on_lrup_import(void* state, unsigned long id, const int* lits, int nbLits, const uint8_t* sigData);
@@ -92,7 +92,7 @@ public:
     friend int terminate_callback(void* state);
 
 private:
-    void produceClause(int size, int lbd);
+    void produceClause(int size, int lbd, u64 id);
     void consumeClause(int** clause, int* size, int* lbd, unsigned long* id, unsigned char* sig);
 	void processProofLine(LratOp&& op);
 
