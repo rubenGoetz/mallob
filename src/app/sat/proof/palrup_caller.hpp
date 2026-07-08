@@ -23,7 +23,7 @@ public:
     enum PalRupResult {DONE, VALIDATED, ERROR};
     PalRupResult callBlocking() {
 
-#if MALLOB_APP_PALRUPCHECK
+//#if MALLOB_APP_PALRUPCHECK
         assert(_params.regularProcessDistribution());
         assert(_params.logDirectory.isSet());
         assert(_params.proofDirectory.isSet());
@@ -39,7 +39,8 @@ public:
         const int palRupMergeBufferSize = _params.palRupMergeBufferSize();
         const int palRupQSize = _params.palRupQSize();
         const bool palRupBinary = _params.palRupBinary();
-        const bool palRipUseLocalDisks =_params.palRipUseLocalDisks();
+        const bool palRupUseLocalDisks = _params.palRupUseLocalDisks();
+        const bool palRupDrup = _params.palRupDrup();
         const float palRupQAlpha = _params.palRupQAlpha();
         const std::string proofInputDir = FileUtils::getAbsoluteFilePath(_proofdir);
         const std::string proofWorkingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir());
@@ -74,7 +75,8 @@ public:
             + " Q_SIZE=\"" + std::to_string(palRupQSize) + "\""
             + " Q_ALPHA=\"" + std::to_string(palRupQAlpha) + "\""
             + " PALRUP_BINARY=\"" + std::to_string(palRupBinary) + "\""
-            + " USE_LOCAL_DISKS=\"" + std::to_string(palRipUseLocalDisks) + "\""
+            + " USE_LOCAL_DISKS=\"" + std::to_string(palRupUseLocalDisks) + "\""
+            + " USE_DRUP=\"" + std::to_string(palRupDrup) + "\""
             + " bash build/pal_launcher.sh";
 
         LOG(V4_VVER, "Calling PalRUP checker: %s\n", palRupCall.c_str());
@@ -90,8 +92,8 @@ public:
             return VALIDATED;
         }
         return DONE;
-#else
+//#else
         return ERROR;
-#endif
+//#endif
     }
 };
