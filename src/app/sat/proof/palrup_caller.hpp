@@ -38,6 +38,7 @@ public:
         const int palRupWriteBufferSize = _params.palRupWriteBufferSize();
         const int palRupMergeBufferSize = _params.palRupMergeBufferSize();
         const int palRupQSize = _params.palRupQSize();
+        const int palrupClean = _params.palrupClean();
         const bool palRupBinary = _params.palRupBinary();
         const bool palRupUseLocalDisks = _params.palRupUseLocalDisks();
         const bool palRupDrup = _params.palRupDrup();
@@ -79,6 +80,7 @@ public:
             + " USE_LOCAL_DISKS=\"" + std::to_string(palRupUseLocalDisks) + "\""
             + " USE_DRUP=\"" + std::to_string(palRupDrup) + "\""
             + " CONVERT=\"" + std::to_string(palRupConvert) + "\""
+            + " CLEANUP=\"" + std::to_string(palrupClean) + "\""
             + " bash build/pal_launcher.sh";
 
         LOG(V4_VVER, "Calling PalRUP checker: %s\n", palRupCall.c_str());

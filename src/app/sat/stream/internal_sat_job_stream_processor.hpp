@@ -7,7 +7,6 @@
 #include <utility>
 #include <vector>
 
-#include "app/sat/data/portfolio_sequence.hpp"
 #include "app/sat/execution/solver_setup.hpp"
 #include "app/sat/parse/serialized_formula_parser.hpp"
 #include "app/sat/proof/lrat_connector.hpp"
@@ -61,12 +60,12 @@ public:
             if (setup.onTheFlyChecking) setup.certifiedUnsat = true;
             // disable pre-/inprocessing
             // setup.flavour = PortfolioSequence::PLAIN;
-            // native diversification 0 (phase=0) happens to improve performance
-            setup.diversifyNative = true;
             auto cadical = new Cadical(setup);
             cadical->getTerminator().setExternalTerminator([&]() {
                 return _terminator(_current_rev);
             });
+            // phase=0 happens to improve performance
+            cadical->setDefaultPhase(false);
             _solver.reset(cadical);
             _lrat = setup.onTheFlyChecking ? _solver->getLratConnector() : nullptr;
         }
@@ -135,6 +134,11 @@ public:
         bool winner = concludeRevision(task.rev, res, std::move(solution));
         if (winner) LOG(V3_VERB, "%s rev. %i won with res=%i\n", _name.c_str(), task.rev, res);
         _pending = false;
+    }
+
+    void forwardAsyncRedundantClauses(std::vector<int>& clauseBuf) override {
+        BufferReader reader(clauseBuf.data(), clauseBuf.size(), 255, false);
+        _solver->addLearnedClauses(reader, 0);
     }
 
     virtual void finalize() override {

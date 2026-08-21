@@ -182,16 +182,17 @@ if(NOT MALLOB_APP_SATWITHPRE EQUAL 0) # included by default
 register_mallob_app("satwithpre")
 endif()
 if(NOT MALLOB_APP_PALRUPCHECK EQUAL 0) # included by default
+add_compile_definitions(MALLOB_APP_PALRUPCHECK)
 register_mallob_app("palrupcheck")
+endif()
+if(NOT MALLOB_APP_MAXSAT EQUAL 0) # included by default
+register_mallob_app("maxsat")
+endif()
+if(NOT MALLOB_APP_SMT EQUAL 0) # included by default
+register_mallob_app("smt")
 endif()
 if(MALLOB_APP_SATCNC EQUAL 1)
 register_mallob_app("satcnc")
-endif()
-if(MALLOB_APP_MAXSAT EQUAL 1)
-register_mallob_app("maxsat")
-endif()
-if(MALLOB_APP_SMT EQUAL 1)
-register_mallob_app("smt")
 endif()
 if(MALLOB_APP_KMEANS EQUAL 1)
     register_mallob_app("kmeans")

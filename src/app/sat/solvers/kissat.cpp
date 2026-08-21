@@ -6,11 +6,9 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
-#include <random>
 
 #include "app/sat/data/clause_metadata.hpp"
 #include "app/sat/proof/lrat_connector.hpp"
-#include "app/sat/solvers/reduce_diversifier.hpp"
 #include "util/logger.hpp"
 #include "app/sat/data/portfolio_sequence.hpp"
 #include "app/sat/data/solver_statistics.hpp"
@@ -22,7 +20,6 @@ extern "C" {
 #include "kissat/src/kissat.h"
 }
 #include "kissat.hpp"
-#include "util/distribution.hpp"
 
 
 
@@ -110,188 +107,50 @@ void Kissat::addLiteral(int lit) {
 void Kissat::diversify(int seed) {
 
     if (seedSet) return;
-
-	// Options may only be set in the initialization phase, so the seed cannot be re-set
-    LOGGER(_logger, V3_VERB, "Diversifying %i\n", getDiversificationIndex());
+    LOGGER(_logger, V3_VERB, "Diversifying %i seed=%i\n", getDiversificationIndex(), seed);
 
     // Basic configuration options for all solvers
     kissat_set_option(solver, "quiet", 1); // do not log to stdout / stderr
     kissat_set_option(solver, "check", 0); // do not check model or derived clauses
     kissat_set_option(solver, "factor", 0); // do not perform bounded variable addition
-
+    kissat_set_option(solver, "seed", seed); // random seed
+    // profiling (if desired)
     kissat_set_option(solver, "profile", _setup.profilingLevel);
 
-    // Set random seed
-    kissat_set_option(solver, "seed", seed);
+    seedSet = true;
+    setClauseSharing(getNumOriginalDiversifications());
 
-    // Eliminated variables obstruct the import of many shared clauses (40-90%!).
-    // They are caused by BVE ("eliminate") and equivalent literal substitution.
-    if (_setup.eliminationSetting == SolverSetup::DISABLE_ALL) {
-        kissat_set_option(solver, "eliminate", 0);
-        kissat_set_option(solver, "substitute", 0);
-    }
-    // Since these are important inprocessing techniques, we may want to cycle through all combinations
-    // of enabling/disabling them.
-    if (_setup.eliminationSetting == SolverSetup::DISABLE_MOST) {
-        if (getDiversificationIndex() % 2 >= 1)
-            kissat_set_option(solver, "eliminate", 0);
-        if (getDiversificationIndex() % 4 >= 2)
-            kissat_set_option(solver, "substitute", 0);
-    }
-    if (_setup.eliminationSetting == SolverSetup::DISABLE_SOME && getDiversificationIndex() % 2 == 1) {
-        // Every second configuration, a subset of elim/sub is disabled.
-        int divIdx = (getDiversificationIndex() / 2) % 3;
-        if (divIdx % 2 == 0)
-            kissat_set_option(solver, "eliminate", 0);
-        if (divIdx % 4 < 2)
-            kissat_set_option(solver, "substitute", 0);
-    }
-
-    if (_setup.solverType == 'v') {
-        configureBoundedVariableAddition();
-        seedSet = true;
-        interruptionInitialized = true;
-        return;
-    }
-
-    if (_setup.solverType == 'p') {
+    if (_setup.flavour == PortfolioSequence::PREPROCESS || _setup.solverType == 'p') {
         LOGGER(_logger, V3_VERB, "Formula before preprocessing: %i vars, %i clauses\n",
             _setup.numVars, _setup.numOriginalClauses);
             kissat_set_preprocessing_report_callback(solver, this,
             begin_formula_report, report_preprocessed_lit);
         kissat_set_option(solver, "factor", 1); // do perform bounded variable addition
         //kissat_set_option(solver, "luckyearly", 0); // lucky before preprocess can take very long
-        seedSet = true;
-        interruptionInitialized = true;
-        return;
     }
-
-    bool ok = true;
-    if (_setup.flavour == PortfolioSequence::SAT) {
-        switch (getDiversificationIndex() % 4) {
-            case 0: ok = kissat_set_configuration(solver, "sat"); break;
-            case 1: /*use default*/ break;
-            case 2:
-                ok = kissat_set_option(solver, "preprocess", 0); assert(ok);
-                ok = kissat_set_option(solver, "simplify", 0); assert(ok);
-                break;
-            case 3: kissat_set_option(solver, "eliminate", 0); break;
-        }
-    } else if (_setup.flavour == PortfolioSequence::PLAIN) {
-        LOGGER(_logger, V4_VVER, "plain\n");
-        bool partitionedVivification = false;
-        ok = kissat_set_option(solver, "lucky", 0); assert(ok);
-        ok = kissat_set_option(solver, "preprocess", 0); assert(ok);
-        ok = kissat_set_option(solver, "simplify", partitionedVivification); assert(ok);
-        ok = kissat_set_option(solver, "probe", 0);
-        if (partitionedVivification) {
-            // need to keep simplify (and probe) enabled for vivification
-            // -- disable everything else tied to simplify (and probe)
-            ok = kissat_set_option(solver, "congruence", 0); assert(ok);
-            ok = kissat_set_option(solver, "substitute", 0); assert(ok);
-            ok = kissat_set_option(solver, "backbone", 0); assert(ok);
-            ok = kissat_set_option(solver, "eliminate", 0); assert(ok);
-            ok = kissat_set_option(solver, "sweep", 0); assert(ok);
-            ok = kissat_set_option(solver, "transitive", 0); assert(ok);
-            //kissat_set_option(solver, "groupindex", _setup.globalId);
-            //kissat_set_option(solver, "groupsize", _setup.maxNumSolvers);
-        }
-
-        if (_setup.plainAddSpecific==1) { //Add just sweep to some solvers, but didnt work, need to understand how preprocessing techniques are intertangled
-            if (getDiversificationIndex()%20==0) {
-                ok = kissat_set_option(solver, "sweep", 1); assert(ok);
-                //Since sweep activates probe, and probe actives further default options, we need to disable them explicitly
-                ok = kissat_set_option(solver, "congruence", 0); assert(ok);
-                ok = kissat_set_option(solver, "substitute", 0); assert(ok);
-                ok = kissat_set_option(solver, "backbone", 0); assert(ok);
-                ok = kissat_set_option(solver, "eliminate", 0); assert(ok);
-                ok = kissat_set_option(solver, "transitive", 0); assert(ok);
-                //ok = kissat_set_option(solver, "factor", 0); assert(ok); assertion failed...
-                ok = kissat_set_option(solver, "vivify", 0); assert(ok);
-            }
-        }
-
-    } else {
-        if (_setup.flavour != PortfolioSequence::DEFAULT) {
-            LOGGER(_logger, V1_WARN, "[WARN] Unsupported flavor - overriding with default\n");
-            _setup.flavour = PortfolioSequence::DEFAULT;
-        }
-        if (_setup.diversifyNative) {
-            // Base portfolio of different configurations
-            switch (getDiversificationIndex() % getNumOriginalDiversifications()) {
-                case 0: kissat_set_option(solver, "eliminate", 0); break;
-                case 1: kissat_set_option(solver, "restartint", 10); break;
-                case 2: kissat_set_option(solver, "walkinitially", 1); break;
-                case 3: kissat_set_option(solver, "restartint", 100); break;
-                case 4: kissat_set_option(solver, "sweep", 0); break;
-                case 5: ok = kissat_set_configuration(solver, "unsat"); break;
-                case 6: ok = kissat_set_configuration(solver, "sat"); break;
-                case 7: kissat_set_option(solver, "probe", 0); break;
-                case 8: kissat_set_option(solver, "minimizedepth", 1e4); break;
-                case 9: kissat_set_option(solver, "reducefraction", 90); break;
-                case 10: kissat_set_option(solver, "vivifyeffort", 1000); break;
-            }
-        }
-    }
-    assert(ok);
-
-    // Randomize ("jitter") certain options around their default value
-    if (getDiversificationIndex() >= getNumOriginalDiversifications() && _setup.diversifyNoise) {
-        std::mt19937 rng(seed);
-        Distribution distribution(rng);
-
-        // Randomize restart frequency
-        double meanRestarts = kissat_get_option(solver, "restartint");
-        double maxRestarts = std::min(10e4, 20*meanRestarts);
-        distribution.configure(Distribution::NORMAL, std::vector<double>{
-            /*mean=*/meanRestarts, /*stddev=*/10, /*min=*/1, /*max=*/maxRestarts
-        });
-        int restartFrequency = (int) std::round(distribution.sample());
-        kissat_set_option(solver, "restartint", restartFrequency);
-
-
-        // Randomize score decay
-        int decay = kissat_get_option(solver, "decay");
-        if(_setup.decayDistribution==1) { //Gaussian
-            //double meanDecay = kissat_get_option(solver, "decay");
-            distribution.configure(Distribution::NORMAL, std::vector<double>{
-                /*mean=*/(double)_setup.decayMean, /*stddev=*/(double)_setup.decayStddev, /*min=*/(double)_setup.decayMin, /*max=*/(double)_setup.decayMax
-            });
-            decay = (int) std::round(distribution.sample());
-            kissat_set_option(solver, "decay", decay);
-        }
-        else if(_setup.decayDistribution==2) { //Normal
-            distribution.configure(Distribution::UNIFORM, std::vector<double>{
-                /*min=*/(double)_setup.decayMin, /*max=*/(double)_setup.decayMax
-            });
-            decay = (int) std::round(distribution.sample());
-            kissat_set_option(solver, "decay", decay);
-        }
-
-        LOGGER(_logger, V3_VERB, "--\n");
-        LOGGER(_logger, V3_VERB, "Decay Sampling Distribution type=%i\n", _setup.decayDistribution);
-        LOGGER(_logger, V3_VERB, "mean=%i stddev=%i min=%i max=%i \n", _setup.decayMean, _setup.decayStddev, _setup.decayMin, _setup.decayMax);
-        LOGGER(_logger, V3_VERB, "Sampled restartint=%i decay=%i\n", restartFrequency, decay);
-    }
-
-    //Randomize reduce bounds
-    if (getDiversificationIndex() >= 4 && _setup.diversifyReduce > 0) {
-        ReduceDiversifier rd(_setup, _logger,
-        [&](int lower) {
-            kissat_set_option(solver, "reducelow", lower);
-            return true;
-        },
-        [&](int upper) {
-            kissat_set_option(solver, "reducehigh", upper);
-            return true;
-        });
-        rd.apply(seed);
-    }
-
-    seedSet = true;
-    setClauseSharing(getNumOriginalDiversifications());
 
     interruptionInitialized = true;
+}
+
+void Kissat::addConfigurationSetting(Setting setting) {
+
+    if (setting.key == "configure") {
+        const char* conf = std::get<0>(setting.val).c_str();
+        if (!kissat_has_configuration(conf)) {
+            LOGGER(_logger, V0_CRIT, "[ERROR] Kissat does not have configuration %s\n", conf);
+            abort();
+        }
+        LOGGER(_logger, V5_DEBG, "conf override \"%s\"\n", conf);
+        kissat_set_configuration(solver, conf);
+    } else {
+        long long value = setting.type == Setting::ADD ? kissat_get_option(solver, setting.key.c_str())
+            : 0;
+        value += std::get<1>(setting.val);
+        value = std::min(value, setting.max);
+        value = std::max(value, setting.min);
+        LOGGER(_logger, V5_DEBG, "opt override \"%s=%lld\"\n", setting.key.c_str(), value);
+        kissat_set_option(solver, setting.key.c_str(), value);
+    }
 }
 
 int Kissat::getNumOriginalDiversifications() {
@@ -455,22 +314,6 @@ void Kissat::writeStatistics(SolverStatistics& stats) {
     stats.discarded = kstats.discarded;
     LOGGER(_logger, V4_VVER, "disc_reasons r_ee:%ld,r_ed:%ld,r_pb:%ld,r_ss:%ld,r_sw:%ld,r_tr:%ld,r_fx:%ld,r_ia:%ld,r_tl:%ld\n",
         kstats.r_ee, kstats.r_ed, kstats.r_pb, kstats.r_ss, kstats.r_sw, kstats.r_tr, kstats.r_fx, kstats.r_ia, kstats.r_tl);
-}
-
-void Kissat::configureBoundedVariableAddition() {
-    kissat_set_option(solver, "probe", 1);
-    kissat_set_option(solver, "preprocess", 1);
-    kissat_set_option(solver, "preprocessrounds", 1'000'000);
-    kissat_set_option(solver, "preprocessbackbone", 0);
-    kissat_set_option(solver, "preprocesscongruence", 0);
-    kissat_set_option(solver, "preprocessfactor", 1);
-    kissat_set_option(solver, "preprocessprobe", 1);
-    kissat_set_option(solver, "preprocessrounds", 0);
-    kissat_set_option(solver, "preprocessweep", 0);
-    kissat_set_option(solver, "factor", 1);
-    kissat_set_option(solver, "factoreffort", 1'000'000);
-    kissat_set_option(solver, "factoriniticks", 1'000'000);
-    kissat_set_option(solver, "factorexport", 1);
 }
 
 bool Kissat::isPreprocessingAcceptable(int nbVars, int nbClauses) {

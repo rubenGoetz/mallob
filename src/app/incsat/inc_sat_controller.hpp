@@ -7,9 +7,11 @@
 #include "app/sat/stream/mallob_sat_job_stream_processor.hpp"
 #include "app/sat/stream/sat_job_stream_processor.hpp"
 #include "app/sat/stream/wrapped_sat_job_stream.hpp"
+#include "comm/msgtags.h"
 #include "core/dtask_tracker.hpp"
 #include "data/job_description.hpp"
 #include "data/job_result.hpp"
+#include "data/job_transfer.hpp"
 #include "interface/api/api_connector.hpp"
 #include "util/logger.hpp"
 #include "util/params.hpp"
@@ -136,6 +138,10 @@ public:
         return _stream->stream.getNonblockingSolveResult();
     }
 
+    void forwardAsyncRedundantClauses(std::vector<int>& clauseBuf) {
+        _stream->stream.forwardAsyncRedundantClauses(clauseBuf);
+    } 
+
     void setInnerTerminator(std::function<bool()> cb, bool replaceDefaultTerminator) {
         _cb_terminate = cb;
         _replace_default_terminator = replaceDefaultTerminator;
@@ -169,7 +175,7 @@ private:
         _stream.reset(new WrappedSatJobStream(_name));
         _stream->mallobProcessor = new MallobSatJobStreamProcessor(_params, _api, _desc,
             _name, _stream_id, true, _stream->stream.getSynchronizer());
-        _stream->mallobProcessor->setDTaskSlot(_dtask_tracker.createDTask());
+        _stream->mallobProcessor->setDTaskTracker(_dtask_tracker);
         _stream->stream.addProcessor(_stream->mallobProcessor);
 
         if (_params.internalStreamProcessor()) {
@@ -188,14 +194,23 @@ private:
         }
 
         _stream->stream.setTerminator([&, str=&_stream->stream, params=&_params, desc=&_desc, startTime=_start_time]() {
-            if (str->finalizing()) return true;
+            if (str->finalizing()) {
+                return true;
+            }
             {
                 auto lock = _mtx_terminate.getLock();
-                if (_terminators_invalidated) return true;
-                if (_cb_terminate && _cb_terminate()) return true;
+                if (_terminators_invalidated) {
+                    return true;
+                }
+                if (_cb_terminate && _cb_terminate()) {
+                    return true;
+                }
             }
             if (_replace_default_terminator) return false; // skip default terminator
-            return isTimeoutHit(params, desc, startTime);
+            if (isTimeoutHit(params, desc, startTime)) {
+                return true;
+            }
+            return false;
         });
 
         if (!_problem_file.empty()) {

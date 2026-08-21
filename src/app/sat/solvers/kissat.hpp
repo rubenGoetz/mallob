@@ -10,7 +10,6 @@
 #include "app/sat/data/clause.hpp"
 #include "app/sat/data/definitions.hpp"
 #include "kissat/src/kissat.h"
-#include "util/sys/threading.hpp"
 
 struct kissat;
 struct SolverSetup;
@@ -48,12 +47,11 @@ public:
 	void addLiteral(int lit) override;
 
 	void diversify(int seed) override;
+	void addConfigurationSetting(Setting setting) override;
 	void setPhase(const int var, const bool phase) override;
 
 	// Solve the formula with a given set of assumptions
 	SatResult solve(size_t numAssumptions, const int* assumptions) override;
-
-	void configureBoundedVariableAddition();
 
 	void setSolverInterrupt() override;
 	void unsetSolverInterrupt() override;
