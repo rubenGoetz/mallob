@@ -41,6 +41,7 @@ public:
         const bool palRupBinary = _params.palRupBinary();
         const bool palRupUseLocalDisks = _params.palRupUseLocalDisks();
         const bool palRupDrup = _params.palRupDrup();
+        const bool palRupConvert = _params.palRupConvert();
         const float palRupQAlpha = _params.palRupQAlpha();
         const std::string proofInputDir = FileUtils::getAbsoluteFilePath(_proofdir);
         const std::string proofWorkingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir());
@@ -77,6 +78,7 @@ public:
             + " PALRUP_BINARY=\"" + std::to_string(palRupBinary) + "\""
             + " USE_LOCAL_DISKS=\"" + std::to_string(palRupUseLocalDisks) + "\""
             + " USE_DRUP=\"" + std::to_string(palRupDrup) + "\""
+            + " CONVERT=\"" + std::to_string(palRupConvert) + "\""
             + " bash build/pal_launcher.sh";
 
         LOG(V4_VVER, "Calling PalRUP checker: %s\n", palRupCall.c_str());
