@@ -84,7 +84,7 @@ Kissat::Kissat(const SolverSetup& setup)
             std::string fragment_path = setup.proofDir + "/"
                                         + std::to_string((int)(solverRank / sqrt)) + "/"
                                         + std::to_string(solverRank) + "/"
-                                        + "out.palrup";
+                                        + "out.padrup";
             kissat_trace_palrup_internally(solver, maxNumSolvers, solverRank, setup.numOriginalClauses, fragment_path.c_str());
         } else {
             assert(_lrat); // needs to be real-time checking setup for Kissat otherwise

@@ -6,7 +6,11 @@
 #include "util/params.hpp"
 #include "util/assert.hpp"
 #include "util/sys/fileutils.hpp"
+#include "util/static_store.hpp"
 #include <unistd.h>
+
+#define LRUP_FILE_ENDING ".palrup"
+#define DRUP_FILE_ENDING ".padrup"
 
 class PalRupCaller {
 
@@ -15,10 +19,11 @@ private:
     const int _global_num_workers;
     const std::string _cnf_path;
     const std::string _proofdir;
+    const int _jobId;
 
 public:
-    PalRupCaller(const Parameters& params, int globalNumWorkers, const std::string& cnfPath, const std::string& proofDir) :
-        _params(params), _global_num_workers(globalNumWorkers), _cnf_path(cnfPath), _proofdir(proofDir) {}
+    PalRupCaller(const Parameters& params, int globalNumWorkers, const std::string& cnfPath, const std::string& proofDir, const int jobId) :
+        _params(params), _global_num_workers(globalNumWorkers), _cnf_path(cnfPath), _proofdir(proofDir), _jobId(jobId) {}
 
     enum PalRupResult {DONE, VALIDATED, ERROR};
     PalRupResult callBlocking() {
@@ -28,6 +33,7 @@ public:
         assert(_params.logDirectory.isSet());
         assert(_params.proofDirectory.isSet());
         assert(_params.palRupCheckWorkdir.isSet());
+        auto readDone = StaticStore<bool>::extractMaybe("done-#" + std::to_string(_jobId));
 
         const int nbProcsPerHost = _params.processesPerHost();
         const int nbHosts = _global_num_workers / nbProcsPerHost;
@@ -41,7 +47,7 @@ public:
         const int palrupClean = _params.palrupClean();
         const bool palRupBinary = _params.palRupBinary();
         const bool palRupUseLocalDisks = _params.palRupUseLocalDisks();
-        const bool palRupDrup = _params.palRupDrup();
+        const bool palRupDrup = readDone.has_value() ? false : _params.palRupDrup();
         const bool palRupConvert = _params.palRupConvert();
         const float palRupQAlpha = _params.palRupQAlpha();
         const std::string proofInputDir = FileUtils::getAbsoluteFilePath(_proofdir);
@@ -49,8 +55,8 @@ public:
         const std::string logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory());
         FileUtils::mkdir(proofWorkingDir);
 
-        auto fileSuccess = logDir + "/success.palrup";
-        auto fileFailure = logDir + "/failure.palrup";
+        auto fileSuccess = logDir + "/success" + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
+        auto fileFailure = logDir + "/failure" + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
         if (FileUtils::isRegularFile(fileSuccess)) {
             LOG(V0_CRIT, "[ERROR] PalRUP success file exists before starting a checker!\n");
             return ERROR;

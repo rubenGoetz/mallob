@@ -38,14 +38,32 @@ void register_mallob_app_palrupcheck() {
                 "PalRUP-check requires to specify a shared working directory."
             });
         }
+        if (params.palRupConvert() && !params.palRupDrup()) {
+            vec.push_back({
+                &params.palRupConvertRecheck,
+                "PalRUP-check requires to specify the PadRUP format when converting."
+            });
+        }
+        if (params.palRupConvertRecheck() && !params.palRupConvert()) {
+            vec.push_back({
+                &params.palRupConvertRecheck,
+                "PalRUP-check requires to enable PalRUP to PadRUP convertion for a recheck."
+            });
+        }
         return vec.empty();
     };
 
     entry.reader = [](const Parameters& params, const std::vector<std::string>& files, JobDescription& desc) {
-        desc.setAppConfigurationEntry("__chkcnf", files[0]);
-        desc.setAppConfigurationEntry("__chkproofdir", files.size() > 1 ? files[1] : params.proofDirectory());
+        auto chkcnf = files[0];
+        auto chkdir = files.size() > 1 ? files[1] : params.proofDirectory();
+        desc.setAppConfigurationEntry("__chkcnf", chkcnf);
+        desc.setAppConfigurationEntry("__chkproofdir", chkdir);
         desc.beginInitialization(0);
         desc.endInitialization();
+        StaticStore<std::string>::insert("chkcnf-#" + std::to_string(desc.getId()), chkcnf);
+        StaticStore<std::string>::insert("chkdir-#" + std::to_string(desc.getId()), chkdir);
+        if (files.size() > 2)
+            StaticStore<bool>::insert("done-#" + std::to_string(desc.getId()), true);
         return true;
     };
 
@@ -70,6 +88,8 @@ void register_mallob_app_palrupcheck() {
             // Remove all files created by previous checker and directories if empty
             FileUtils::rmrf(params.palRupCheckWorkdir() + "/.cleanup");
             FileUtils::rmrf(params.palRupCheckWorkdir() + "/.unsat_found");
+            for (auto file : FileUtils::glob(params.palRupCheckWorkdir() + "/.pal_launcher.*.lock"))
+                FileUtils::rm(file);
             for (auto file : FileUtils::glob(params.palRupCheckWorkdir() + "/*/*/.check_ok"))
                 FileUtils::rm(file);
             for (auto file : FileUtils::glob(params.palRupCheckWorkdir() + "/*/*/.done"))
@@ -91,11 +111,37 @@ void register_mallob_app_palrupcheck() {
         }
 
         if (!params.logDirectory().empty()) {
-            FileUtils::rmrf(params.logDirectory() + "/pals");
+            FileUtils::rmrf(params.logDirectory() + "/palrup_pals");
+            FileUtils::rmrf(params.logDirectory() + "/padrup_pals");
             for (auto file : FileUtils::glob(params.logDirectory() + "/*.palrup"))
-                FileUtils::rmrf(file);
+                FileUtils::rm(file);
+            for (auto file : FileUtils::glob(params.logDirectory() + "/*.padrup"))
+                FileUtils::rm(file);
             for (auto file : FileUtils::glob(params.logDirectory() + "/*/palrup.out"))
-                FileUtils::rmrf(file);
+                FileUtils::rm(file);
+            for (auto file : FileUtils::glob(params.logDirectory() + "/*/padrup.out"))
+                FileUtils::rm(file);
+        }
+    };
+
+    entry.epilog = [](const Parameters& params, const JobResult& result) {
+        auto cnfPathOpt = StaticStore<std::string>::extractMaybe("chkcnf-#" + std::to_string(result.id));
+        auto chkPathOpt = StaticStore<std::string>::extractMaybe("chkdir-#" + std::to_string(result.id));
+        auto isDone = StaticStore<bool>::extractMaybe("done-#" + std::to_string(result.id));
+        if (params.palRupConvertRecheck()
+            && cnfPathOpt.has_value() && chkPathOpt.has_value()
+            && result.result == UNSAT && !isDone.has_value()) {
+            auto cnfPath = cnfPathOpt.value();
+            auto chkPath = chkPathOpt.value();
+            nlohmann::json jsonJob = {
+                {"user", "internal"},
+                {"name", "palrupchk-re-" + std::to_string(result.id)},
+                {"files", {cnfPath, chkPath, cnfPath}},     // third file marks end of palrup-job-chain. TODO: make elegant
+                {"priority", 1.000},
+                {"application", "PALRUPCHECK"},
+                {"incremental", false}
+            };
+            auto jsonPalrupResult = APIRegistry::get().processBlocking(jsonJob);
         }
     };
 

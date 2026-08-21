@@ -82,6 +82,7 @@ struct SolverSetup {
 	// PalRUP proof output.
 	bool usePalRupFormat {false};
 	bool outputBinaryPalRup {true};
+	bool palRupDrup {false};
 	// If on-the-fly checking is enabled: this solver also seeks to have a found satisfying assignment checked.
 	bool onTheFlyCheckModel {false};
 	bool incrementalImpCheck {false};

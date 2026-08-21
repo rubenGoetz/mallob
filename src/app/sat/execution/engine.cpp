@@ -294,6 +294,7 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 		setup.incrementalImpCheck = params.onTheFlyCheckIncremental();
 		setup.usePalRupFormat = params.palRup();
 		setup.outputBinaryPalRup = params.palRupBinary();
+		setup.palRupDrup = params.palRupDrup();
 		setup.trustedParserForced = params.forceIncrementalTrustedParser();
 		setup.modelCheckingLratConnector = modelCheckingLratConnector;
 		setup.avoidUnsatParticipation = (params.proofOutputFile.isSet() || params.onTheFlyChecking() || _params.palRup()) && !item.outputProof;
@@ -718,7 +719,7 @@ void SatEngine::cleanUp(bool hardTermination) {
 			for (int localId = 0; localId < _params.numThreadsPerProcess(); localId++) {
 				int globalId = _config.apprank * _params.numThreadsPerProcess() + localId;
 				auto dir = setup.proofDir + "/" + std::to_string((int)(globalId / sqrt)) + "/" + std::to_string(globalId);
-				FileUtils::create(dir + "/out.palrup");
+				_params.palRupDrup() ? FileUtils::create(dir + "/out.padrup") : FileUtils::create(dir + "/out.palrup");
 			}
 		}
 		LOGGER(_logger, V4_VVER, "[engine-cleanup] done - hard exit pending\n");

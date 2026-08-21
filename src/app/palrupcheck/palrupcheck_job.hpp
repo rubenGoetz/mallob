@@ -71,7 +71,7 @@ public:
             // Run PalRUPCheck
             const std::string cnfPath = getDescription().getAppConfiguration().map.at("__chkcnf");
             const std::string proofDir = getDescription().getAppConfiguration().map.at("__chkproofdir");
-            auto res = PalRupCaller(_params, getGlobalNumWorkers(), cnfPath, proofDir).callBlocking();
+            auto res = PalRupCaller(_params, getGlobalNumWorkers(), cnfPath, proofDir, getId()).callBlocking();
             if (res == PalRupCaller::VALIDATED) _result.result = 20;
             if (res == PalRupCaller::ERROR) _result.result = 10;
         });
