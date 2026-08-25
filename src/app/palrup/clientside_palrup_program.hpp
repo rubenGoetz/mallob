@@ -44,9 +44,10 @@ public:
                 // Build next PalRUP job
                 auto jsonJob = jsonJobBlueprint;
                 auto param_preset = PalRupSequence::get_param_preset(symbol);
+                auto logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory()) + "/palrup_logs." + _seq.get_remaining_sequence();
                 bool palRupDrup = param_preset.find("-palrup-drup=1") != std::string::npos;
                 jsonJob["name"] = "palrupchain-" + std::to_string(_desc.getId()) + "-" + std::to_string(count++);
-                jsonJob["configuration"]["options"] = param_preset;
+                jsonJob["configuration"]["options"] = param_preset + " -log=" + logDir;
 
                 // execute PalRUP
                 LOG(V4_VVER, "Execute PalRUP preset %c: %s\n", symbol, jsonJob.dump().c_str());
@@ -57,21 +58,6 @@ public:
                 if (result == PALRUP_ERROR) {
                     LOG(V0_CRIT, "PalRUP job chain failed at %c!\n", symbol);
                     break;
-                }
-
-                // rename result file for next iteration
-                auto logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory());
-                auto fileSuccess = logDir + "/" + SUCCESS_FILE_BASE_NAME + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
-                auto fileFailure = logDir + "/" + FAILURE_FILE_BASE_NAME + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
-                if (FileUtils::exists(fileSuccess)){
-                    std::string new_file_name = fileSuccess + "." + _seq.get_remaining_sequence();
-                    LOG(V4_VVER, "Rename PalRUP result file %s -> %s", fileSuccess.c_str(), new_file_name.c_str());
-                    std::rename(fileSuccess.c_str(), new_file_name.c_str());
-                }
-                if (FileUtils::exists(fileFailure)) {
-                    std::string new_file_name = fileFailure + "." + _seq.get_remaining_sequence();
-                    LOG(V4_VVER, "Rename PalRUP result file %s -> %s", fileFailure.c_str(), new_file_name.c_str());
-                    std::rename(fileFailure.c_str(), new_file_name.c_str());
                 }
 
                 _seq.pop();

@@ -47,15 +47,15 @@ public:
         const bool palRupDrup = _params.palRupDrup();
         const bool palRupConvert = _params.palRupConvert();
         const bool palRupCheck = _params.palRupCheck();
+        const bool palRupBestEffort = _params.palRupBestEffort();
         const float palRupQAlpha = _params.palRupQAlpha();
         const std::string proofInputDir = FileUtils::getAbsoluteFilePath(_proofdir);
         const std::string proofWorkingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir());
         const std::string logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory());
         FileUtils::mkdir(proofWorkingDir);
 
-        auto fileSuccess = logDir + "/" + SUCCESS_FILE_BASE_NAME + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
-        auto fileFailure = logDir + "/" + FAILURE_FILE_BASE_NAME + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
-        // TODO: make checks consistent with palrup sequence
+        auto fileSuccess = logDir + "/" + SUCCESS_FILE_NAME;
+        auto fileFailure = logDir + "/" + FAILURE_FILE_NAME;
         if (FileUtils::isRegularFile(fileSuccess) && palRupCheck) {
             LOG(V0_CRIT, "[ERROR] PalRUP success file exists before starting a checker!\n");
             return PALRUP_ERROR;
@@ -87,6 +87,7 @@ public:
             + " CONVERT=\"" + std::to_string(palRupConvert) + "\""
             + " FULL_CHECK=\"" + std::to_string(palRupCheck) +"\""
             + " CLEANUP=\"" + std::to_string(palrupClean) + "\""
+            + " BEST_EFFORT=\"" + std::to_string(palRupBestEffort) + "\""
             + " bash build/pal_launcher.sh";
 
         LOG(V4_VVER, "Calling PalRUP checker: %s\n", palRupCall.c_str());

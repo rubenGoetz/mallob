@@ -93,15 +93,10 @@ void register_mallob_app_palrupcheck() {
         }
 
         if (!params.logDirectory().empty()) {
-            FileUtils::rmrf(params.logDirectory() + "/palrup_pals");
-            FileUtils::rmrf(params.logDirectory() + "/padrup_pals");
-            for (auto file : FileUtils::glob(params.logDirectory() + "/*.palrup"))
+            FileUtils::rmrf(params.logDirectory() + "/*/pals");
+            for (auto file : FileUtils::glob(params.logDirectory() + "/*/*.palrup"))
                 FileUtils::rm(file);
-            for (auto file : FileUtils::glob(params.logDirectory() + "/*.padrup"))
-                FileUtils::rm(file);
-            for (auto file : FileUtils::glob(params.logDirectory() + "/*/palrup.out"))
-                FileUtils::rm(file);
-            for (auto file : FileUtils::glob(params.logDirectory() + "/*/padrup.out"))
+            for (auto file : FileUtils::glob(params.logDirectory() + "/*/*/palrup.out"))
                 FileUtils::rm(file);
         }
     };

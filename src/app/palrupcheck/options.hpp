@@ -19,5 +19,5 @@ OPTION_GROUP(grpAppPalrupCheck, "app/palrupcheck", "PalRUP checking options")
  OPT_BOOL(palRupCheck,                  "palrup-check", "",                          false,                     "Check PalRUP proof immediately after its production")
  OPT_BOOL(palRupDrup,                   "palrup-drup", "",                           false,                     "Check proof in DRUP format")
  OPT_BOOL(palRupConvert,                "palrup-convert", "",                        false,                     "Convert proof from DRUP tu LRUP format")
- //OPT_BOOL(palRupBestEffort,             "palrup-best-effort", "",                    false,                     "Check LRUP if it exists, check DRUP else")     // TODO: implement
+ OPT_BOOL(palRupBestEffort,             "palrup-best-effort", "",                    false,                     "Check LRUP if it exists, check DRUP else")
  OPT_FLOAT(palRupQAlpha,                "palrup-q-alpha", "",                        0.5, 0, 1,                 "PalRUP checker queue alpha")

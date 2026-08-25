@@ -719,7 +719,10 @@ void SatEngine::cleanUp(bool hardTermination) {
 			for (int localId = 0; localId < _params.numThreadsPerProcess(); localId++) {
 				int globalId = _config.apprank * _params.numThreadsPerProcess() + localId;
 				auto dir = setup.proofDir + "/" + std::to_string((int)(globalId / sqrt)) + "/" + std::to_string(globalId);
-				_params.palRupDrup() ? FileUtils::create(dir + "/out.padrup") : FileUtils::create(dir + "/out.palrup");
+				if (!FileUtils::exists(dir + "/out.palrup") && !FileUtils::exists(dir + "/out.padrup")) {
+					FileUtils::create(dir + "/out.palrup");
+					FileUtils::create(dir + "/out.padrup");
+				}
 			}
 		}
 		LOGGER(_logger, V4_VVER, "[engine-cleanup] done - hard exit pending\n");
