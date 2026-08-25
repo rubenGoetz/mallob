@@ -1,0 +1,10 @@
+
+#pragma once
+
+#include "optionslist.hpp"
+
+// Application-specific program options for PalRUP job chains.
+// memberName                               short option name, long option name          default   min  max
+
+OPTION_GROUP(grpAppPalrup, "app/palrup", "PalRUP meta app options")
+ OPT_STRING(palRupSequence,     "palrup-sequence", "",     "",     "Defines a sequence of PalRUP-Check jobs to be executed consecutively")

@@ -2,6 +2,7 @@
 #pragma once
 
 #include "comm/mympi.hpp"
+#include "app/palrup/palrup_constants.hpp"
 #include "util/logger.hpp"
 #include "util/params.hpp"
 #include "util/assert.hpp"
@@ -9,8 +10,6 @@
 #include "util/static_store.hpp"
 #include <unistd.h>
 
-#define LRUP_FILE_ENDING ".palrup"
-#define DRUP_FILE_ENDING ".padrup"
 
 class PalRupCaller {
 
@@ -25,7 +24,6 @@ public:
     PalRupCaller(const Parameters& params, int globalNumWorkers, const std::string& cnfPath, const std::string& proofDir, const int jobId) :
         _params(params), _global_num_workers(globalNumWorkers), _cnf_path(cnfPath), _proofdir(proofDir), _jobId(jobId) {}
 
-    enum PalRupResult {DONE, VALIDATED, ERROR};
     PalRupResult callBlocking() {
 
 #if MALLOB_APP_PALRUPCHECK
@@ -33,7 +31,6 @@ public:
         assert(_params.logDirectory.isSet());
         assert(_params.proofDirectory.isSet());
         assert(_params.palRupCheckWorkdir.isSet());
-        auto readDone = StaticStore<bool>::extractMaybe("done-#" + std::to_string(_jobId));
 
         const int nbProcsPerHost = _params.processesPerHost();
         const int nbHosts = _global_num_workers / nbProcsPerHost;
@@ -47,23 +44,25 @@ public:
         const int palrupClean = _params.palrupClean();
         const bool palRupBinary = _params.palRupBinary();
         const bool palRupUseLocalDisks = _params.palRupUseLocalDisks();
-        const bool palRupDrup = readDone.has_value() ? false : _params.palRupDrup();
+        const bool palRupDrup = _params.palRupDrup();
         const bool palRupConvert = _params.palRupConvert();
+        const bool palRupCheck = _params.palRupCheck();
         const float palRupQAlpha = _params.palRupQAlpha();
         const std::string proofInputDir = FileUtils::getAbsoluteFilePath(_proofdir);
         const std::string proofWorkingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir());
         const std::string logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory());
         FileUtils::mkdir(proofWorkingDir);
 
-        auto fileSuccess = logDir + "/success" + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
-        auto fileFailure = logDir + "/failure" + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
-        if (FileUtils::isRegularFile(fileSuccess)) {
+        auto fileSuccess = logDir + "/" + SUCCESS_FILE_BASE_NAME + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
+        auto fileFailure = logDir + "/" + FAILURE_FILE_BASE_NAME + (palRupDrup ? DRUP_FILE_ENDING : LRUP_FILE_ENDING);
+        // TODO: make checks consistent with palrup sequence
+        if (FileUtils::isRegularFile(fileSuccess) && palRupCheck) {
             LOG(V0_CRIT, "[ERROR] PalRUP success file exists before starting a checker!\n");
-            return ERROR;
+            return PALRUP_ERROR;
         }
-        if (FileUtils::isRegularFile(fileFailure)) {
+        if (FileUtils::isRegularFile(fileFailure) && palRupCheck) {
             LOG(V0_CRIT, "[ERROR] PalRUP failure file discovered immediately\n");
-            return ERROR;
+            return PALRUP_ERROR;
         }
 
         std::string palRupCall = "cd lib/palrup;"
@@ -86,6 +85,7 @@ public:
             + " USE_LOCAL_DISKS=\"" + std::to_string(palRupUseLocalDisks) + "\""
             + " USE_DRUP=\"" + std::to_string(palRupDrup) + "\""
             + " CONVERT=\"" + std::to_string(palRupConvert) + "\""
+            + " FULL_CHECK=\"" + std::to_string(palRupCheck) +"\""
             + " CLEANUP=\"" + std::to_string(palrupClean) + "\""
             + " bash build/pal_launcher.sh";
 
@@ -95,15 +95,15 @@ public:
 
         if (retval != 0) {
             FileUtils::create(fileFailure);
-            return ERROR;
+            return PALRUP_ERROR;
         }
         if (FileUtils::isRegularFile(fileSuccess)) {
             LOG(V2_INFO, "PalRUP VALIDATED UNSAT\n");
-            return VALIDATED;
+            return PALRUP_VALIDATED;
         }
-        return DONE;
+        return PALRUP_DONE;
 #else
-        return ERROR;
+        return PALRUP_ERROR;
 #endif
     }
 };

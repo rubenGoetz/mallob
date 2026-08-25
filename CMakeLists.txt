@@ -181,6 +181,9 @@ endif()
 if(NOT MALLOB_APP_SATWITHPRE EQUAL 0) # included by default
 register_mallob_app("satwithpre")
 endif()
+if(NOT MALLOB_APP_PALRUP EQUAL 0) # included by default
+register_mallob_app("palrup")
+endif()
 if(NOT MALLOB_APP_PALRUPCHECK EQUAL 0) # included by default
 add_compile_definitions(MALLOB_APP_PALRUPCHECK)
 register_mallob_app("palrupcheck")

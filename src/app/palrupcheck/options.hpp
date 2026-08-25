@@ -18,5 +18,5 @@ OPTION_GROUP(grpAppPalrupCheck, "app/palrupcheck", "PalRUP checking options")
  OPT_BOOL(palRupUseLocalDisks,          "palrup-use-local-disks", "",                false,                     "Expect PalRUP fragments to be stored on distributed disks")
  OPT_BOOL(palRupDrup,                   "palrup-drup", "",                           false,                     "Check proof in DRUP format")
  OPT_BOOL(palRupConvert,                "palrup-convert", "",                        false,                     "Convert proof from DRUP tu LRUP format")
- OPT_BOOL(palRupConvertRecheck,         "palrup-recheck", "",                        false,                     "Immediatly check generated LRUP proof")
+ //OPT_BOOL(palRupBestEffort,             "palrup-best-effort", "",                    false,                     "Check LRUP if it exists, check DRUP else")     // TODO: implement
  OPT_FLOAT(palRupQAlpha,                "palrup-q-alpha", "",                        0.5, 0, 1,                 "PalRUP checker queue alpha")

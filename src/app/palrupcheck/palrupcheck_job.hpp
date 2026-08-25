@@ -2,7 +2,7 @@
 #pragma once
 
 #include "app/job.hpp"
-#include "app/sat/proof/palrup_caller.hpp"
+#include "app/palrupcheck/palrup_caller.hpp"
 #include "util/logger.hpp"
 #include "util/sys/thread_pool.hpp"
 #include "util/sys/threading.hpp"
@@ -72,8 +72,9 @@ public:
             const std::string cnfPath = getDescription().getAppConfiguration().map.at("__chkcnf");
             const std::string proofDir = getDescription().getAppConfiguration().map.at("__chkproofdir");
             auto res = PalRupCaller(_params, getGlobalNumWorkers(), cnfPath, proofDir, getId()).callBlocking();
-            if (res == PalRupCaller::VALIDATED) _result.result = 20;
-            if (res == PalRupCaller::ERROR) _result.result = 10;
+            _result.result = res;
+
+            LOG(V4_VVER, "PalRUPCHECK result: %i\n", _result.result);
         });
     }
 
