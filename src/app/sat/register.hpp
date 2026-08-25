@@ -131,7 +131,7 @@ void register_mallob_app_sat() {
 
     entry.epilog = [](const Parameters& params, const JobResult& result) {
         auto cnfPathOpt = StaticStore<std::string>::extractMaybe("cnf-#" + std::to_string(result.id));
-        if (cnfPathOpt.has_value() && params.palRupCheck() && result.result == UNSAT) {
+        if (cnfPathOpt.has_value() && params.palRupSequence.isSet() && result.result == UNSAT) {
             auto cnfPath = cnfPathOpt.value();
             nlohmann::json jsonJob = {
                 {"user", "internal"},
@@ -140,7 +140,7 @@ void register_mallob_app_sat() {
                     {cnfPath, 
                     params.proofDirectory() + "/proof#" + std::to_string(result.id) + "/"}},
                 {"priority", 1.000},
-                {"application", "PALRUPCHECK"},
+                {"application", "PALRUP"},
                 {"incremental", false}
             };
             auto jsonPalrupResult = APIRegistry::get().processBlocking(jsonJob);

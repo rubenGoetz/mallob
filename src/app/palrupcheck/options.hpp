@@ -16,6 +16,7 @@ OPTION_GROUP(grpAppPalrupCheck, "app/palrupcheck", "PalRUP checking options")
  OPT_INT(palRupQSize,                   "palrup-q-size", "",                         409600, 0, LARGE_INT,      "PalRUP checker queue size in KiB")
  OPT_INT(palrupClean,                   "palrup-clean", "",                          1, 0, 2,                   "Clean up after PalRUP check. 0 performs no cleanup, 1 removes working directory, 2 additionaly removes proof")
  OPT_BOOL(palRupUseLocalDisks,          "palrup-use-local-disks", "",                false,                     "Expect PalRUP fragments to be stored on distributed disks")
+ OPT_BOOL(palRupCheck,                  "palrup-check", "",                          false,                     "Check PalRUP proof immediately after its production")
  OPT_BOOL(palRupDrup,                   "palrup-drup", "",                           false,                     "Check proof in DRUP format")
  OPT_BOOL(palRupConvert,                "palrup-convert", "",                        false,                     "Convert proof from DRUP tu LRUP format")
  //OPT_BOOL(palRupBestEffort,             "palrup-best-effort", "",                    false,                     "Check LRUP if it exists, check DRUP else")     // TODO: implement

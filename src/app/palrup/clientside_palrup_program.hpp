@@ -23,10 +23,16 @@ public:
         function = [&]() {
             LOG(V4_VVER, "Execute PalRUP sequence %s\n", _seq.get_remaining_sequence().c_str());
 
+            // Create job blueprint
+            auto proofCnfOpt = StaticStore<std::string>::extractMaybe("chkcnf-#" + std::to_string(_desc.getId()));
+            auto proofDirOpt = StaticStore<std::string>::extractMaybe("chkdir-#" + std::to_string(desc.getId()));
             nlohmann::json jsonJobBlueprint = {
                 {"user", "internal"},
                 {"name", ""},
-                {"files", {_params.monoFilename(), _params.proofDirectory()}},
+                {"files", {
+                    proofCnfOpt.has_value() ? proofCnfOpt.value() : _params.monoFilename(),
+                    proofDirOpt.has_value() ? proofDirOpt.value() : _params.proofDirectory()}
+                },
                 {"priority", 1.000},
                 {"application", "PALRUPCHECK"},
                 {"incremental", false}
