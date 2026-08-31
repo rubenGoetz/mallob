@@ -85,6 +85,7 @@ Kissat::Kissat(const SolverSetup& setup)
                                         + std::to_string((int)(solverRank / sqrt)) + "/"
                                         + std::to_string(solverRank) + "/"
                                         + "out.padrup";
+            LOG(V2_INFO, "KISSAT PROOF DIR %s\n", fragment_path.c_str());
             kissat_trace_palrup_internally(solver, maxNumSolvers, solverRank, setup.numOriginalClauses, fragment_path.c_str());
         } else {
             assert(_lrat); // needs to be real-time checking setup for Kissat otherwise
@@ -191,7 +192,8 @@ void Kissat::setSolverInterrupt() {
 	interrupted = true;
     if (interruptionInitialized) {
         kissat_terminate (solver);
-        kissat_close_palrup_internally(solver);
+        if (_setup.usePalRupFormat)
+            kissat_close_palrup_internally(solver);
     }
 }
 
