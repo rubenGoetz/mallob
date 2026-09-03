@@ -190,11 +190,8 @@ SatResult Kissat::solve(size_t numAssumptions, const int* assumptions) {
 
 void Kissat::setSolverInterrupt() {
 	interrupted = true;
-    if (interruptionInitialized) {
+    if (interruptionInitialized)
         kissat_terminate (solver);
-        if (_setup.usePalRupFormat)
-            kissat_close_palrup_internally(solver);
-    }
 }
 
 void Kissat::unsetSolverInterrupt() {
@@ -206,6 +203,8 @@ bool Kissat::shouldTerminate() {
 }
 
 void Kissat::cleanUp() {
+    if (_setup.usePalRupFormat)
+        kissat_close_palrup_internally(solver);
     if (_setup.profilingLevel > 0) {
         auto profileFileString = _setup.profilingBaseDir + "/profile." + _setup.jobname
             + "." + std::to_string(_setup.globalId);
