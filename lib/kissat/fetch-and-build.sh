@@ -3,7 +3,7 @@
 source ../base-build-functions.sh
 dirname="kissat"
 
-branchorcommit="bc8833b423d40f7c153d1a0672f665d60cf21eba" # updated 2026-07-11
+branchorcommit="f769a0a5bb91b50b6160d1cb8791cbb0ba1e6312" # updated 2026-07-11
 fetch_and_extract $dirname configure https://github.com/rubenGoetz/kissat/archive/${branchorcommit}.zip
 
 echo "[kissat] Building ..."
