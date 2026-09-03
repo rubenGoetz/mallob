@@ -45,9 +45,13 @@ public:
                 auto jsonJob = jsonJobBlueprint;
                 auto param_preset = PalRupSequence::get_param_preset(symbol);
                 auto logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory()) + "/palrup_logs." + _seq.get_remaining_sequence();
+                auto workingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir()) + "/" + _seq.get_remaining_sequence();
                 bool palRupDrup = param_preset.find("-palrup-drup=1") != std::string::npos;
                 jsonJob["name"] = "palrupchain-" + std::to_string(_desc.getId()) + "-" + std::to_string(count++);
-                jsonJob["configuration"]["options"] = param_preset + " -log=" + logDir;
+                // TODO: add timeout extention for drup
+                jsonJob["configuration"]["options"] = param_preset +
+                                                      " -log=" + logDir + 
+                                                      " -palrup-check-dir=" + workingDir;
 
                 // execute PalRUP
                 LOG(V4_VVER, "Execute PalRUP preset %c: %s\n", symbol, jsonJob.dump().c_str());
