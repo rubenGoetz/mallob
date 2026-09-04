@@ -16,7 +16,7 @@ private:
     const JobDescription& _desc;
 
 public:
-    ClientSidePalrupProgram(const Parameters params, APIConnector& api, const JobDescription& desc) :
+    ClientSidePalrupProgram(const Parameters& params, APIConnector& api, const JobDescription& desc) :
         app_registry::ClientSideProgram(), _seq(params.palRupSequence()),
         _params(params), _desc(desc) {
 
