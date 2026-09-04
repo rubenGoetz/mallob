@@ -49,9 +49,12 @@ public:
                 bool palRupDrup = param_preset.find("-palrup-drup=1") != std::string::npos;
                 jsonJob["name"] = "palrupchain-" + std::to_string(_desc.getId()) + "-" + std::to_string(count++);
                 // TODO: add timeout extention for drup
-                jsonJob["configuration"]["options"] = param_preset +
-                                                      " -log=" + logDir + 
-                                                      " -palrup-check-dir=" + workingDir;
+                std::string job_string = param_preset +
+                                        " -log=" + logDir + 
+                                        " -palrup-check-dir=" + workingDir;
+                if (palRupDrup)
+                    job_string += " -jwl=" + std::to_string(_params.palRupDrupFactor() * _params.jobWallclockLimit());
+                jsonJob["configuration"]["options"] = job_string;
 
                 // execute PalRUP
                 LOG(V4_VVER, "Execute PalRUP preset %c: %s\n", symbol, jsonJob.dump().c_str());
