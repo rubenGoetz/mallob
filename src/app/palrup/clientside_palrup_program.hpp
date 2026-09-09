@@ -26,6 +26,10 @@ public:
             // Create job blueprint
             auto proofCnfOpt = StaticStore<std::string>::extractMaybe("chkcnf-#" + std::to_string(_desc.getId()));
             auto proofDirOpt = StaticStore<std::string>::extractMaybe("chkdir-#" + std::to_string(desc.getId()));
+            auto logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory());
+            auto workingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir());
+            auto drupFactor = _params.palRupDrupFactor();
+            auto jwl = _params.jobWallclockLimit();
             nlohmann::json jsonJobBlueprint = {
                 {"user", "internal"},
                 {"name", ""},
@@ -44,16 +48,14 @@ public:
                 // Build next PalRUP job
                 auto jsonJob = jsonJobBlueprint;
                 auto param_preset = PalRupSequence::get_param_preset(symbol);
-                auto logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory()) + "/palrup_logs." + _seq.get_remaining_sequence();
-                auto workingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir()) + "/" + _seq.get_remaining_sequence();
                 bool palRupDrup = param_preset.find("-palrup-drup=1") != std::string::npos;
                 jsonJob["name"] = "palrupchain-" + std::to_string(_desc.getId()) + "-" + std::to_string(count++);
                 // TODO: add timeout extention for drup
                 std::string job_string = param_preset +
-                                        " -log=" + logDir + 
-                                        " -palrup-check-dir=" + workingDir;
+                                        " -log=" + logDir + "/palrup_logs." + _seq.get_remaining_sequence() + 
+                                        " -palrup-check-dir=" + workingDir + "/" + _seq.get_remaining_sequence();
                 if (palRupDrup)
-                    job_string += " -jwl=" + std::to_string(_params.palRupDrupFactor() * _params.jobWallclockLimit());
+                    job_string += " -jwl=" + std::to_string(drupFactor * jwl);
                 jsonJob["configuration"]["options"] = job_string;
 
                 // execute PalRUP
