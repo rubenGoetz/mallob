@@ -8,7 +8,9 @@
 #include "util/assert.hpp"
 #include "util/sys/fileutils.hpp"
 #include "util/static_store.hpp"
+#include "util/sys/subprocess.hpp"
 #include <unistd.h>
+#include <csignal>
 
 
 class PalRupCaller {
@@ -19,6 +21,8 @@ private:
     const std::string _cnf_path;
     const std::string _proofdir;
     const int _jobId;
+
+    pid_t _pal_launcher_pid {-1};
 
 public:
     PalRupCaller(const Parameters& params, int globalNumWorkers, const std::string& cnfPath, const std::string& proofDir, const int jobId) :
@@ -65,46 +69,64 @@ public:
             return PALRUP_ERROR;
         }
 
-        std::string palRupCall = "cd lib/palrup;"
-            " NUM_SOLVERS=" + std::to_string(nbSolvers)
-            + " NUM_NODES=" + std::to_string(nbHosts)
-            + " NUM_PROCS_PER_NODE=" + std::to_string(nbProcsPerHost)
-            // FIXME replace monoFilename with path to *this specific job's* description
-            + " FORMULA_PATH=\"" + FileUtils::getAbsoluteFilePath(_cnf_path) + "\""
-            + " PROOF_PALRUP=\"" + proofInputDir + "\""
-            + " PROOF_WORKING=\"" + proofWorkingDir + "\""
-            + " LOG_DIR=\"" + logDir + "\""
-            + " TIMEOUT=" + std::to_string(jwl > 0 ? jwl : 9999999)
-            + " REDIST_STRAT=\"" + std::to_string(palRupStrat) + "\""
-            + " READ_BUFFER_SIZE=\"" + std::to_string(palRupReadBufferSize) + "\""
-            + " WRITE_BUFFER_SIZE=\"" + std::to_string(palRupWriteBufferSize) + "\""
-            + " MERGE_BUFFER_SIZE=\"" + std::to_string(palRupMergeBufferSize) + "\""
-            + " Q_SIZE=\"" + std::to_string(palRupQSize) + "\""
-            + " Q_ALPHA=\"" + std::to_string(palRupQAlpha) + "\""
-            + " PALRUP_BINARY=\"" + std::to_string(palRupBinary) + "\""
-            + " USE_LOCAL_DISKS=\"" + std::to_string(palRupUseLocalDisks) + "\""
-            + " USE_DRUP=\"" + std::to_string(palRupDrup) + "\""
-            + " CONVERT=\"" + std::to_string(palRupConvert) + "\""
-            + " FULL_CHECK=\"" + std::to_string(palRupCheck) +"\""
-            + " CLEANUP=\"" + std::to_string(palrupClean) + "\""
-            + " BEST_EFFORT=\"" + std::to_string(palRupBestEffort) + "\""
-            + " bash build/pal_launcher.sh";
+        std::string palRupCall = "../lib/palrup/build/pal_launcher.sh" // Subprocess will prepend "build/"
+            " -num-solvers=" + std::to_string(nbSolvers)
+            + " -num-nodes=" + std::to_string(nbHosts)
+            + " -num-procs-per-node=" + std::to_string(nbProcsPerHost)
+            + " -proof-palrup=" + proofInputDir
+            + " -proof-working=" + proofWorkingDir
+            + " -log-dir=" + logDir
+            + " -timeout=" + std::to_string(jwl > 0 ? jwl : LARGE_INT)
+            + " -use-local-discs=" + std::to_string(palRupUseLocalDisks)
+            + " -execution-dir=" + "lib/palrup"
+            + " -formula-path=" + FileUtils::getAbsoluteFilePath(_cnf_path)
+            + " -redist-strat=" + std::to_string(palRupStrat)
+            + " -read-buffer-size=" + std::to_string(palRupReadBufferSize)
+            + " -write-buffer-size=" + std::to_string(palRupWriteBufferSize)
+            + " -merge-buffer-size=" + std::to_string(palRupMergeBufferSize)
+            + " -q-size=" + std::to_string(palRupQSize)
+            + " -q-alpha=" + std::to_string(palRupQAlpha)
+            + " -palrup-binary=" + std::to_string(palRupBinary)
+            + " -use-drup=" + std::to_string(palRupDrup)
+            + " -convert=" + std::to_string(palRupConvert)
+            + " -full-check=" + std::to_string(palRupCheck)
+            + " -cleanup=" + std::to_string(palrupClean)
+            + " -best-effort=" + std::to_string(palRupBestEffort);
+        Subprocess subPalRup(_params, palRupCall, false);
 
         LOG(V4_VVER, "Calling PalRUP checker: %s\n", palRupCall.c_str());
-        const int retval = system(palRupCall.c_str());
+        _pal_launcher_pid = subPalRup.start();
+        LOG(V4_VVER, "PalRUP checker started, pid %i\n", _pal_launcher_pid);
+
+        int retval = 1;
+        LOG(V4_VVER, "wait for PalRUP checker to exit.\n");
+        Process::didChildExit(_pal_launcher_pid, &retval, true);
+        _pal_launcher_pid = -1;
         LOG(V4_VVER, "PalRUP checker returned, retval=%i\n", retval);
 
         if (retval != 0) {
             FileUtils::create(fileFailure);
             return PALRUP_ERROR;
         }
+
+        // Wait until checking is done
+        while (!FileUtils::isDirectory(proofWorkingDir + "/.DONE"))
+            usleep(10000);
+
         if (FileUtils::isRegularFile(fileSuccess)) {
             LOG(V2_INFO, "PalRUP VALIDATED UNSAT\n");
             return PALRUP_VALIDATED;
         }
+        LOG(V4_VVER, "PalRUP return PALRUP_DONE = %i\n", PALRUP_DONE);
         return PALRUP_DONE;
 #else
         return PALRUP_ERROR;
 #endif
     }
+
+    void interrupt() {
+        if (_pal_launcher_pid > 0)
+            Process::sendSignal(_pal_launcher_pid, SIGABRT);
+    }
+
 };

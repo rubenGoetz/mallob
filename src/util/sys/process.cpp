@@ -165,7 +165,7 @@ void Process::sendPthreadSignal(pthread_t pthreadId, int sig) {
     pthread_kill(pthreadId, sig);
 }
 
-bool Process::didChildExit(pid_t childpid, int* exitStatusOut) {
+bool Process::didChildExit(pid_t childpid, int* exitStatusOut, bool blocking) {
     auto lock = _children_mutex.getLock();
 
     if (!_children.count(childpid)) {
@@ -175,7 +175,12 @@ bool Process::didChildExit(pid_t childpid, int* exitStatusOut) {
     }
     
     int status;
-    pid_t result = waitpid(childpid, &status, WNOHANG /*| WUNTRACED | WCONTINUED*/);
+    pid_t result;
+    if (!blocking)
+        result = waitpid(childpid, &status, WNOHANG /*| WUNTRACED | WCONTINUED*/);
+    else
+        result = waitpid(childpid, &status, 0);
+
     if (result != 0) {
         _children.erase(childpid);
         if (exitStatusOut != nullptr) 

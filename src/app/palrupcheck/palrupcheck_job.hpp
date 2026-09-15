@@ -3,6 +3,7 @@
 
 #include "app/job.hpp"
 #include "app/palrupcheck/palrup_caller.hpp"
+#include "app/palrup/palrup_constants.hpp"
 #include "util/logger.hpp"
 #include "util/sys/thread_pool.hpp"
 #include "util/sys/threading.hpp"
@@ -14,11 +15,12 @@ private:
     JobResult _result;
     std::future<void> _fut_done;
     volatile bool _terminate_signal = false;
+    PalRupCaller* _caller;
 
 public:
     // Standard constructor. During construction, no job description is present yet.
     PalrupCheckJob(const Parameters& params, const JobSetup& setup, AppMessageTable& table) 
-        : Job(params, setup, table) {
+        : Job(params, setup, table), _caller(NULL) {
 
         // no result present
         _result.id = getId();
@@ -71,10 +73,11 @@ public:
             // Run PalRUPCheck
             const std::string cnfPath = getDescription().getAppConfiguration().map.at("__chkcnf");
             const std::string proofDir = getDescription().getAppConfiguration().map.at("__chkproofdir");
-            auto res = PalRupCaller(_params, getGlobalNumWorkers(), cnfPath, proofDir, getId()).callBlocking();
+            PalRupCaller caller = PalRupCaller(_params, getGlobalNumWorkers(), cnfPath, proofDir, getId());
+            _caller = &caller;
+            auto res = caller.callBlocking();
+            _caller = NULL;
             _result.result = res;
-
-            LOG(V4_VVER, "PalRUPCHECK result: %i\n", _result.result);
         });
     }
 
@@ -112,7 +115,7 @@ public:
     // We acknowledge this implicitly by having background threads check for getState().
     void appl_terminate() override {
         _terminate_signal = true;
-        if (_fut_done.valid()) _fut_done.get();
+        if (_caller) _caller->interrupt();
     }
     // React to an incoming message. (This becomes relevant only if you send custom messages)
     void appl_communicate(int source, int mpiTag, JobMessage& msg) override {}
