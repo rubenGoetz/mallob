@@ -104,7 +104,7 @@ public:
         _pal_launcher_pid = -1;
         LOG(V4_VVER, "PalRUP checker returned, retval=%i\n", retval);
 
-        if (retval != 0) {
+        if (retval != 0 && !FileUtils::isDirectory(proofWorkingDir + "/.DONE")) {
             FileUtils::create(fileFailure);
             return PALRUP_ERROR;
         }
