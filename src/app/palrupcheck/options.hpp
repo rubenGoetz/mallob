@@ -9,6 +9,7 @@
 
 OPTION_GROUP(grpAppPalrupCheck, "app/palrupcheck", "PalRUP checking options")
  OPT_STRING(palRupCheckWorkdir,         "palrup-check-dir", "",                      "",                        "Global (shared) working directory for PalRUP checkers")
+ OPT_STRING(palRupDecompExe,            "palrup-decomp-exe", "",                     "",                        "path to an executable that decompresses .vg files")
  OPT_INT(palRupStrat,                   "palrup-strat", "",                          3, 1, 3,                   "Check PalRUP proof using redistribution strategy 1 to 3")
  OPT_INT(palRupReadBufferSize,          "palrup-read-buffer", "",                    16384, 0, LARGE_INT,       "PalRUP checker read buffer size in KiB")
  OPT_INT(palRupWriteBufferSize,         "palrup-write-buffer", "",                   16384, 0, LARGE_INT,       "PalRUP checker write buffer size in KiB")

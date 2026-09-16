@@ -56,6 +56,7 @@ public:
         const std::string proofInputDir = FileUtils::getAbsoluteFilePath(_proofdir);
         const std::string proofWorkingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir());
         const std::string logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory());
+        const std::string palRupDecompExe = _params.palRupDecompExe();
         FileUtils::mkdir(proofWorkingDir);
 
         auto fileSuccess = logDir + "/" + SUCCESS_FILE_NAME;
@@ -91,7 +92,8 @@ public:
             + " -convert=" + std::to_string(palRupConvert)
             + " -full-check=" + std::to_string(palRupCheck)
             + " -cleanup=" + std::to_string(palrupClean)
-            + " -best-effort=" + std::to_string(palRupBestEffort);
+            + " -best-effort=" + std::to_string(palRupBestEffort)
+            + " -decomp-exe=" + FileUtils::getAbsoluteFilePath(palRupDecompExe);
         Subprocess subPalRup(_params, palRupCall, false);
 
         LOG(V4_VVER, "Calling PalRUP checker: %s\n", palRupCall.c_str());
