@@ -16,3 +16,8 @@ make -j
 chmod +x pal_launcher.sh
 cd ..
 echo "[$dirname] Build complete"
+
+if ! [ -z "$1" ]; then
+    echo "[$dirname] cp compress-proof.sh $1/"
+    cp compress-proof.sh "$1/"
+fi

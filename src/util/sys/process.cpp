@@ -165,7 +165,7 @@ void Process::sendPthreadSignal(pthread_t pthreadId, int sig) {
     pthread_kill(pthreadId, sig);
 }
 
-bool Process::didChildExit(pid_t childpid, int* exitStatusOut, bool blocking) {
+bool Process::didChildExit(pid_t childpid, int* exitStatusOut) {
     auto lock = _children_mutex.getLock();
 
     if (!_children.count(childpid)) {
@@ -175,12 +175,7 @@ bool Process::didChildExit(pid_t childpid, int* exitStatusOut, bool blocking) {
     }
     
     int status;
-    pid_t result;
-    if (!blocking)
-        result = waitpid(childpid, &status, WNOHANG /*| WUNTRACED | WCONTINUED*/);
-    else
-        result = waitpid(childpid, &status, 0);
-
+    pid_t result = waitpid(childpid, &status, WNOHANG /*| WUNTRACED | WCONTINUED*/);
     if (result != 0) {
         _children.erase(childpid);
         if (exitStatusOut != nullptr) 
@@ -188,6 +183,25 @@ bool Process::didChildExit(pid_t childpid, int* exitStatusOut, bool blocking) {
         return true;
     }
     return false;
+}
+
+void Process::waitForChildToExit(pid_t childpid, int* exitStatusOut) {
+    auto lock = _children_mutex.getLock();
+
+    if (!_children.count(childpid)) {
+        if (exitStatusOut != nullptr)
+            *exitStatusOut = 0;
+        return;
+    }
+
+    int status;
+    pid_t result = waitpid(childpid, &status, 0);
+    if (result != 0) {
+        _children.erase(childpid);
+        if (exitStatusOut != nullptr)
+            *exitStatusOut = status;
+        return;
+    }
 }
 
 std::optional<Process::SignalInfo> Process::getCaughtSignal() {
