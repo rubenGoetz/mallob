@@ -238,6 +238,8 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	setup.numOriginalClauses = numClauses;
 	int sqrt = std::ceil(std::sqrt((double) setup.maxNumSolvers));
 	setup.proofDir = proofDirectory;
+	setup.formulaPath = FileUtils::getAbsoluteFilePath(params.monoFilename());
+	setup.compressionExe = FileUtils::getAbsoluteFilePath(params.palRupDecompExe());
 	if (_params.proofCompressionMode() == 1) setup.compressProofMode = SolverSetup::XZ;
 	if (_params.proofCompressionMode() == 2) setup.compressProofMode = SolverSetup::VASKIN_GOETZ;
 

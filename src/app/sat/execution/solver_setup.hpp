@@ -84,6 +84,8 @@ struct SolverSetup {
 	bool outputBinaryPalRup {true};
 	bool palRupDrup {false};
 	enum CompressProofMode {NONE, XZ, VASKIN_GOETZ} compressProofMode {NONE};
+	std::string formulaPath;
+	std::string compressionExe;
 	// If on-the-fly checking is enabled: this solver also seeks to have a found satisfying assignment checked.
 	bool onTheFlyCheckModel {false};
 	bool incrementalImpCheck {false};
