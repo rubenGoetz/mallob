@@ -48,6 +48,9 @@ private:
 	
 	bool isSweeper = false; 
 
+	std::string fragment_path;
+	pid_t compressorPid {-1};
+
 public:
 	Kissat(const SolverSetup& setup);
 	 ~Kissat();

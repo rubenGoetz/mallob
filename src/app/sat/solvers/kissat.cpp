@@ -83,12 +83,40 @@ Kissat::Kissat(const SolverSetup& setup)
 
             // set kissat to log PalRUP
             int sqrt = std::ceil(std::sqrt((double) maxNumSolvers));
-            std::string fragment_path = setup.proofDir + "/"
-                                        + std::to_string((int)(solverRank / sqrt)) + "/"
-                                        + std::to_string(solverRank) + "/"
-                                        + "out.padrup";
-            LOG(V2_INFO, "KISSAT PROOF DIR %s\n", fragment_path.c_str());
-            kissat_trace_palrup_internally(solver, maxNumSolvers, solverRank, setup.numOriginalClauses, fragment_path.c_str());
+            fragment_path = setup.proofDir + "/"
+                            + std::to_string((int)(solverRank / sqrt)) + "/"
+                            + std::to_string(solverRank) + "/"
+                            + "out.padrup";
+            
+            if (_setup.compressProofMode == SolverSetup::NONE) {
+                // No proof compression.
+                LOG(V4_VVER, "KISSAT PROOF PATH %s\n", (fragment_path + "~").c_str());
+                kissat_trace_palrup_internally(solver, maxNumSolvers, solverRank, setup.numOriginalClauses, (fragment_path + "~").c_str());
+            } else {
+                // Proof compression.
+				// - Create pipe from solver to compressor
+                fragment_path += (_setup.compressProofMode == SolverSetup::XZ ? ".xz" : ".vg");
+                std::string pipePath = fragment_path + ".compress";
+                int res;
+				res = mkfifo(pipePath.c_str(), 0666);
+				if (res == -1) abort();
+                // - Launch compression sub-process
+                Parameters params;
+				Subprocess subprocCompress(params,
+					"compress-proof.sh "
+					+ std::string(_setup.compressProofMode == SolverSetup::XZ ? "XZ" : "VASKIN_GOETZ")+ " "	// compression algorithm
+					+ pipePath + " "	// input
+					+ fragment_path + "~ "	// output
+					+ setup.formulaPath + " "	// path to formula
+					+ std::to_string(maxNumSolvers) + " "	// number of solver threads
+					+ setup.compressionExe,	// .vg compression executable
+					false);
+				compressorPid = subprocCompress.start();
+				// - Tell solver to output its proof information to the pipe
+                LOG(V4_VVER, "KISSAT PROOF PATH %s\n", pipePath.c_str());
+                kissat_trace_palrup_internally(solver, maxNumSolvers, solverRank, setup.numOriginalClauses, pipePath.c_str());
+            }
+
         } else {
             assert(_lrat); // needs to be real-time checking setup for Kissat otherwise
 
@@ -216,6 +244,14 @@ bool Kissat::shouldTerminate() {
 void Kissat::cleanUp() {
     if (_setup.usePalRupFormat)
         kissat_close_palrup_internally(solver);
+    if (compressorPid > 0) Process::waitForChildToExit(compressorPid);
+	if (_setup.compressProofMode != SolverSetup::NONE) {
+		LOGGER(_logger, V5_DEBG, "Compressor PID %i finished\n", compressorPid);
+		// remove pipe file
+		FileUtils::rm(fragment_path + ".compress");
+	}
+    if (_setup.usePalRupFormat)
+        ::rename((fragment_path + "~").c_str(), fragment_path.c_str());
     if (_setup.profilingLevel > 0) {
         auto profileFileString = _setup.profilingBaseDir + "/profile." + _setup.jobname
             + "." + std::to_string(_setup.globalId);
