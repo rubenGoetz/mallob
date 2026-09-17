@@ -238,6 +238,8 @@ SatEngine::SatEngine(const Parameters& params, const SatProcessConfig& config, L
 	setup.numOriginalClauses = numClauses;
 	int sqrt = std::ceil(std::sqrt((double) setup.maxNumSolvers));
 	setup.proofDir = proofDirectory;
+	if (_params.proofCompressionMode() == 1) setup.compressProofMode = SolverSetup::XZ;
+	if (_params.proofCompressionMode() == 2) setup.compressProofMode = SolverSetup::VASKIN_GOETZ;
 
 	LratConnector* modelCheckingLratConnector {nullptr};
 	setup.nbSkippedIdEpochs = std::max(0, epochOffset + epochModulus * config.nbPreviousBalancingEpochs);
@@ -720,6 +722,8 @@ void SatEngine::cleanUp(bool hardTermination) {
 			for (int localId = 0; localId < _params.numThreadsPerProcess(); localId++) {
 				int globalId = _config.apprank * _params.numThreadsPerProcess() + localId;
 				auto dir = setup.proofDir + "/" + std::to_string((int)(globalId / sqrt)) + "/" + std::to_string(globalId);
+				if (FileUtils::exists(dir + "/out.palrup.xz") || FileUtils::exists(dir + "/out.palrup.vg"))
+					continue;
 				FileUtils::create(dir + "/out.palrup");
 			}
 		}
