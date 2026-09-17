@@ -102,7 +102,7 @@ public:
 
         int retval = 1;
         LOG(V4_VVER, "wait for PalRUP checker to exit.\n");
-        Process::didChildExit(_pal_launcher_pid, &retval, true);
+        Process::waitForChildToExit(_pal_launcher_pid, &retval);
         _pal_launcher_pid = -1;
         LOG(V4_VVER, "PalRUP checker returned, retval=%i\n", retval);
 

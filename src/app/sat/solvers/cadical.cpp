@@ -131,9 +131,15 @@ Cadical::Cadical(const SolverSetup& setup)
 				if (res == -1) abort();
 				// - Launch compression sub-process
 				Parameters params;
-				Subprocess subprocCompress(params, "compress-proof.sh "
-					+ std::string(_setup.compressProofMode == SolverSetup::XZ ? "XZ" : "VASKIN_GOETZ")
-					+ " " + pipePath + " " + proofFileString + "~", false);
+				Subprocess subprocCompress(params,
+					"compress-proof.sh "
+					+ std::string(_setup.compressProofMode == SolverSetup::XZ ? "XZ" : "VASKIN_GOETZ")+ " "	// compression algorithm
+					+ pipePath + " "	// input
+					+ proofFileString + "~ "	// output
+					+ FileUtils::getAbsoluteFilePath(params.monoFilename()) + " "	// path to formula
+					+ std::to_string(setup.maxNumSolvers) + " "	// number of solver threads
+					+ FileUtils::getAbsoluteFilePath(params.palRupDecompExe()),	// .vg compression executable
+					false);
 				compressorPid = subprocCompress.start();
 				// - Tell solver to output its proof information to the pipe
 				okay = solver->trace_proof(pipePath.c_str()); assert(okay);
