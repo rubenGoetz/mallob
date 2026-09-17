@@ -307,7 +307,7 @@ void JsonInterface::handleJobDone(JobResult&& result, const JobProcessingStatist
     j["internal_revision"] = result.revision;
     j["result"] = { 
         { "resultcode", result.result }, 
-        { "resultstring", result.result == RESULT_SAT ? "SAT" : result.result == RESULT_UNSAT ? "UNSAT" : "UNKNOWN" }
+        { "resultstring", result.result == RESULT_SAT ? "SAT" : result.result == RESULT_UNSAT ? "UNSAT" : result.result == RESULT_SIMPLIFIED ? "SIMPLIFIED" : "UNKNOWN" }
     };
     if (useSolutionFile) {
         j["result"]["solution-file"] = solutionFile;
@@ -328,10 +328,17 @@ void JsonInterface::handleJobDone(JobResult&& result, const JobProcessingStatist
         { "used_cpu_seconds" , stats.usedCpuSeconds }
     };
 
-    // Send back feedback over whichever connection the job arrived
+    auto cbFeedback = img->feedback;
+    if (!img->incremental) {
+        _job_name_to_id_rev.erase(img->userQualifiedName);
+        _job_id_to_image.erase(result.id);
+        delete img;
+    }
+    // "img" is no longer valid, return the mutex
     _job_map_mutex.unlock();
-    img->feedback(j);
-    _job_map_mutex.lock();
+
+    // Send back feedback over whichever connection the job arrived
+    cbFeedback(j);
 
     if (useSolutionFile) {
         ProcessWideThreadPool::get().addTask([solutionFile, sol = result.extractSolution()]() {
@@ -350,11 +357,4 @@ void JsonInterface::handleJobDone(JobResult&& result, const JobProcessingStatist
             close(fd);
         });
     }
-
-    if (!img->incremental) {
-        _job_name_to_id_rev.erase(img->userQualifiedName);
-        _job_id_to_image.erase(result.id);
-        delete img;
-    }
-    _job_map_mutex.unlock();
 }
