@@ -23,6 +23,7 @@ private:
     const int _jobId;
 
     pid_t _pal_launcher_pid {-1};
+    std::string _workingdir;
 
 public:
     PalRupCaller(const Parameters& params, int globalNumWorkers, const std::string& cnfPath, const std::string& proofDir, const int jobId) :
@@ -58,6 +59,7 @@ public:
         const std::string logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory());
         const std::string palRupDecompExe = _params.palRupDecompExe();
         FileUtils::mkdir(proofWorkingDir);
+        _workingdir = proofWorkingDir;
 
         auto fileSuccess = logDir + "/" + SUCCESS_FILE_NAME;
         auto fileFailure = logDir + "/" + FAILURE_FILE_NAME;
@@ -127,8 +129,13 @@ public:
     }
 
     void interrupt() {
-        if (_pal_launcher_pid > 0)
-            Process::sendSignal(_pal_launcher_pid, SIGABRT);
+        if (_pal_launcher_pid > 0) {
+            if (!FileUtils::isDirectory(_workingdir + "/.DONE")) {
+                // Only send SIGABRT if the job is not already done
+                LOG(V4_VVER, "Send SIGABRT to PalRupCaller #%i\n", _jobId);
+                Process::sendSignal(_pal_launcher_pid, SIGABRT);
+            }
+        }
     }
 
 };

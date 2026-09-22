@@ -116,6 +116,7 @@ public:
     void appl_terminate() override {
         _terminate_signal = true;
         if (_caller) _caller->interrupt();
+        if (_fut_done.valid()) _fut_done.get();
     }
     // React to an incoming message. (This becomes relevant only if you send custom messages)
     void appl_communicate(int source, int mpiTag, JobMessage& msg) override {}
