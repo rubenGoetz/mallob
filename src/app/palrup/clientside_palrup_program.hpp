@@ -54,8 +54,10 @@ public:
                 std::string job_string = param_preset +
                                         " -log=" + logDir + "/palrup_logs." + _seq.get_remaining_sequence() + 
                                         " -palrup-check-dir=" + workingDir + "/" + _seq.get_remaining_sequence();
-                if (palRupDrup)
+                if (palRupDrup) {
                     job_string += " -jwl=" + std::to_string(drupFactor * jwl);
+                    jsonJob["wallclock-limit"] = std::to_string(int(drupFactor * jwl)) + "s";
+                }
                 jsonJob["configuration"]["options"] = job_string;
 
                 // execute PalRUP
