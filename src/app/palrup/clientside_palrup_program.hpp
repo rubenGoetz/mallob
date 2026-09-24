@@ -28,7 +28,6 @@ public:
             auto proofDirOpt = StaticStore<std::string>::extractMaybe("chkdir-#" + std::to_string(desc.getId()));
             auto logDir = FileUtils::getAbsoluteFilePath(_params.logDirectory());
             auto workingDir = FileUtils::getAbsoluteFilePath(_params.palRupCheckWorkdir());
-            auto drupFactor = _params.palRupDrupFactor();
             auto jwl = _params.jobWallclockLimit();
             nlohmann::json jsonJobBlueprint = {
                 {"user", "internal"},
@@ -50,14 +49,9 @@ public:
                 auto param_preset = PalRupSequence::get_param_preset(symbol);
                 bool palRupDrup = param_preset.find("-palrup-drup=1") != std::string::npos;
                 jsonJob["name"] = "palrupchain-" + std::to_string(_desc.getId()) + "-" + std::to_string(count++);
-                // TODO: add timeout extention for drup
                 std::string job_string = param_preset +
                                         " -log=" + logDir + "/palrup_logs." + _seq.get_remaining_sequence() + 
                                         " -palrup-check-dir=" + workingDir + "/" + _seq.get_remaining_sequence();
-                if (palRupDrup) {
-                    job_string += " -jwl=" + std::to_string(drupFactor * jwl);
-                    jsonJob["wallclock-limit"] = std::to_string(int(drupFactor * jwl)) + "s";
-                }
                 jsonJob["configuration"]["options"] = job_string;
 
                 // execute PalRUP

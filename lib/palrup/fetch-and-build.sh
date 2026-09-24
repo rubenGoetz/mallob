@@ -3,7 +3,7 @@
 source ../base-build-functions.sh
 dirname="PalRUP-Check"
 
-branchorcommit="91f37eadf92abbe1ad6e20a6cdc1845ef24d3d9d" # updated 2026-07-08
+branchorcommit="ced0b4c32a79fb8c5dd1da95ff2a70badc6117f2" # updated 2026-07-08
 fetch_and_extract $dirname CMakeLists.txt https://github.com/rubenGoetz/PalRUP-Check/archive/${branchorcommit}.zip
 
 sed -i 's/-Werror//g' CMakeLists.txt
@@ -14,6 +14,7 @@ cd build
 cmake .. -DCMAKE_BUILD_TYPE=RELEASE
 make -j
 chmod +x pal_launcher.sh
+chmod +x pal.sh
 cd ..
 echo "[$dirname] Build complete"
 

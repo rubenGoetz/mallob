@@ -101,6 +101,7 @@ OPTION_GROUP(grpJob, "job", "Global configuration of jobs")
  OPT_FLOAT(jobCommUpdatePeriod,           "jcup", "job-comm-update-period",            0,    0, LARGE_INT,      "Job communicator update period (0: never update)" )
  OPT_FLOAT(jobCpuLimit,                   "jcl", "job-cpu-limit",                      0,    0, LARGE_INT,      "Timeout an instance after x cpu seconds")
  OPT_FLOAT(jobWallclockLimit,             "jwl", "job-wallclock-limit",                0,    0, LARGE_INT,      "Timeout an instance after x seconds wall clock time")
+ OPT_FLOAT(monoJobWallclockLimit,         "mjwl", "mono-job-wallclock-limit",          0,    0, LARGE_INT,      "Timeout only the first mono job after x seconds wall clock time")
  OPT_INT(maxDemand,                       "md", "max-demand",                          0,    0, LARGE_INT,      "Limit any job's demand to this value")
  OPT_INT(numThreadsPerProcess,            "t", "threads-per-process",                  0,    0, MALLOB_MAX_N_APPTHREADS_PER_PROCESS,
     "Number of application worker threads per MPI process; maximum value configurable at compile time via -DMALLOB_MAX_N_APPTHREADS_PER_PROCESS")

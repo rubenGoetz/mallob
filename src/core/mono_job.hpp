@@ -44,6 +44,8 @@ public:
         if (_params.crossJobCommunication()) json["group-id"] = "1";
         if (_params.jobWallclockLimit() > 0)
             json["wallclock-limit"] = std::to_string(_params.jobWallclockLimit()) + "s";
+        if (_params.monoJobWallclockLimit() > 0)
+            json["wallclock-limit"] = std::to_string(_params.monoJobWallclockLimit()) + "s";
         if (_params.jobCpuLimit() > 0) {
             json["cpu-limit"] = std::to_string(_params.jobCpuLimit()) + "s";
         }

@@ -128,12 +128,12 @@ public:
 #endif
     }
 
-    void interrupt() {
+    void interrupt() {;
         if (_pal_launcher_pid > 0) {
             if (!FileUtils::isDirectory(_workingdir + "/.DONE")) {
-                // Only send SIGABRT if the job is not already done
-                LOG(V4_VVER, "Send SIGABRT to PalRupCaller #%i\n", _jobId);
-                Process::sendSignal(_pal_launcher_pid, SIGABRT);
+                // Only send SIGTERM if the job is not already done
+                LOG(V4_VVER, "Send SIGTERM to PalRupCaller #%i\n", _jobId);
+                Process::sendSignal(_pal_launcher_pid, SIGTERM);
             }
         }
     }
