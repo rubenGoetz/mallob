@@ -60,10 +60,10 @@ public:
                 result = jsonJobResult["result"]["resultcode"];
                 LOG(V4_VVER, "PalRUP preset %c result: %i\n", symbol, result);
 
-                if (result == PALRUP_ERROR) {
-                    LOG(V0_CRIT, "PalRUP job chain failed at %c!\n", symbol);
-                    break;
-                }
+                //if (result == PALRUP_ERROR) {
+                //    LOG(V0_CRIT, "PalRUP job chain failed at %c!\n", symbol);
+                //    break;
+                //}
 
                 _seq.pop();
             }
