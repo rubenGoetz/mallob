@@ -3,7 +3,7 @@
 source ../base-build-functions.sh
 dirname="PalRUP-Check"
 
-branchorcommit="1fc7cde49e770480f93057cfff60183a7c7061d2" # updated 2026-07-08
+branchorcommit="61c79f445bae6affd20a159cb2d2cea627824b30" # updated 2026-07-08
 fetch_and_extract $dirname CMakeLists.txt https://github.com/rubenGoetz/PalRUP-Check/archive/${branchorcommit}.zip
 
 sed -i 's/-Werror//g' CMakeLists.txt
