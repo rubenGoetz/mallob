@@ -15,7 +15,7 @@
 # SuperMUC has TWO processors with 24 physical cores each, totalling 48 physical cores (96 hwthreads)
 # See: https://doku.lrz.de/download/attachments/43321076/SuperMUC-NG_computenode.png
 
-module load slurm_setup; module unload devEnv/Intel/2019 intel-mpi; module load gcc/11 intel-mpi/2019-gcc cmake/3.14.5 gdb
+module load slurm_setup; module unload devEnv/Intel/2019 intel-mpi; module load gcc/14.3.0 intel-mpi/default cmake/3.31.11 gdb/15.2 mpifileutils
 
 username="$DS_USERNAME"
 projname="$DS_PROJECTNAME"
@@ -46,7 +46,9 @@ localtmpdir_base=${SCRATCH}/tmp/$DS_JOBNAME-$SLURM_JOB_ID # fast (?) disk
 mkdir -p $localtmpdir_base $globallogdir_base
 
 # Benchmark instances, one per line
-benchmarkfile="/hppfs/work/$projname/$username/instances/2023+2024-unique.txt" # TODO benchmark file
+#benchmarkfile="/hppfs/work/$projname/$username/instances/2023+2024-unique.txt" # TODO benchmark file
+#benchmarkfile="/dss/dsshome1/06/di97xah/small_unsat_benchmarks.txt"
+benchmarkfile="/hppfs/work/pn72pu/di97xah/main_2025/unsat_solved.txt"
 if [ ! -f $benchmarkfile ]; then
     echo "Benchmark file not found!"
     exit 1
@@ -96,18 +98,21 @@ while [ $(( $(date +%s) - $starttime + $DS_SECONDSPERJOB + 30 )) -lt $DS_RUNTIME
     localtmpdir="${localtmpdir_base}/tmp/$i" # make sure that proof and disk data are written on FAST, local disk
     globallogdir="${localtmpdir_base}/$i"
     outputlogdir="${globallogdir_base}"
+    proof_palrup="${SCRATCH}/$DS_JOBNAME-$SLURM_JOB_ID"
+    proof_working="/hppfs/work/$projname/$username/palrup/$DS_JOBNAME-$SLURM_JOB_ID"
 
     echo "logdir: $globallogdir , localtmp: $localtmpdir , output: $outputlogdir"
 
     # TODO Configure Mallob
-    timeout=$DS_SECONDSPERJOB
-    cmd="$build/mallob -mono-app=SATWITHPRE -pb=1 -pjp=999999 -pef=1 -mono=$f -jwl=$timeout -T=$(($timeout+30)) -wam=60``000 -pre-cleanup=1 \
+    internal_jobs=9	# solving, drup, conversion, lrup
+    timeout=$(($DS_SECONDSPERJOB/$internal_jobs))
+    cmd="$build/mallob -mono-app=SAT -pb=1 -pjp=999999 -pef=1 -mono=$f -mjwl=$timeout -jwl=$((timeout*2)) -T=$((($timeout*$internal_jobs)+30)) -wam=60``000 -pre-cleanup=1 \
     -q=1 -log=$globallogdir -tmp=$localtmpdir -comment-outputlogdir=$outputlogdir -sro=${globallogdir}/processed-jobs.out -trace-dir=${globallogdir}/ -os=1 -v=4 -iff=0 -s2f=${globallogdir}/model -cm=0 \
-    -rpa=1 -pph=${SLURM_NTASKS_PER_NODE} -mlpt=50``000``000 -t=$((${SLURM_CPUS_PER_TASK} / 2)) \
-    -satsolver=[k_]w -isp=0 -div-phases=1 -div-noise=0 -div-seeds=1 -div-elim=0 -div-native=0 -scsd=0 \
-    -scll=60 -slbdl=60 -qcll=60 -qlbdl=60 -csm=3 -cfm=3 -cfci=30 -mscf=5 -bem=1 -aim=1 -rlbd=0 -ilbd=1 -randlbd=0 -scramble-lbds=0 \
-    -seed=0 \
-    -spd=${globallogdir}/ -spl=3"
+    -rpa=1 -pph=${SLURM_NTASKS_PER_NODE} -mlpt=20``000``000 -t=$((${SLURM_CPUS_PER_TASK} / 2)) \
+    -satsolver=k_ -isp=0 -div-phases=1 -div-noise=0 -div-seeds=1 -div-elim=0 -div-native=0 -scsd=0 \
+    -scll=60 -slbdl=60 -qcll=60 -qlbdl=60 -csm=3 -cfm=3 -cfci=30 -mscf=5 -bem=1 -aim=1 -rlbd=0 -ilbd=1 -randlbd=0 -scramble-lbds=0 -seed=0 \
+    -palrup=1 -proof-dir=$proof_palrup -palrup-binary=1 -palrup-drup=1 \
+    -palrup-sequence=dclD -palrup-check-dir=$proof_working -palrup-clean=0"
 
     # Pre-create network-disk output directories to avoid many concurrent filesystem manips
     mkdir -p $(for rank in $(seq 0 $(($SLURM_NTASKS-1))); do echo $outputlogdir/$i/$rank; done)
@@ -117,9 +122,13 @@ while [ $(( $(date +%s) - $starttime + $DS_SECONDSPERJOB + 30 )) -lt $DS_RUNTIME
     export MALLOB_OUTPUTLOGDIR=$outputlogdir
     export MALLOB_BUILDDIR=$build
     export MALLOB_NUMNODES=$DS_NODES
+    export PROOF_PALRUP=$proof_palrup
+    export PROOF_WORKING=$proof_working
 
     # Assemble MPI command options
     mpicall="mpiexec -n $SLURM_NTASKS --bind-to core --map-by numa -genvall"
+    mpicleanup="mpiexec -n $((SLURM_NTASKS*SLURM_CPUS_PER_TASK)) drm --traceless --lite --aggressive"
+    mpicopy="mpiexec -n $((SLURM_NTASKS*SLURM_CPUS_PER_TASK)) dcp"
 
     # Drop hint which file we're solving
     echo "$f -> $globallogdir"
@@ -131,7 +140,19 @@ while [ $(( $(date +%s) - $starttime + $DS_SECONDSPERJOB + 30 )) -lt $DS_RUNTIME
     $mpicall bash -c "scripts/slurm/prolog.sh ; $cmd"
 
     sleep 3 # avoid "nodes are still busy" issue?
-    $mpicall scripts/slurm/epilog.sh
+    echo "EPILOG"
+    echo "$mpicopy $globallogdir $outputlogdir"
+    $mpicopy $globallogdir $outputlogdir
+    mkdir "$outputlogdir/$i/.alldone"
+    echo "$mpicleanup $globallogdir"
+    $mpicleanup $globallogdir
+
+    echo "CLEANUP"
+    echo "$mpicleanup /hppfs/work/$projname/$username/palrup/$DS_JOBNAME-$SLURM_JOB_ID"
+    $mpicleanup /hppfs/work/$projname/$username/palrup/$DS_JOBNAME-$SLURM_JOB_ID
+    echo "$mpicleanup $SCRATCH/$DS_JOBNAME-$SLURM_JOB_ID"
+    $mpicleanup $SCRATCH/$DS_JOBNAME-$SLURM_JOB_ID
+    
 
     echo "$(date) JOB $i FINISHED"
 
@@ -144,3 +165,7 @@ if ! $change; then exit; fi
 
 # Submit next instance, to begin after this job is done (do nothing if it fails)
 sbatch --begin=now`#+$(($DS_RUNTIME+30))` sbatch/generated/$DS_JOBNAME/sbatch.sh
+
+# clean up lod dir skeletons
+$mpicleanup $localtmpdir_base
+
