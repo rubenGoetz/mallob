@@ -732,7 +732,7 @@ void SatEngine::cleanUp(bool hardTermination) {
 					FileUtils::exists(dir + "/out.padrup.xz") ||
 					FileUtils::exists(dir + "/out.padrup.vg")) continue;
 					
-				_params.palRupDrup() ? FileUtils::create(dir + "/out.palrup") : FileUtils::create(dir + "/out.padrup");
+				_params.palRupDrup() ? FileUtils::create(dir + "/out.padrup") : FileUtils::create(dir + "/out.palrup");
 			}
 		}
 		LOGGER(_logger, V4_VVER, "[engine-cleanup] done - hard exit pending\n");
