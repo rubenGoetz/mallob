@@ -80,7 +80,7 @@ public:
             + " -proof-working=" + proofWorkingDir
             + " -log-dir=" + logDir
             + " -timeout=" + std::to_string(jwl > 0 ? jwl : LARGE_INT)
-            + " -use-local-discs=" + std::to_string(palRupUseLocalDisks)
+            + " -use-local-disks=" + std::to_string(palRupUseLocalDisks)
             + " -execution-dir=" + "lib/palrup"
             + " -formula-path=" + FileUtils::getAbsoluteFilePath(_cnf_path)
             + " -redist-strat=" + std::to_string(palRupStrat)
